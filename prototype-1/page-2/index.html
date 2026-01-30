@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype 1 - Page 2 - Autocom Prototypes</title>
+    <link rel="stylesheet" href="/assets/styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.5.0/index.js"></script>
+    <script>
+      // Initialize theme-change after DOM loads
+      if (typeof themeChange !== 'undefined') {
+        themeChange();
+      } else {
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof themeChange !== 'undefined') {
+            themeChange();
+          }
+        });
+      }
+    </script>
+</head>
+<body class="bg-base-100 text-base-content">
+    
+<nav class="navbar bg-base-100 shadow-lg">
+    <div class="flex-1">
+        <a class="btn btn-ghost text-xl" href="/">Autocom</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li><a href="/">Home</a></li>
+            <li>
+                <details id="theme-dropdown">
+                    <summary>Theme</summary>
+                    <ul class="bg-base-100 rounded-t-none p-2 z-50">
+                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<main class="container mx-auto px-4 py-8">
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Page 2</h2>
+            <p>Second page in the flow.</p>
+            <div class="card-actions justify-end">
+                <a href="/prototype-1/" class="btn btn-ghost">Back</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
