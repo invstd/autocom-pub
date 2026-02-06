@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - Prototype 1 - Autocom Prototypes</title>
+    <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.5.0/index.js"></script>
+    <script>
+      // Initialize theme-change after DOM loads
+      if (typeof themeChange !== 'undefined') {
+        themeChange();
+      } else {
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof themeChange !== 'undefined') {
+            themeChange();
+          }
+        });
+      }
+    </script>
+</head>
+<body class="bg-base-100 text-base-content">
+    <div class="drawer lg:drawer-open min-h-screen">
+  <input id="app-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col">
+    <nav class="app-nav navbar bg-base-100 shadow-sm border-b border-base-200">
+  <div class="flex-none lg:hidden">
+    <label for="app-drawer" class="btn btn-ghost btn-square drawer-button" aria-label="open sidebar">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </label>
+  </div>
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl" href="/autocom-pub/prototype-1/">Prototype 1</a>
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
+      <li>
+        <details id="theme-dropdown">
+          <summary>Theme</summary>
+          <ul class="bg-base-100 rounded-t-none p-2 z-50">
+            <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
+            <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+    <main class="flex-1 container mx-auto px-4 py-6 max-w-[1200px] w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <aside class="lg:col-span-1">
+          <div class="card bg-base-200">
+            <div class="card-body p-4">
+              <h3 class="font-semibold text-base-content">Vehicle list</h3>
+              <p class="text-sm text-base-content/70">Search and list placeholder.</p>
+              <input type="text" placeholder="Search vehicles…" class="input input-bordered input-sm w-full" />
+              <div class="space-y-2 mt-4">
+                
+                
+                  
+<div class="vehicle-item-card card bg-base-100 shadow-sm border border-base-200 rounded-box">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start gap-2 justify-between">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        
+        <div class="avatar shrink-0 size-8 md:size-9 mask mask-circle">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="" />
+        </div>
+        
+        <p class="font-bold text-base-content text-sm md:text-base truncate">
+          BMW 330i – 2018 – Petrol
+        </p>
+      </div>
+      <span class="text-base-content/70 text-xs md:text-sm shrink-0">Monday</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 mt-1">
+      <span class="badge badge-soft badge-neutral">GSS 831</span>
+      <span class="text-base-content/70 text-xs">VIN ***273723</span>
+    </div>
+  </div>
+</div>
+
+                
+                  
+<div class="vehicle-item-card card bg-base-100 shadow-sm border border-base-200 rounded-box">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start gap-2 justify-between">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        
+        <div class="avatar shrink-0 size-8 md:size-9 mask mask-circle">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="" />
+        </div>
+        
+        <p class="font-bold text-base-content text-sm md:text-base truncate">
+          BMW 330i – 2018 – Petrol
+        </p>
+      </div>
+      <span class="text-base-content/70 text-xs md:text-sm shrink-0">Sunday</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 mt-1">
+      <span class="badge badge-soft badge-neutral">GSS 831</span>
+      <span class="text-base-content/70 text-xs">VIN ***273723</span>
+    </div>
+  </div>
+</div>
+
+                
+                  
+<div class="vehicle-item-card card bg-base-100 shadow-sm border border-base-200 rounded-box">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start gap-2 justify-between">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        
+        <p class="font-bold text-base-content text-sm md:text-base truncate">
+          Audi A4 – 2020 – Diesel
+        </p>
+      </div>
+      <span class="text-base-content/70 text-xs md:text-sm shrink-0">Jan 15</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 mt-1">
+      <span class="badge badge-soft badge-neutral">ZG 1234 AB</span>
+      <span class="text-base-content/70 text-xs">VIN ***882901</span>
+    </div>
+  </div>
+</div>
+
+                
+                  
+<div class="vehicle-item-card card bg-base-100 shadow-sm border border-base-200 rounded-box">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start gap-2 justify-between">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        
+        <p class="font-bold text-base-content text-sm md:text-base truncate">
+          VW Golf – 2019 – Petrol
+        </p>
+      </div>
+      <span class="text-base-content/70 text-xs md:text-sm shrink-0">14:20</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 mt-1">
+      <span class="badge badge-soft badge-neutral">ST 5678 CD</span>
+      <span class="text-base-content/70 text-xs">VIN ***441266</span>
+    </div>
+  </div>
+</div>
+
+                
+              </div>
+            </div>
+          </div>
+        </aside>
+        
+        <div class="min-w-0 lg:col-span-2">
+          
+<div class="space-y-6">
+  <h2 class="text-xl font-semibold text-base-content">Activity</h2>
+  
+  <ul class="timeline timeline-vertical">
+    <li>
+      <div class="timeline-start text-sm text-base-content/80">10:23</div>
+      <div class="timeline-middle">
+        <div class="w-3 h-3 rounded-full bg-neutral"></div>
+      </div>
+      <div class="timeline-end timeline-box">
+        
+<div class="activity-card card bg-base-200 border border-base-300 shadow-sm">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start justify-between gap-2">
+      <h3 class="font-semibold text-base-content">Reset service message</h3>
+      <a href="#" class="link link-error font-semibold text-sm shrink-0">View report</a>
+    </div>
+    <p class="text-sm text-base-content/70 flex flex-wrap items-center gap-2">
+      
+          <span class="badge badge-success badge-sm">Completed</span>
+          <span>Function</span>
+        
+    </p>
+  </div>
+</div>
+
+      </div>
+    </li>
+    <li>
+      <div class="timeline-start text-sm text-base-content/80">10:28</div>
+      <div class="timeline-middle">
+        <div class="w-3 h-3 rounded-full bg-neutral"></div>
+      </div>
+      <div class="timeline-end timeline-box">
+        
+<div class="activity-card card bg-base-200 border border-base-300 shadow-sm">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start justify-between gap-2">
+      <h3 class="font-semibold text-base-content">Emission test</h3>
+      <a href="#" class="link link-error font-semibold text-sm shrink-0">View report</a>
+    </div>
+    <p class="text-sm text-base-content/70 flex flex-wrap items-center gap-2">
+      
+          <span class="badge badge-success badge-sm">Passed</span>
+          <span class="badge badge-error badge-sm">1</span>
+          <span>fault codes erased</span>
+        
+    </p>
+  </div>
+</div>
+
+      </div>
+    </li>
+    <li>
+      <div class="timeline-start text-sm text-base-content/80">14 SEP</div>
+      <div class="timeline-middle">
+        <div class="w-3 h-3 rounded-full bg-neutral"></div>
+      </div>
+      <div class="timeline-end timeline-box">
+        
+<div class="activity-card card bg-base-200 border border-base-300 shadow-sm">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start justify-between gap-2">
+      <h3 class="font-semibold text-base-content">Erase fault codes</h3>
+      <a href="#" class="link link-error font-semibold text-sm shrink-0">View report</a>
+    </div>
+    <p class="text-sm text-base-content/70 flex flex-wrap items-center gap-2">
+      
+          <span class="badge badge-error badge-sm">4</span>
+          <span>fault codes erased</span>
+        
+    </p>
+  </div>
+</div>
+
+      </div>
+    </li>
+    <li>
+      <div class="timeline-start text-sm text-base-content/80">14 SEP</div>
+      <div class="timeline-middle">
+        <div class="w-3 h-3 rounded-full bg-neutral"></div>
+      </div>
+      <div class="timeline-end timeline-box">
+        
+<div class="activity-card card bg-base-200 border border-base-300 shadow-sm">
+  <div class="card-body p-4">
+    <div class="flex flex-wrap items-start justify-between gap-2">
+      <h3 class="font-semibold text-base-content">System scan</h3>
+      <a href="#" class="link link-error font-semibold text-sm shrink-0">View report</a>
+    </div>
+    <p class="text-sm text-base-content/70 flex flex-wrap items-center gap-2">
+      
+          <span class="badge badge-neutral badge-sm">24</span>
+          <span>systems,</span>
+          <span class="badge badge-error badge-sm">7</span>
+          <span>fault codes detected</span>
+        
+    </p>
+  </div>
+</div>
+
+      </div>
+    </li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40">
+    <label for="app-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-64 min-h-full bg-base-200 text-base-content">
+      <li class="menu-title">Prototype 1</li>
+      <li><a href="/autocom-pub/prototype-1/" >Vehicle</a></li>
+      <li><a href="/autocom-pub/prototype-1/tech-data/" >Tech data</a></li>
+      <li><a href="/autocom-pub/prototype-1/history/" class="menu-active">History</a></li>
+      <li><a href="/autocom-pub/prototype-1/settings/" >Settings</a></li>
+      <li class="mt-auto pt-4 border-t border-base-300">
+        <a href="/autocom-pub/">← Back to site</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

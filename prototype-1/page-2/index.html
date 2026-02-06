@@ -20,39 +20,68 @@
     </script>
 </head>
 <body class="bg-base-100 text-base-content">
-    
-<nav class="navbar bg-base-100 shadow-lg">
-    <div class="flex-1">
-        <a class="btn btn-ghost text-xl" href="/autocom-pub/">Autocom</a>
-    </div>
-    <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
-            <li><a href="/autocom-pub/">Home</a></li>
-            <li>
-                <details id="theme-dropdown">
-                    <summary>Theme</summary>
-                    <ul class="bg-base-100 rounded-t-none p-2 z-50">
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
-    </div>
+    <div class="drawer lg:drawer-open min-h-screen">
+  <input id="app-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col">
+    <nav class="app-nav navbar bg-base-100 shadow-sm border-b border-base-200">
+  <div class="flex-none lg:hidden">
+    <label for="app-drawer" class="btn btn-ghost btn-square drawer-button" aria-label="open sidebar">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </label>
+  </div>
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl" href="/autocom-pub/prototype-1/">Prototype 1</a>
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
+      <li>
+        <details id="theme-dropdown">
+          <summary>Theme</summary>
+          <ul class="bg-base-100 rounded-t-none p-2 z-50">
+            <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
+            <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-
-<main class="container mx-auto px-4 py-8">
-    <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-            <h2 class="card-title">Page 2</h2>
-            <p>Second page in the flow.</p>
-            <div class="card-actions justify-end">
-                <a href="/autocom-pub/prototype-1/" class="btn btn-ghost">Back</a>
-            </div>
-        </div>
+    <main class="flex-1 container mx-auto px-4 py-6 max-w-[1200px] w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="min-w-0 lg:col-span-3">
+          
+<div class="card bg-base-100 shadow-sm border border-base-200">
+  <div class="card-body">
+    <h2 class="card-title">Page 2</h2>
+    <p>Second page in the flow.</p>
+    <div class="card-actions justify-end mt-4">
+      <a href="/autocom-pub/prototype-1/" class="btn btn-ghost">Back</a>
     </div>
-</main>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="drawer-side z-40">
+    <label for="app-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-64 min-h-full bg-base-200 text-base-content">
+      <li class="menu-title">Prototype 1</li>
+      <li><a href="/autocom-pub/prototype-1/" >Vehicle</a></li>
+      <li><a href="/autocom-pub/prototype-1/tech-data/" >Tech data</a></li>
+      <li><a href="/autocom-pub/prototype-1/history/" >History</a></li>
+      <li><a href="/autocom-pub/prototype-1/settings/" >Settings</a></li>
+      <li class="mt-auto pt-4 border-t border-base-300">
+        <a href="/autocom-pub/">← Back to site</a>
+      </li>
+    </ul>
+  </div>
+</div>
 
 </body>
 </html>
