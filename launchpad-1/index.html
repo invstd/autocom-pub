@@ -238,9 +238,10 @@
           </div>
         </div>
         <p id="vci-modal-status" class="skeleton skeleton-text text-sm text-center min-h-[1.5rem]">Initializing...</p>
-        <div class="divider text-sm my-4">Too slow?</div>
-        <button type="button" id="vci-modal-manual" class="btn btn-neutral flex items-center gap-2">
-          
+        <div id="vci-modal-state-2-manual-fallback" class="contents">
+          <div class="divider text-sm my-4">Too slow?</div>
+          <button type="button" id="vci-modal-manual" class="btn btn-neutral flex items-center gap-2">
+            
 <span class="icon icon-user w-5 h-5 shrink-0 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -248,8 +249,9 @@
 
 </span>
 
-          SELECT MANUALLY
-        </button>
+            SELECT MANUALLY
+          </button>
+        </div>
       </div>
       <div class="modal-action justify-end mt-6">
         <button type="button" class="btn btn-ghost" data-vci-modal-cancel>Cancel</button>
@@ -350,7 +352,7 @@
         </div>
         <p id="scan-vin-status" class="text-sm text-center min-h-[1.5rem] text-base-content/80">Decoding...</p>
         <div class="divider text-sm my-4">Too slow?</div>
-        <button type="button" id="scan-vin-manual" class="btn btn-primary flex items-center gap-2">
+        <button type="button" id="scan-vin-manual" class="btn btn-neutral flex items-center gap-2">
           
 <span class="icon icon-user w-5 h-5 shrink-0 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

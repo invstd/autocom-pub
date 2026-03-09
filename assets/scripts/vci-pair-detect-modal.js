@@ -73,6 +73,7 @@
   var state1StatusEl;
   var vehicleDetailsEl;
   var manualLink;
+  var manualFallbackEl;
   var basePath;
   var timeouts = [];
   var devControlsEl;
@@ -87,6 +88,10 @@
     state1El.classList.toggle("hidden", stateNum !== 1);
     state2El.classList.toggle("hidden", stateNum !== 2);
     state3El.classList.toggle("hidden", stateNum !== 3);
+    if (stateNum === 2 && manualFallbackEl) {
+      var fromVehicleSelection = dialog && dialog.getAttribute("data-from-vehicle-selection") === "1";
+      manualFallbackEl.classList.toggle("hidden", fromVehicleSelection);
+    }
     if (stateNum === 1 || stateNum === 2 || stateNum === 3) {
       titleEl.textContent = "";
       titleEl.classList.add("hidden");
@@ -258,6 +263,7 @@
     state1StatusEl = document.getElementById("vci-modal-state-1-status");
     vehicleDetailsEl = document.getElementById("vci-modal-vehicle-details");
     manualLink = document.getElementById("vci-modal-manual");
+    manualFallbackEl = document.getElementById("vci-modal-state-2-manual-fallback");
     devControlsEl = document.getElementById("vci-modal-dev-controls");
     isDevMode = typeof URLSearchParams !== "undefined" && new URLSearchParams(window.location.search).get("modal-dev") === "1";
     if (devControlsEl && isDevMode) devControlsEl.classList.remove("hidden");

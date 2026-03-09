@@ -267,8 +267,8 @@
 
     <div class="diagnostics-dashboard-columns grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0 min-w-0">
       
-      <div class="diagnostics-dashboard-left flex flex-col gap-4 min-w-0 flex-1 min-h-0">
-        <figure class="diagnostics-dashboard-hero flex flex-col md:flex-row md:items-start justify-center gap-3 md:gap-2 bg-base-200 rounded-box p-4">
+      <div class="diagnostics-dashboard-left flex flex-col gap-1 min-w-0 flex-1 min-h-0">
+        <figure class="diagnostics-dashboard-hero flex flex-col md:flex-row md:items-start justify-center gap-3 md:gap-2 bg-base-200 rounded-box p-4 pb-1">
           
           <div class="flex items-start gap-2 shrink-0" data-gauges-wrapper>
             <div data-health-gauge-wrapper>
@@ -325,7 +325,7 @@
   
   
   <div class="health-gauge-center">
-    <span class="health-gauge-value">—</span>
+    <span class="health-gauge-value">READY</span>
     <span class="health-gauge-label"></span>
   </div>
 </div>
@@ -398,7 +398,7 @@
             <div class="scan-effect-overlay" data-scan-effect></div>
           </div>
         </figure>
-        <div class="flex flex-wrap items-center justify-center gap-4 text-sm-content/80">
+        <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-base-content/80 pt-1 pb-1">
           
 <span class="micro-stat flex items-center gap-1.5 text-sm">
   
@@ -446,17 +446,18 @@
 </span>
 
         </div>
-        <div class="card bg-base-100 border border-base-200 rounded-box">
-          <div class="card-body p-4 gap-3">
+        <div class="card bg-base-100 border border-base-200 rounded-box flex-1 min-h-0 flex flex-col">
+          <div class="card-body p-4 gap-3 flex-1 min-h-0 flex flex-col overflow-hidden">
             <h2 class="text-lg font-semibold text-base-content px-2 shrink-0">Vehicle Tasks</h2>
             
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-0">
-              
+            <div class="min-h-0 overflow-auto flex-1">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-0">
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-droplet w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-droplet w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.9999 2.68994L17.6599 8.34994C18.7792 9.46855 19.5417 10.894 19.8508 12.446C20.1599 13.998 20.0018 15.6068 19.3964 17.0689C18.7911 18.531 17.7657 19.7808 16.45 20.66C15.1343 21.5393 13.5874 22.0086 12.0049 22.0086C10.4224 22.0086 8.87549 21.5393 7.55978 20.66C6.24407 19.7808 5.2187 18.531 4.61335 17.0689C4.008 15.6068 3.84988 13.998 4.15899 12.446C4.46809 10.894 5.23054 9.46855 6.34989 8.34994L11.9999 2.68994Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
@@ -466,12 +467,12 @@
   <span class="w-full text-center line-clamp-2">Oil &amp; Service Reset</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-brakes w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-brakes w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.8837 8.12932C10.2737 8.12932 8.14784 10.2552 8.14784 12.8863C8.14784 15.5174 10.2737 17.6222 12.8837 17.6222C15.4938 17.6222 17.6196 15.4963 17.6196 12.8863C17.6196 10.2762 15.4938 8.12932 12.8837 8.12932ZM12.8837 16.5066C10.8842 16.5066 9.24239 14.8858 9.24239 12.8653C9.24239 10.8445 10.8632 9.22391 12.8837 9.22391C14.9045 9.22391 16.5251 10.8447 16.5251 12.8653C16.5251 14.8858 14.8833 16.5066 12.8837 16.5066Z" fill="currentColor"/>
 <path d="M13.5994 10.9708C13.5994 11.3661 13.279 11.6866 12.8838 11.6866C12.4885 11.6866 12.1682 11.3661 12.1682 10.9708C12.1682 10.5756 12.4885 10.2552 12.8838 10.2552C13.279 10.2552 13.5994 10.5756 13.5994 10.9708Z" fill="currentColor"/>
@@ -486,12 +487,12 @@
   <span class="w-full text-center line-clamp-2">EPB</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-battery w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-battery w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20.4352 20.281H3.56481C2.14699 20.281 1 19.134 1 17.7161V9.09775C1 7.67994 2.14699 6.53294 3.56481 6.53294H20.4352C21.853 6.53294 23 7.67994 23 9.09775V17.7161C23 19.134 21.853 20.281 20.4352 20.281ZM3.56481 8.03041C2.97538 8.03041 2.49747 8.50832 2.49747 9.09775V17.7161C2.49747 18.3056 2.97538 18.7835 3.56481 18.7835H20.4352C21.0246 18.7835 21.5025 18.3056 21.5025 17.7161V9.09775C21.5025 8.50832 21.0246 8.03041 20.4352 8.03041H3.56481Z" fill="currentColor"/>
 <path d="M9.22019 14.3548H11.7053L10.9248 18.0029L14.7481 12.0768L12.2151 12.029L12.7886 8.82694L9.22019 14.3548Z" fill="currentColor"/>
@@ -504,12 +505,12 @@
   <span class="w-full text-center line-clamp-2">BMS</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-gauge-instruments w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-gauge-instruments w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.2215 16.4014C17.3381 16.4714 17.4715 16.5084 17.6075 16.5084C17.7305 16.5082 17.8515 16.4778 17.9599 16.4198C18.0683 16.3619 18.1608 16.2782 18.2293 16.1761C19.0172 14.9999 19.4564 13.6248 19.4962 12.2096C19.536 10.7944 19.1748 9.39681 18.4543 8.17812C18.3527 8.00705 18.1874 7.88333 17.9946 7.83418C17.8019 7.78502 17.5975 7.81445 17.4264 7.91599C17.2554 8.01754 17.1316 8.18288 17.0825 8.37564C17.0333 8.56841 17.0627 8.7728 17.1643 8.94387C17.7403 9.91847 18.0292 11.0361 17.9974 12.1677C17.9657 13.2994 17.6148 14.3991 16.985 15.3399C16.9091 15.4527 16.8654 15.5841 16.8584 15.72C16.8514 15.8558 16.8815 15.991 16.9455 16.111C17.0094 16.231 17.1048 16.3314 17.2215 16.4014ZM6.40329 16.524C6.28044 16.5242 6.15942 16.4942 6.05088 16.4366C5.94233 16.3791 5.84959 16.2958 5.78079 16.194C5.01969 15.0656 4.57999 13.7514 4.5088 12.3923C4.43762 11.0331 4.73764 9.68012 5.37671 8.47844C6.01578 7.27675 6.96981 6.27162 8.13654 5.57077C9.30328 4.86992 10.6387 4.49977 11.9998 4.5C12.4905 4.49989 12.9801 4.54762 13.4615 4.6425C13.5583 4.66146 13.6504 4.69932 13.7325 4.7539C13.8146 4.80848 13.8852 4.87872 13.9401 4.96059C13.995 5.04247 14.0333 5.13437 14.0527 5.23105C14.0721 5.32773 14.0722 5.42728 14.0531 5.524C14.0339 5.62073 13.9959 5.71274 13.9412 5.79476C13.8865 5.87678 13.8161 5.9472 13.7341 6.002C13.6522 6.0568 13.5602 6.0949 13.4635 6.11412C13.3668 6.13334 13.2672 6.1333 13.1705 6.114C12.3004 5.94199 11.403 5.96484 10.5427 6.1809C9.68249 6.39696 8.88077 6.80088 8.19519 7.36363C7.50961 7.92638 6.95718 8.63399 6.57759 9.43563C6.198 10.2373 6.00067 11.113 5.99979 12C5.99747 13.1956 6.3544 14.3644 7.02429 15.3547C7.10032 15.4675 7.14425 15.5988 7.15138 15.7347C7.15852 15.8705 7.12859 16.0057 7.06479 16.1258C7.001 16.2459 6.90574 16.3464 6.78922 16.4166C6.6727 16.4867 6.5393 16.5238 6.40329 16.524ZM16.1381 5.90672C15.9953 5.9041 15.8561 5.95117 15.7442 6.0399L14.9522 6.6714C14.4737 7.05165 13.8317 7.5654 13.1762 8.0964C12.5207 8.6274 11.8487 9.17415 11.3124 9.62415C11.0447 9.8484 10.8077 10.0501 10.6224 10.2136C10.4742 10.3401 10.3332 10.4748 10.2002 10.6171C9.88193 10.9896 9.72466 11.4732 9.76299 11.9617C9.80132 12.4501 10.0321 12.9033 10.4046 13.2215C10.777 13.5398 11.2607 13.697 11.7491 13.6587C12.2375 13.6204 12.6907 13.3896 13.0089 13.0171C13.1289 12.8638 13.2399 12.7035 13.3412 12.5371C13.4732 12.3286 13.6359 12.0631 13.8152 11.7631C14.1744 11.1631 14.6109 10.4146 15.0324 9.6834C15.4539 8.95215 15.8634 8.23815 16.1634 7.7064L16.5264 7.06665L16.6629 6.82515C16.7332 6.70081 16.758 6.55593 16.7331 6.41531C16.7083 6.27469 16.6354 6.14707 16.5268 6.05429C16.4183 5.96151 16.2809 5.90935 16.1381 5.90672ZM12 1.5C6.20101 1.5 1.5 6.20101 1.5 12C1.5 17.799 6.20101 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"/>
 </svg>
@@ -519,12 +520,12 @@
   <span class="w-full text-center line-clamp-2">SAS</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-brakes w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-brakes w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.8837 8.12932C10.2737 8.12932 8.14784 10.2552 8.14784 12.8863C8.14784 15.5174 10.2737 17.6222 12.8837 17.6222C15.4938 17.6222 17.6196 15.4963 17.6196 12.8863C17.6196 10.2762 15.4938 8.12932 12.8837 8.12932ZM12.8837 16.5066C10.8842 16.5066 9.24239 14.8858 9.24239 12.8653C9.24239 10.8445 10.8632 9.22391 12.8837 9.22391C14.9045 9.22391 16.5251 10.8447 16.5251 12.8653C16.5251 14.8858 14.8833 16.5066 12.8837 16.5066Z" fill="currentColor"/>
 <path d="M13.5994 10.9708C13.5994 11.3661 13.279 11.6866 12.8838 11.6866C12.4885 11.6866 12.1682 11.3661 12.1682 10.9708C12.1682 10.5756 12.4885 10.2552 12.8838 10.2552C13.279 10.2552 13.5994 10.5756 13.5994 10.9708Z" fill="currentColor"/>
@@ -539,12 +540,12 @@
   <span class="w-full text-center line-clamp-2">ABS Bleeding</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-tpms w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-tpms w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.2045 12.7841C13.2045 13.1229 12.9297 13.3963 12.5923 13.3963H11.7115C11.3741 13.3963 11.1006 13.1229 11.1006 12.7841V5.3255C11.1006 4.98801 11.3741 4.71324 11.7115 4.71324H12.5923C12.9297 4.71324 13.2045 4.98801 13.2045 5.3255V12.7841Z" fill="currentColor"/>
 <path d="M13.2045 16.0611C13.2045 16.3999 12.9297 16.6734 12.5923 16.6734H11.7115C11.3741 16.6734 11.1006 16.3999 11.1006 16.0611V15.1817C11.1006 14.8442 11.3741 14.5694 11.7115 14.5694H12.5923C12.9297 14.5694 13.2045 14.8442 13.2045 15.1817V16.0611Z" fill="currentColor"/>
@@ -556,12 +557,12 @@
   <span class="w-full text-center line-clamp-2">TPMS</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-restrains-safety w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-restrains-safety w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.9801 6.92842C11.9801 4.17263 9.75695 1.94947 7.00116 1.94947C4.24537 1.94947 2.02222 4.17263 2.02222 6.92842C2.02222 9.6842 4.24537 11.9074 7.00116 11.9074C9.75695 11.9074 11.9801 9.66105 11.9801 6.92842ZM3.31906 6.92842C3.31906 4.89052 4.98643 3.22315 7.02432 3.22315C9.06222 3.22315 10.7296 4.89052 10.7296 6.92842C10.7296 8.96631 9.06222 10.6337 7.02432 10.6337C4.98643 10.6337 3.31906 8.96631 3.31906 6.92842Z" fill="currentColor"/>
 <path d="M21.8222 7.80842C21.5906 7.55368 21.1738 7.50737 20.9191 7.73895C20.8959 7.76211 20.5022 8.10947 19.8306 8.59579C19.7843 8.48 19.7148 8.36421 19.6454 8.24842C19.4601 7.92421 19.2285 7.64632 18.9506 7.41474C19.9927 6.83579 20.7106 5.72421 20.7106 4.42737C20.7106 2.52842 19.1591 1 17.2833 1C15.4075 1 13.8559 2.55158 13.8559 4.42737C13.8559 5.46947 14.3191 6.37263 15.0601 7.02105C14.3191 7.43789 13.717 8.13263 13.4622 8.98947L12.4201 12.4632C12.2812 12.4863 12.1654 12.5326 12.0264 12.5558C11.7948 12.6021 11.5864 12.7642 11.5169 12.9958C11.4938 13.0884 11.4938 13.2042 11.5169 13.32H9.15484C8.18221 13.32 7.32537 13.9453 7.02432 14.8484L5.31063 20.0589C5.12537 20.6379 5.17169 21.24 5.42642 21.7726C5.70432 22.3053 6.14432 22.6989 6.72326 22.8842C6.95484 22.9537 7.18642 23 7.418 23C8.39063 23 9.24748 22.3747 9.54853 21.4716L10.7759 17.7895H15.8706C15.9401 17.7895 15.9864 17.7895 16.0559 17.7663L16.658 18.3453C16.7738 18.4611 16.9359 18.5305 17.098 18.5305C17.2601 18.5305 17.4454 18.4611 17.5612 18.3221C17.7927 18.0674 17.7927 17.6505 17.538 17.4189L17.3296 17.2337C17.6075 17.0021 17.8391 16.7011 17.9548 16.3305L19.877 11.1663C20.0159 10.7958 20.0854 10.4021 20.0854 10.0084C21.0348 9.31368 21.6601 8.78105 21.7296 8.71158C22.0306 8.48 22.0538 8.08632 21.8222 7.80842ZM17.2833 2.27368C18.4643 2.27368 19.437 3.24632 19.437 4.42737C19.437 5.60842 18.4643 6.58105 17.2833 6.58105C16.1022 6.58105 15.1296 5.60842 15.1296 4.42737C15.1296 3.24632 16.1022 2.27368 17.2833 2.27368ZM14.6896 9.36C14.9906 8.34105 16.0096 7.71579 17.0748 7.8779C17.7001 7.97053 18.2559 8.36421 18.5801 8.89684C18.6727 9.05895 18.7422 9.22105 18.7885 9.38316C17.4917 10.2863 15.7317 11.3516 13.9022 12.0232L14.6896 9.36ZM10.3127 16.5158C10.0348 16.5158 9.80327 16.7011 9.71063 16.9558L8.34432 21.0779C8.18221 21.5642 7.62642 21.8653 7.14011 21.68C6.88537 21.6105 6.70011 21.4253 6.58432 21.1937C6.46853 20.9621 6.44537 20.7074 6.538 20.4526L8.25169 15.2421C8.39063 14.8484 8.738 14.5937 9.15484 14.5937H12.6285C12.6517 14.5937 12.6517 14.5937 12.6748 14.5937L14.7127 16.5158H10.3127ZM16.7738 15.8905C16.7043 16.0758 16.5654 16.2379 16.4033 16.3537L13.4391 13.5516C15.2917 13.0189 17.1212 12.0232 18.5801 11.0737L16.7738 15.8905Z" fill="currentColor"/>
@@ -572,12 +573,12 @@
   <span class="w-full text-center line-clamp-2">SRS / Airbag Reset</span>
 </button>
 
-              
                 
+                  
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-3 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
+<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors">
   <span class="shrink-0 text-primary">
-<span class="icon icon-more w-8 h-8 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+<span class="icon icon-more w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.49995 14C6.08747 14 5.73435 13.8531 5.4406 13.5593C5.14687 13.2656 5 12.9125 5 12.5C5 12.0875 5.14687 11.7344 5.4406 11.4406C5.73435 11.1469 6.08747 11 6.49995 11C6.91245 11 7.26557 11.1469 7.5593 11.4406C7.85305 11.7344 7.99993 12.0875 7.99993 12.5C7.99993 12.9125 7.85305 13.2656 7.5593 13.5593C7.26557 13.8531 6.91245 14 6.49995 14ZM12.2692 14C11.8567 14 11.5036 13.8531 11.2098 13.5593C10.9161 13.2656 10.7692 12.9125 10.7692 12.5C10.7692 12.0875 10.9161 11.7344 11.2098 11.4406C11.5036 11.1469 11.8567 11 12.2692 11C12.6817 11 13.0348 11.1469 13.3285 11.4406C13.6223 11.7344 13.7692 12.0875 13.7692 12.5C13.7692 12.9125 13.6223 13.2656 13.3285 13.5593C13.0348 13.8531 12.6817 14 12.2692 14ZM18.0384 14C17.6259 14 17.2728 13.8531 16.9791 13.5593C16.6853 13.2656 16.5384 12.9125 16.5384 12.5C16.5384 12.0875 16.6853 11.7344 16.9791 11.4406C17.2728 11.1469 17.6259 11 18.0384 11C18.4509 11 18.804 11.1469 19.0978 11.4406C19.3915 11.7344 19.5384 12.0875 19.5384 12.5C19.5384 12.9125 19.3915 13.2656 19.0978 13.5593C18.804 13.8531 18.4509 14 18.0384 14Z" fill="currentColor"/>
 </svg>
@@ -587,7 +588,8 @@
   <span class="w-full text-center line-clamp-2">More</span>
 </button>
 
-              
+                
+              </div>
             </div>
           </div>
         </div>
@@ -2047,7 +2049,7 @@
 
 
 
-<div class="sticky-footer sticky bottom-0 left-0 right-0 bg-base-200 border-t border-base-200 z-10 -mx-4 w-[calc(100%+2rem)] ">
+<div class="sticky-footer sticky bottom-0 left-0 right-0 bg-base-200/50 z-10 -mx-4 w-[calc(100%+2rem)] ">
   <div class="max-w-[1200px] mx-auto px-4 py-3">
     <div class="flex flex-col sm:flex-row gap-2">
       

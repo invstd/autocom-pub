@@ -253,7 +253,7 @@ function healthGaugeReset() {
     gaugeSegments.innerHTML = '';
   }
   if (gaugeValue) {
-    gaugeValue.textContent = '—';
+    gaugeValue.textContent = 'READY';
   }
   if (gaugeLabel) {
     gaugeLabel.textContent = '';
@@ -581,6 +581,7 @@ tabs.addEventListener('click', (e) => {
   } else {
     page.dataset.view = 'default';
   }
+  applyErrorsFilter();
 });
 
 // Scan button demo (toggle scan/stop)
@@ -619,11 +620,12 @@ if (clearDtcsBtn) {
   });
 }
 
-// Errors only toggle - dims nodes without issues
+// Errors only toggle: in Systems list view hide non-error items (like presets); in Topology view dim nodes
 function applyErrorsFilter() {
   const showErrorsOnly = errorsOnlyToggle ? errorsOnlyToggle.checked : false;
-  
-  // Apply to topology nodes
+  const isSystemsListView = page && page.dataset.view !== 'topology';
+
+  // Topology nodes: dim when errors-only (unchanged)
   document.querySelectorAll('.topology-node[data-node-id]').forEach(n => {
     const state = n.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
@@ -635,17 +637,35 @@ function applyErrorsFilter() {
       n.style.pointerEvents = '';
     }
   });
-  
-  // Apply to system list items
+
+  // System list items: in Systems list view hide non-error items; in Topology view dim
   document.querySelectorAll('.system-list-item[data-system-id]').forEach(item => {
     const state = item.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
-    if (showErrorsOnly && !hasIssue) {
-      item.style.opacity = '0.25';
-      item.style.pointerEvents = 'none';
-    } else {
+    if (!showErrorsOnly) {
       item.style.opacity = '';
       item.style.pointerEvents = '';
+      item.classList.remove('hidden');
+      return;
+    }
+    if (isSystemsListView) {
+      if (hasIssue) {
+        item.classList.remove('hidden');
+        item.style.opacity = '';
+        item.style.pointerEvents = '';
+      } else {
+        item.classList.add('hidden');
+      }
+    } else {
+      if (hasIssue) {
+        item.style.opacity = '';
+        item.style.pointerEvents = '';
+        item.classList.remove('hidden');
+      } else {
+        item.style.opacity = '0.25';
+        item.style.pointerEvents = 'none';
+        item.classList.remove('hidden');
+      }
     }
   });
 }
