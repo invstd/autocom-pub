@@ -18,7 +18,8 @@
     </script>
 </head>
 <body class="bg-base-100 text-base-content">
-    <div class="drawer min-h-screen">
+    
+<div class="drawer min-h-screen">
   <input id="launchpad-drawer" type="checkbox" class="drawer-toggle" />
   
   <div class="drawer-content flex flex-col lg:h-screen lg:overflow-hidden">
@@ -111,18 +112,43 @@
 </span>
 
     </a>
-    <a href="/autocom-pub/launchpad-1/settings/" class="avatar ml-1" aria-label="Profile">
-      <div class="w-9 rounded-full ring-2 ring-base-200">
-        <img src="/autocom-pub/assets/images/tinkerer.png" alt="" width="36" height="36" />
-      </div>
-    </a>
+    <details class="dropdown dropdown-end" id="launchpad-profile-dropdown" data-onboarding-mode>
+      <summary class="avatar ml-1 cursor-pointer list-none" aria-label="Profile" aria-haspopup="menu">
+        <div class="w-9 rounded-full ring-2 ring-base-200">
+          <img src="/autocom-pub/assets/images/tinkerer.png" alt="" width="36" height="36" />
+        </div>
+      </summary>
+      <ul class="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-52 border border-base-200 p-2 shadow-lg" role="menu">
+        <li role="none"><button type="button" class="launchpad-mode-option" data-mode="normal" role="menuitem">Normal mode</button></li>
+        <li role="none"><button type="button" class="launchpad-mode-option" data-mode="onboarding" role="menuitem">Onboarding mode</button></li>
+        <li role="none" class="border-t border-base-200 mt-1 pt-1"><a href="/autocom-pub/launchpad-1/settings/" role="menuitem">Settings</a></li>
+      </ul>
+    </details>
   </div>
 </nav>
+<script>
+(function() {
+  var KEY = 'launchpad-onboarding-mode';
+  var dropdown = document.getElementById('launchpad-profile-dropdown');
+  if (!dropdown) return;
+  var current = localStorage.getItem(KEY) || 'normal';
+  dropdown.setAttribute('data-onboarding-mode', current);
+  dropdown.querySelectorAll('.launchpad-mode-option').forEach(function(btn) {
+    if (btn.getAttribute('data-mode') === current) btn.classList.add('menu-active');
+    btn.addEventListener('click', function() {
+      var mode = this.getAttribute('data-mode');
+      localStorage.setItem(KEY, mode);
+      dropdown.removeAttribute('open');
+      window.location.reload();
+    });
+  });
+})();
+</script>
 
     </div>
     <main class="flex-1 min-h-0 flex flex-col w-full">
       
-      <div class="w-full flex-1 min-h-0 lg:overflow-auto">
+      <div class="w-full flex-1 min-h-0 lg:overflow-auto launchpad-main-bg">
         <div class="container mx-auto px-4 py-6 max-w-[1200px] w-full flex flex-col min-h-0">
           
 
@@ -160,8 +186,8 @@
 
     <div class="my-garage-kanban grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1 min-h-0 overflow-hidden min-w-0">
       
-      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-300 rounded-box border border-base-300 overflow-hidden">
-        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-300 shrink-0">
+      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-100 rounded-box border border-base-200 overflow-hidden">
+        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-200 shrink-0">
           <h2 class="text-base font-semibold text-base-content flex items-center gap-2">
             
 <span class="icon icon-clipboard w-5 h-5 text-base-content/80 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
@@ -184,7 +210,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE273723" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE273723" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -231,7 +257,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Kia&amp;brandSlug=kia&amp;model=Ceed%20hatchback&amp;year=2018&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE882901" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Kia&amp;brandSlug=kia&amp;model=Ceed%20hatchback&amp;year=2018&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE882901" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -278,7 +304,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%20liftback&amp;year=2013&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE441266" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%20liftback&amp;year=2013&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE441266" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -325,7 +351,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A6%20sedan%20S-Line&amp;year=2023&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE112233" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A6%20sedan%20S-Line&amp;year=2023&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE112233" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -372,7 +398,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Seat&amp;brandSlug=seat&amp;model=Leon%205F%20FR&amp;year=2016&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE445566" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Seat&amp;brandSlug=seat&amp;model=Leon%205F%20FR&amp;year=2016&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE445566" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -419,7 +445,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=Golf&amp;year=2018&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE778899" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=Golf&amp;year=2018&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE778899" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -466,7 +492,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=Golf&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE101112" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=Golf&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE101112" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -513,7 +539,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=T-Cross&amp;year=2022&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE131415" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=VW&amp;brandSlug=volkswagen&amp;model=T-Cross&amp;year=2022&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE131415" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -556,8 +582,8 @@
       </div>
 
       
-      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-300 rounded-box border border-base-300 overflow-hidden">
-        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-300 shrink-0">
+      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-100 rounded-box border border-base-200 overflow-hidden">
+        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-200 shrink-0">
           <h2 class="text-base font-semibold text-base-content flex items-center gap-2">
             
 <span class="icon icon-tool w-5 h-5 text-base-content/80 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
@@ -580,7 +606,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Tipo&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE161718" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Tipo&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE161718" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -627,7 +653,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Hyundai&amp;brandSlug=hyundai&amp;model=i30%20PD&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE192021" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Hyundai&amp;brandSlug=hyundai&amp;model=i30%20PD&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE192021" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -674,7 +700,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Mazda&amp;brandSlug=mazda&amp;model=3%20sedan&amp;year=2019&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE222324" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Mazda&amp;brandSlug=mazda&amp;model=3%20sedan&amp;year=2019&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE222324" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -721,7 +747,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Renault&amp;brandSlug=renault&amp;model=Megane%20hatchback&amp;year=2014&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE252627" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Renault&amp;brandSlug=renault&amp;model=Megane%20hatchback&amp;year=2014&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE252627" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -768,7 +794,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Ford&amp;brandSlug=ford&amp;model=Focus%20Titanium&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE282930" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Ford&amp;brandSlug=ford&amp;model=Focus%20Titanium&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE282930" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -811,8 +837,8 @@
       </div>
 
       
-      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-300 rounded-box border border-base-300 overflow-hidden">
-        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-300 shrink-0">
+      <div class="my-garage-column flex flex-col min-h-0 min-w-0 bg-base-100 rounded-box border border-base-200 overflow-hidden">
+        <div class="flex items-center justify-between gap-2 p-3 border-b border-base-200 shrink-0">
           <h2 class="text-base font-semibold text-base-content flex items-center gap-2">
             
 <span class="icon icon-clipboard-task w-5 h-5 text-base-content/80 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
@@ -835,7 +861,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Seat&amp;brandSlug=seat&amp;model=Leon%20FR%20eHybrid&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE313233" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Seat&amp;brandSlug=seat&amp;model=Leon%20FR%20eHybrid&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE313233" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -882,7 +908,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Hyundai&amp;brandSlug=hyundai&amp;model=i30%20GD&amp;year=2015&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE343536" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Hyundai&amp;brandSlug=hyundai&amp;model=i30%20GD&amp;year=2015&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE343536" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -929,7 +955,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Toyota&amp;brandSlug=toyota&amp;model=Corolla%20E210%20sedan%20Hybrid&amp;year=2019&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE373839" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Toyota&amp;brandSlug=toyota&amp;model=Corolla%20E210%20sedan%20Hybrid&amp;year=2019&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE373839" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -976,7 +1002,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9%20sedan&amp;year=2017&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE404142" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9%20sedan&amp;year=2017&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE404142" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1023,7 +1049,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Toyota&amp;brandSlug=toyota&amp;model=Corolla%20E210%20hybrid&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE434445" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Toyota&amp;brandSlug=toyota&amp;model=Corolla%20E210%20hybrid&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE434445" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1070,7 +1096,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C3&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE464748" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C3&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE464748" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1117,7 +1143,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A3%20sedan&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE495051" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A3%20sedan&amp;year=2024&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE495051" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1164,7 +1190,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Dacia&amp;brandSlug=dacia&amp;model=Duster%20Extreme&amp;year=2024&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE505152" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Dacia&amp;brandSlug=dacia&amp;model=Duster%20Extreme&amp;year=2024&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE505152" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1211,7 +1237,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Panda%20Cross&amp;year=2014&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE515253" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Panda%20Cross&amp;year=2014&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE515253" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1258,7 +1284,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%205E%20liftback&amp;year=2017&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE525354" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%205E%20liftback&amp;year=2017&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE525354" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1305,7 +1331,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Dacia&amp;brandSlug=dacia&amp;model=Sandero&amp;year=2021&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE535455" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Dacia&amp;brandSlug=dacia&amp;model=Sandero&amp;year=2021&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE535455" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1352,7 +1378,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Pulse%20Impetus&amp;year=2021&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE545556" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Pulse%20Impetus&amp;year=2021&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE545556" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1399,7 +1425,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Nissan&amp;brandSlug=nissan&amp;model=Qashqai&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE555657" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Nissan&amp;brandSlug=nissan&amp;model=Qashqai&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE555657" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1446,7 +1472,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C3%20L%20sedan&amp;year=2020&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE565758" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C3%20L%20sedan&amp;year=2020&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE565758" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1493,7 +1519,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Opel&amp;brandSlug=opel&amp;model=Astra%20L%20Hybrid&amp;year=2021&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE575859" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Opel&amp;brandSlug=opel&amp;model=Astra%20L%20Hybrid&amp;year=2021&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE575859" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1540,7 +1566,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C4%20Cactus&amp;year=2015&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE586061" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C4%20Cactus&amp;year=2015&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE586061" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1587,7 +1613,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Argo&amp;year=2017&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE596162" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Fiat&amp;brandSlug=fiat&amp;model=Argo&amp;year=2017&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE596162" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1634,7 +1660,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A4&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE606263" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Audi&amp;brandSlug=audi&amp;model=A4&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE606263" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1681,7 +1707,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Opel&amp;brandSlug=opel&amp;model=Astra%20K&amp;year=2016&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE616364" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Opel&amp;brandSlug=opel&amp;model=Astra%20K&amp;year=2016&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE616364" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1728,7 +1754,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Honda&amp;brandSlug=honda&amp;model=Civic%20coupe&amp;year=2016&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE626465" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Honda&amp;brandSlug=honda&amp;model=Civic%20coupe&amp;year=2016&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE626465" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1775,7 +1801,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Renault&amp;brandSlug=renault&amp;model=Megane%20sedan&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE636566" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Renault&amp;brandSlug=renault&amp;model=Megane%20sedan&amp;year=2020&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE636566" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1822,7 +1848,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%201Z%20liftback&amp;year=2005&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE646667" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Skoda&amp;brandSlug=skoda&amp;model=Octavia%201Z%20liftback&amp;year=2005&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE646667" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1869,7 +1895,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C4%20Picasso&amp;year=2016&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE656768" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Citro%C3%ABn&amp;brandSlug=citroen&amp;model=C4%20Picasso&amp;year=2016&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE656768" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1916,7 +1942,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20P5%20HYBRID&amp;year=2021&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE666869" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20P5%20HYBRID&amp;year=2021&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE666869" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -1963,7 +1989,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Ford&amp;brandSlug=ford&amp;model=Focus%20ST%20Line&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE677071" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Ford&amp;brandSlug=ford&amp;model=Focus%20ST%20Line&amp;year=2018&amp;engine=Hybrid&amp;vin=WVWZZZ3CZWE677071" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -2030,7 +2056,43 @@
       </ul>
     </aside>
   </div>
+
+  
+  <div id="onboarding-right-drawer" class="onboarding-right-drawer fixed top-0 right-0 bottom-0 w-80 max-w-full bg-base-200 border-l border-base-300 shadow-lg z-30 translate-x-full transition-transform duration-200 ease-out flex flex-col" role="dialog" aria-label="Onboarding tutorial" aria-hidden="true">
+    <div class="flex items-center justify-between p-4 border-b border-base-300 shrink-0">
+      <h2 class="text-lg font-semibold text-base-content">Tutorial</h2>
+      <button type="button" id="onboarding-drawer-close" class="btn btn-ghost btn-sm btn-square" aria-label="Close">
+        
+<span class="icon icon-close w-5 h-5 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+</span>
+
+      </button>
+    </div>
+    <div id="onboarding-drawer-content" class="flex-1 overflow-auto p-4 text-base-content/90">
+      <p class="text-sm">Loading…</p>
+    </div>
+    <div class="p-4 border-t border-base-300 shrink-0">
+      <button type="button" id="onboarding-drawer-next" class="btn btn-primary btn-block">Next</button>
+    </div>
+  </div>
+
+  
+  <button type="button" id="onboarding-help-fab" class="onboarding-help-fab fixed bottom-6 right-6 btn btn-circle btn-primary btn-lg shadow-lg z-20 hidden" aria-label="Help">
+    
+<span class="icon icon-help w-6 h-6 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.93 4.93L9.17 9.17M14.83 14.83L19.07 19.07M19.07 4.93L14.83 9.17L18.36 5.64M4.93 19.07L9.17 14.83M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</span>
+
+  </button>
 </div>
+<script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 
 </body>
 </html>

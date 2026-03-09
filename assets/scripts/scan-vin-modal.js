@@ -115,16 +115,32 @@
     window.location.href = normalized;
   }
 
+  function isOnboardingDemo() {
+    return typeof sessionStorage !== "undefined" && sessionStorage.getItem("launchpad-onboarding-demo") === "1";
+  }
+
+  function setOnboardingStep(n) {
+    if (typeof sessionStorage !== "undefined") sessionStorage.setItem("launchpad-onboarding-step", String(n));
+  }
+
+  function setOnboardingCompleted() {
+    if (typeof localStorage !== "undefined") localStorage.setItem("launchpad-onboarding-completed", "1");
+  }
+
   /** Runs state 2 → state 3 → redirect. Requires currentVehicle set and state 2 visible. */
   function runDecodeAndRedirect() {
     setProgress(0, 0);
     setStatus("Decoding...");
     if (vinDisplayEl && currentVehicle) vinDisplayEl.textContent = currentVehicle.vin;
 
+    var isDemo = isOnboardingDemo();
+    var decodeDelay = isDemo ? 600 : 100;
+    var state3Delay = isDemo ? 800 : 2500;
+
     timeouts.push(setTimeout(function () {
-      setProgress(100, 2000);
+      setProgress(100, isDemo ? 400 : 2000);
       setStatus("Done");
-    }, 100));
+    }, decodeDelay));
 
     timeouts.push(setTimeout(function () {
       showState(3);
@@ -132,6 +148,7 @@
         decodedVehicleEl.textContent = [currentVehicle.brand, currentVehicle.model, currentVehicle.year, currentVehicle.engine].join(" · ");
       }
       timeouts.push(setTimeout(function () {
+        if (isDemo) setOnboardingStep(1);
         var params = new URLSearchParams();
         params.set("vin", currentVehicle.vin);
         params.set("brand", currentVehicle.brand);
@@ -141,8 +158,8 @@
         if (currentVehicle.engine) params.set("engine", currentVehicle.engine);
         closeAndReset();
         redirect("launchpad-1/diagnostics-dashboard/?" + params.toString());
-      }, 1500));
-    }, 2500));
+      }, isDemo ? 500 : 1500));
+    }, state3Delay));
   }
 
   function runFlow() {
@@ -154,11 +171,14 @@
     clearTimeouts();
     showState(1);
 
-    // State 1 → State 2 after ~3.5s
+    var isDemo = isOnboardingDemo();
+    var state1Delay = isDemo ? 800 : 3500;
+
+    // State 1 → State 2
     timeouts.push(setTimeout(function () {
       showState(2);
       runDecodeAndRedirect();
-    }, 3500));
+    }, state1Delay));
   }
 
   function init() {

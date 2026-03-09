@@ -150,6 +150,18 @@
     window.location.href = normalized;
   }
 
+  function isOnboardingDemo() {
+    return typeof sessionStorage !== "undefined" && sessionStorage.getItem("launchpad-onboarding-demo") === "1";
+  }
+
+  function setOnboardingStep(n) {
+    if (typeof sessionStorage !== "undefined") sessionStorage.setItem("launchpad-onboarding-step", String(n));
+  }
+
+  function setOnboardingCompleted() {
+    if (typeof localStorage !== "undefined") localStorage.setItem("launchpad-onboarding-completed", "1");
+  }
+
   function runFlow() {
     if (isDevMode) {
       goToState(1);
@@ -157,6 +169,7 @@
     }
     var fromVehicleSelection = dialog && dialog.getAttribute("data-from-vehicle-selection") === "1";
     var vehicleDetailsJson = dialog && dialog.getAttribute("data-vehicle-details");
+    var isDemo = isOnboardingDemo();
 
     // Determine vehicle data based on path
     if (fromVehicleSelection && vehicleDetailsJson) {
@@ -193,7 +206,7 @@
       if (state1StatusEl) state1StatusEl.textContent = "Connecting...";
     }
 
-    var state1Delay = fromVehicleSelection ? 1000 : 2000;
+    var state1Delay = isDemo ? 400 : (fromVehicleSelection ? 1000 : 2000);
 
     // State 1 → State 2
     timeouts.push(setTimeout(function () {
@@ -213,6 +226,26 @@
         vehicleDetailsEl.textContent = "";
       }
 
+      if (isDemo) {
+        setProgress(100, 400);
+        setStatus("Requesting Vehicle Data...");
+        timeouts.push(setTimeout(function () {
+          showState(3);
+          if (vinEl) vinEl.textContent = currentVehicle.vin;
+          timeouts.push(setTimeout(function () {
+            setOnboardingStep(1);
+            var vehicleParams = new URLSearchParams();
+            vehicleParams.set("vin", currentVehicle.vin);
+            vehicleParams.set("brand", currentVehicle.brand);
+            vehicleParams.set("brandSlug", currentVehicle.brandSlug);
+            vehicleParams.set("model", currentVehicle.model);
+            vehicleParams.set("year", currentVehicle.year);
+            if (currentVehicle.engine) vehicleParams.set("engine", currentVehicle.engine);
+            closeAndReset();
+            redirect("launchpad-1/diagnostics-dashboard/?" + vehicleParams.toString());
+          }, 500));
+        }, 800));
+      } else {
       // Step-wise progress with easing: 0→25% (2s), 25→75% (4s), 75→100% (2s)
       timeouts.push(setTimeout(function () {
         setProgress(25, 2000);
@@ -244,6 +277,7 @@
           redirect("launchpad-1/diagnostics-dashboard/?" + vehicleParams.toString());
         }, 1500));
       }, 8000));
+      }
     }, state1Delay));
   }
 

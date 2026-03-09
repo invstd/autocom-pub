@@ -587,6 +587,9 @@ tabs.addEventListener('click', (e) => {
 // Scan button demo (toggle scan/stop)
 if (scanBtn && stopBtn) {
   scanBtn.addEventListener('click', () => {
+    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('launchpad-onboarding-demo') === '1' && typeof window.completeOnboardingAndClose === 'function') {
+      window.completeOnboardingAndClose();
+    }
     scanBtn.classList.add('hidden');
     stopBtn.classList.remove('hidden');
     if (filterControls) filterControls.classList.add('hidden');

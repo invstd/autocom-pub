@@ -18,7 +18,8 @@
     </script>
 </head>
 <body class="bg-base-100 text-base-content">
-    <div class="drawer min-h-screen">
+    
+<div class="drawer min-h-screen">
   <input id="launchpad-drawer" type="checkbox" class="drawer-toggle" />
   
   <div class="drawer-content flex flex-col lg:h-screen lg:overflow-hidden">
@@ -111,18 +112,43 @@
 </span>
 
     </a>
-    <a href="/autocom-pub/launchpad-1/settings/" class="avatar ml-1" aria-label="Profile">
-      <div class="w-9 rounded-full ring-2 ring-base-200">
-        <img src="/autocom-pub/assets/images/tinkerer.png" alt="" width="36" height="36" />
-      </div>
-    </a>
+    <details class="dropdown dropdown-end" id="launchpad-profile-dropdown" data-onboarding-mode>
+      <summary class="avatar ml-1 cursor-pointer list-none" aria-label="Profile" aria-haspopup="menu">
+        <div class="w-9 rounded-full ring-2 ring-base-200">
+          <img src="/autocom-pub/assets/images/tinkerer.png" alt="" width="36" height="36" />
+        </div>
+      </summary>
+      <ul class="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-52 border border-base-200 p-2 shadow-lg" role="menu">
+        <li role="none"><button type="button" class="launchpad-mode-option" data-mode="normal" role="menuitem">Normal mode</button></li>
+        <li role="none"><button type="button" class="launchpad-mode-option" data-mode="onboarding" role="menuitem">Onboarding mode</button></li>
+        <li role="none" class="border-t border-base-200 mt-1 pt-1"><a href="/autocom-pub/launchpad-1/settings/" role="menuitem">Settings</a></li>
+      </ul>
+    </details>
   </div>
 </nav>
+<script>
+(function() {
+  var KEY = 'launchpad-onboarding-mode';
+  var dropdown = document.getElementById('launchpad-profile-dropdown');
+  if (!dropdown) return;
+  var current = localStorage.getItem(KEY) || 'normal';
+  dropdown.setAttribute('data-onboarding-mode', current);
+  dropdown.querySelectorAll('.launchpad-mode-option').forEach(function(btn) {
+    if (btn.getAttribute('data-mode') === current) btn.classList.add('menu-active');
+    btn.addEventListener('click', function() {
+      var mode = this.getAttribute('data-mode');
+      localStorage.setItem(KEY, mode);
+      dropdown.removeAttribute('open');
+      window.location.reload();
+    });
+  });
+})();
+</script>
 
     </div>
     <main class="flex-1 min-h-0 flex flex-col w-full">
       
-      <div class="w-full flex-1 min-h-0 lg:overflow-auto">
+      <div class="w-full flex-1 min-h-0 lg:overflow-auto launchpad-main-bg">
         <div class="container mx-auto px-4 py-6 max-w-[1200px] w-full flex flex-col min-h-0">
           
 <div class="card bg-base-100 shadow-sm border border-base-200">
@@ -152,7 +178,43 @@
       </ul>
     </aside>
   </div>
+
+  
+  <div id="onboarding-right-drawer" class="onboarding-right-drawer fixed top-0 right-0 bottom-0 w-80 max-w-full bg-base-200 border-l border-base-300 shadow-lg z-30 translate-x-full transition-transform duration-200 ease-out flex flex-col" role="dialog" aria-label="Onboarding tutorial" aria-hidden="true">
+    <div class="flex items-center justify-between p-4 border-b border-base-300 shrink-0">
+      <h2 class="text-lg font-semibold text-base-content">Tutorial</h2>
+      <button type="button" id="onboarding-drawer-close" class="btn btn-ghost btn-sm btn-square" aria-label="Close">
+        
+<span class="icon icon-close w-5 h-5 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+</span>
+
+      </button>
+    </div>
+    <div id="onboarding-drawer-content" class="flex-1 overflow-auto p-4 text-base-content/90">
+      <p class="text-sm">Loading…</p>
+    </div>
+    <div class="p-4 border-t border-base-300 shrink-0">
+      <button type="button" id="onboarding-drawer-next" class="btn btn-primary btn-block">Next</button>
+    </div>
+  </div>
+
+  
+  <button type="button" id="onboarding-help-fab" class="onboarding-help-fab fixed bottom-6 right-6 btn btn-circle btn-primary btn-lg shadow-lg z-20 hidden" aria-label="Help">
+    
+<span class="icon icon-help w-6 h-6 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.93 4.93L9.17 9.17M14.83 14.83L19.07 19.07M19.07 4.93L14.83 9.17L18.36 5.64M4.93 19.07L9.17 14.83M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</span>
+
+  </button>
 </div>
+<script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 
 </body>
 </html>
