@@ -1,0 +1,161 @@
+{
+    "brand_name": "Mercedes-Benz",
+    "models": [
+      {
+        "model": "A-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Sedan",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "B-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "C-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon/Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "E-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon/Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "S-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "CLA",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Shooting Brake",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "CLE",
+        "years": [2024, 2025, 2026],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol", "Mild Hybrid"]
+      },
+      {
+        "model": "CLS",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Sedan/Shooting Brake",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "GLA",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "GLB",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "GLC / GLK",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV/Coupe",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "GLE / M-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV/Coupe",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "GLS / GL-Class",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "G-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "SL-Class",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2023, 2024, 2025, 2026],
+        "type": "Convertible",
+        "engine_types": ["Petrol", "Plug-in Hybrid"]
+      },
+      {
+        "model": "SLC / SLK",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "AMG GT",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe/Convertible/4-Door",
+        "engine_types": ["Petrol", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "SLS AMG",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "EQA",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQB",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQC",
+        "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQE / E-Class EV",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQE SUV",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQS / S-Class EV",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EQS SUV",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "V-Class / Metris",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      }
+    ]
+  }

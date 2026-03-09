@@ -1,0 +1,65 @@
+{
+    "brand_name": "Chrysler",
+    "models": [
+      {
+        "model": "300",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "PT Cruiser",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Hatchback/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Sebring",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Sedan/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "200",
+        "years": [2011, 2012, 2013, 2014, 2015, 2016, 2017],
+        "type": "Sedan/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Crossfire",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Town & Country",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
+        "type": "Minivan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Pacifica (SUV)",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Pacifica (Minivan)",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Minivan",
+        "engine_types": ["Petrol", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Voyager / Grand Caravan",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Minivan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Aspen",
+        "years": [2007, 2008, 2009],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid"]
+      }
+    ]
+  }

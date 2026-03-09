@@ -1,0 +1,17 @@
+{
+    "brand_name": "GAZ",
+    "models": [
+      {
+        "model": "Volga (31105)",
+        "years": [2005, 2006, 2007, 2008, 2009],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Volga Siber",
+        "years": [2008, 2009, 2010],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      }
+    ]
+  }

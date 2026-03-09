@@ -1,0 +1,77 @@
+{
+    "brand_name": "Jaguar",
+    "models": [
+      {
+        "model": "X-Type",
+        "years": [2005, 2006, 2007, 2008, 2009],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "S-Type",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "XJ",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "XK",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "XF",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "F-Type",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "XE",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "F-Pace",
+        "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "E-Pace",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "I-Pace",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Electric GT (Next-Gen)",
+        "years": [2026],
+        "type": "Grand Tourer",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Electric Luxury SUV (Next-Gen)",
+        "years": [2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      }
+    ]
+  }

@@ -1,0 +1,131 @@
+{
+    "brand_name": "Volkswagen",
+    "models": [
+      {
+        "model": "Golf",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Polo",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "CNG"]
+      },
+      {
+        "model": "Passat",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Tiguan",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Touareg",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Atlas / Teramont",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Tayron",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Plug-in Hybrid"]
+      },
+      {
+        "model": "T-Roc",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "T-Cross",
+        "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Taigo / Nivus",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Jetta",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "Arteon",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "Fastback/Shooting Brake",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Touran",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel", "CNG"]
+      },
+      {
+        "model": "Sharan",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "ID.3",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "ID.4",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "ID.5",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV/Coupe",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "ID.7",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "ID. Buzz",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "ID. Polo",
+        "years": [2026],
+        "type": "Hatchback",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Amarok",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol", "Diesel"]
+      }
+    ]
+  }

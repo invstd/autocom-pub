@@ -1,0 +1,89 @@
+{
+    "brand_name": "Jeep",
+    "models": [
+      {
+        "model": "Wrangler",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Grand Cherokee",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Liberty / Cherokee (KJ/KK)",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Cherokee (KL & Next-Gen)",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "Commander",
+        "years": [2006, 2007, 2008, 2009, 2010],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Compass",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Patriot",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Renegade",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Gladiator",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Wagoneer",
+        "years": [2022, 2023, 2024, 2025],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Grand Wagoneer",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Avenger",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Mild Hybrid", "Electric"]
+      },
+      {
+        "model": "Recon",
+        "years": [2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Wagoneer S",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      }
+    ]
+  }

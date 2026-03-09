@@ -1,0 +1,53 @@
+{
+    "brand_name": "Land Rover",
+    "models": [
+      {
+        "model": "Range Rover",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Range Rover Sport",
+        "years": [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Range Rover Evoque",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Range Rover Velar",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Discovery (LR3 / LR4)",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "Discovery Sport",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Freelander 2 (LR2)",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Defender",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      }
+    ]
+  }

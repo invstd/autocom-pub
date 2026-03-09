@@ -1,0 +1,113 @@
+{
+    "brand_name": "Hyundai",
+    "models": [
+      {
+        "model": "Accent",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Sedan/Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Elantra / Avante",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "Sonata",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Tucson",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Santa Fe",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Palisade",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Kona",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Electric"]
+      },
+      {
+        "model": "Venue",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Ioniq",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "Hatchback",
+        "engine_types": ["Hybrid", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Ioniq 5",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Ioniq 6",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "i10",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "i20",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "i30",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon/Fastback",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+      },
+      {
+        "model": "Veloster",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022],
+        "type": "Hatchback",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Santa Cruz",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Genesis",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
+        "type": "Sedan/Coupe",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Equus",
+        "years": [2011, 2012, 2013, 2014, 2015, 2016],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      }
+    ]
+  }

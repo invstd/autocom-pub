@@ -1,0 +1,119 @@
+{
+    "brand_name": "Lexus",
+    "models": [
+      {
+        "model": "IS",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Convertible",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "ES",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "GS",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "LS",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "RX",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "GX",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "LX",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "NX",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "UX",
+        "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Electric"]
+      },
+      {
+        "model": "TX",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "RZ",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "LBX",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "RC",
+        "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "LC",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "SC",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "LFA",
+        "years": [2011, 2012],
+        "type": "Coupe",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "CT",
+        "years": [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "Hatchback",
+        "engine_types": ["Hybrid"]
+      },
+      {
+        "model": "HS",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
+        "type": "Sedan",
+        "engine_types": ["Hybrid"]
+      },
+      {
+        "model": "LM",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Hybrid"]
+      }
+    ]
+  }

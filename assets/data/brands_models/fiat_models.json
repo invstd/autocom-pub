@@ -1,0 +1,101 @@
+{
+  "brand_name": "Fiat",
+  "models": [
+    {
+      "model": "500",
+      "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "type": "Hatchback/Convertible",
+      "engine_types": ["Petrol", "Mild Hybrid"]
+    },
+    {
+      "model": "500e",
+      "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "type": "Hatchback/Convertible",
+      "engine_types": ["Electric"]
+    },
+    {
+      "model": "500L",
+      "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+      "type": "MPV",
+      "engine_types": ["Petrol", "Diesel"]
+    },
+    {
+      "model": "500X",
+      "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "type": "SUV",
+      "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+    },
+    {
+      "model": "Panda",
+      "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "type": "Hatchback",
+      "engine_types": ["Petrol", "Diesel", "CNG", "Mild Hybrid"]
+    },
+    {
+      "model": "Grande Panda",
+      "years": [2024, 2025, 2026],
+      "type": "Hatchback",
+      "engine_types": ["Mild Hybrid", "Electric"]
+    },
+    {
+      "model": "Punto / Grande Punto",
+      "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
+      "type": "Hatchback",
+      "engine_types": ["Petrol", "Diesel", "CNG"]
+    },
+    {
+      "model": "Bravo",
+      "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+      "type": "Hatchback",
+      "engine_types": ["Petrol", "Diesel"]
+    },
+    {
+      "model": "Tipo",
+      "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+      "type": "Sedan/Hatchback/Wagon",
+      "engine_types": ["Petrol", "Diesel", "Mild Hybrid"]
+    },
+    {
+      "model": "Freemont",
+      "years": [2011, 2012, 2013, 2014, 2015, 2016],
+      "type": "SUV",
+      "engine_types": ["Petrol", "Diesel"]
+    },
+    {
+      "model": "124 Spider",
+      "years": [2016, 2017, 2018, 2019, 2020],
+      "type": "Convertible",
+      "engine_types": ["Petrol"]
+    },
+    {
+      "model": "Croma",
+      "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011],
+      "type": "Wagon",
+      "engine_types": ["Petrol", "Diesel"]
+    },
+    {
+      "model": "Multipla",
+      "years": [2005, 2006, 2007, 2008, 2009, 2010],
+      "type": "MPV",
+      "engine_types": ["Petrol", "Diesel", "CNG"]
+    },
+    {
+      "model": "Idea",
+      "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+      "type": "MPV",
+      "engine_types": ["Petrol", "Diesel"]
+    },
+    {
+      "model": "600 / 600e",
+      "years": [2023, 2024, 2025, 2026],
+      "type": "SUV",
+      "engine_types": ["Mild Hybrid", "Electric"]
+    },
+    {
+      "model": "Topolino",
+      "years": [2023, 2024, 2025, 2026],
+      "type": "Microcar",
+      "engine_types": ["Electric"]
+    }
+  ]
+}

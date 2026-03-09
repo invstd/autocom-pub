@@ -1,0 +1,41 @@
+{
+    "brand_name": "JMC",
+    "models": [
+      {
+        "model": "Baowei",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Yusheng S330",
+        "years": [2016, 2017, 2018, 2019, 2020, 2021],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Yusheng S350",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Boarding / Baodian",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Yuhu / Vigus (Series 3, 5, 7, 9)",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "Dadao / Grand Avenue",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "Truck",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      }
+    ]
+  }

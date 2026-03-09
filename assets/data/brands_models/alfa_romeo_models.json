@@ -1,0 +1,89 @@
+{
+    "brand_name": "Alfa Romeo",
+    "models": [
+      {
+        "model": "147",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "156",
+        "years": [2005, 2006, 2007],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "159",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "166",
+        "years": [2005, 2006, 2007],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "GT",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Coupe",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Brera / Spider",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "8C Competizione",
+        "years": [2007, 2008, 2009, 2010],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "MiTo",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Giulietta",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "4C",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Giulia",
+        "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Stelvio",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "Tonale",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Junior",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Hybrid", "Electric"]
+      }
+    ]
+  }

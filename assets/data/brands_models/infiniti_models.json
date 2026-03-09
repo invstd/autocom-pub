@@ -1,0 +1,89 @@
+{
+    "brand_name": "Infiniti",
+    "models": [
+      {
+        "model": "G35 / G37",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+        "type": "Sedan/Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "M35 / M45 / M37 / M56",
+        "years": [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "FX35 / FX45 / FX37 / FX50 (QX70)",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "EX35 / EX37",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "JX35",
+        "years": [2013],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "QX56",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Q50",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "Q60",
+        "years": [2014, 2015, 2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Q70",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "QX30",
+        "years": [2017, 2018, 2019],
+        "type": "Hatchback/SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "QX50",
+        "years": [2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "QX55",
+        "years": [2022, 2023, 2024, 2025],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "QX60",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "QX80",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      }
+    ]
+  }

@@ -1,0 +1,113 @@
+{
+    "brand_name": "Opel",
+    "models": [
+      {
+        "model": "Agila",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Adam",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
+        "type": "Hatchback",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Karl / Viva",
+        "years": [2015, 2016, 2017, 2018, 2019],
+        "type": "Hatchback",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Corsa",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "Astra",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Vectra",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "Sedan/Wagon/Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Signum",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Insignia",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "Sedan/Wagon/Liftback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Meriva",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Zafira / Zafira Tourer",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel", "CNG"]
+      },
+      {
+        "model": "Antara",
+        "years": [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Mokka / Mokka X",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "Crossland / Crossland X",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Frontera",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Mild Hybrid", "Electric"]
+      },
+      {
+        "model": "Grandland / Grandland X",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Cascada",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019],
+        "type": "Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Ampera",
+        "years": [2011, 2012, 2013, 2014, 2015],
+        "type": "Hatchback",
+        "engine_types": ["Plug-in Hybrid"]
+      },
+      {
+        "model": "Ampera-e",
+        "years": [2017, 2018, 2019, 2020],
+        "type": "Hatchback",
+        "engine_types": ["Electric"]
+      }
+    ]
+  }

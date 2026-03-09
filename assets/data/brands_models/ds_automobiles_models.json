@@ -1,0 +1,35 @@
+{
+    "brand_name": "DS Automobiles",
+    "models": [
+      {
+        "model": "DS 3 / DS 3 Crossback",
+        "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/SUV",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "DS 4 / DS 4 Crossback",
+        "years": [2016, 2017, 2018, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Crossover",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "DS 5",
+        "years": [2016, 2017, 2018],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "DS 7 / DS 7 Crossback",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "DS 9",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Plug-in Hybrid"]
+      }
+    ]
+  }

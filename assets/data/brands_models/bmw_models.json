@@ -1,0 +1,143 @@
+{
+    "brand_name": "BMW",
+    "models": [
+      {
+        "model": "1 Series",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "2 Series",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe/Convertible/MPV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "3 Series",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "4 Series",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "5 Series",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "6 Series",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Coupe/Convertible/GT",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "7 Series",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "8 Series",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "X1",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "X2",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "X3",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "X4",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "X5",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "X6",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "X7",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Z4",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Convertible",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "i3",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+        "type": "Hatchback",
+        "engine_types": ["Electric", "Plug-in Hybrid"]
+      },
+      {
+        "model": "i4",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Gran Coupe",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "i5",
+        "years": [2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "i7",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "i8",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Coupe/Convertible",
+        "engine_types": ["Plug-in Hybrid"]
+      },
+      {
+        "model": "iX",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "XM",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Plug-in Hybrid"]
+      }
+    ]
+  }

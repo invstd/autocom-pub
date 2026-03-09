@@ -1,0 +1,47 @@
+{
+    "brand_name": "Cupra",
+    "models": [
+      {
+        "model": "Ateca",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Leon",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon",
+        "engine_types": ["Petrol", "Mild Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Formentor",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Plug-in Hybrid", "Diesel"]
+      },
+      {
+        "model": "Born",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Tavascan",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Terramar",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Raval",
+        "years": [2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Electric"]
+      }
+    ]
+  }

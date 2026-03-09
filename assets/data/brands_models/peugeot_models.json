@@ -1,0 +1,119 @@
+{
+    "brand_name": "Peugeot",
+    "models": [
+      {
+        "model": "107",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "108",
+        "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021],
+        "type": "Hatchback",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "206",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+        "type": "Hatchback/Wagon/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "207",
+        "years": [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "Hatchback/Wagon/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "208",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Electric"]
+      },
+      {
+        "model": "301",
+        "years": [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "307",
+        "years": [2005, 2006, 2007, 2008],
+        "type": "Hatchback/Wagon/Convertible",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "308",
+        "years": [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon/Convertible",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "407",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011],
+        "type": "Sedan/Wagon/Coupe",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "408",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Fastback/Crossover",
+        "engine_types": ["Petrol", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "508",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "607",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "807",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "1007",
+        "years": [2005, 2006, 2007, 2008, 2009],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "2008",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Electric"]
+      },
+      {
+        "model": "3008",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "5008",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV/MPV",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "RCZ",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015],
+        "type": "Coupe",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Rifter / Partner Tepee",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      }
+    ]
+  }

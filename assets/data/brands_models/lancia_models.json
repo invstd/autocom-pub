@@ -1,0 +1,47 @@
+{
+    "brand_name": "Lancia",
+    "models": [
+      {
+        "model": "Ypsilon",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Electric"]
+      },
+      {
+        "model": "Musa",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Thesis",
+        "years": [2005, 2006, 2007, 2008, 2009],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Delta",
+        "years": [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Thema",
+        "years": [2011, 2012, 2013, 2014],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Voyager",
+        "years": [2011, 2012, 2013, 2014, 2015],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Flavia",
+        "years": [2012, 2013, 2014],
+        "type": "Convertible",
+        "engine_types": ["Petrol"]
+      }
+    ]
+  }

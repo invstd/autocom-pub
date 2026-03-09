@@ -1,0 +1,95 @@
+{
+    "brand_name": "Skoda",
+    "models": [
+      {
+        "model": "Fabia",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Wagon",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Octavia",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Mild Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Superb",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Scala",
+        "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "CNG"]
+      },
+      {
+        "model": "Kamiq",
+        "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "CNG"]
+      },
+      {
+        "model": "Karoq",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Kodiaq",
+        "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Kushaq",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Slavia",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Kylaq",
+        "years": [2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Enyaq",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Elroq",
+        "years": [2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Epiq",
+        "years": [2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "Yeti",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Citigo",
+        "years": [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "Electric"]
+      }
+    ]
+  }

@@ -1,0 +1,143 @@
+{
+    "brand_name": "Kia",
+    "models": [
+      {
+        "model": "Picanto / Morning",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback",
+        "engine_types": ["Petrol", "LPG"]
+      },
+      {
+        "model": "Rio / K2",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Sedan/Hatchback",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "Forte / Cerato / K3",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+        "type": "Sedan/Hatchback",
+        "engine_types": ["Petrol", "Diesel", "Plug-in Hybrid"]
+      },
+      {
+        "model": "K4",
+        "years": [2025, 2026],
+        "type": "Sedan/Hatchback/Wagon",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "Optima / K5",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan/Wagon",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Cadenza / K7",
+        "years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "K8",
+        "years": [2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol", "Hybrid"]
+      },
+      {
+        "model": "Stinger",
+        "years": [2018, 2019, 2020, 2021, 2022, 2023],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "K900 / K9",
+        "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Sedan",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Soul",
+        "years": [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Hatchback/Crossover",
+        "engine_types": ["Petrol", "Diesel", "Electric"]
+      },
+      {
+        "model": "Seltos",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "Sportage",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Sorento",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid"]
+      },
+      {
+        "model": "Telluride",
+        "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Petrol"]
+      },
+      {
+        "model": "Niro",
+        "years": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Hybrid", "Plug-in Hybrid", "Electric"]
+      },
+      {
+        "model": "Carnival / Sedona",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "type": "Minivan",
+        "engine_types": ["Petrol", "Diesel", "Hybrid"]
+      },
+      {
+        "model": "Carens / Rondo",
+        "years": [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2022, 2023, 2024, 2025, 2026],
+        "type": "MPV",
+        "engine_types": ["Petrol", "Diesel"]
+      },
+      {
+        "model": "EV2",
+        "years": [2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EV3",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EV4",
+        "years": [2025, 2026],
+        "type": "Sedan/Hatchback",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EV5",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EV6",
+        "years": [2022, 2023, 2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      },
+      {
+        "model": "EV9",
+        "years": [2024, 2025, 2026],
+        "type": "SUV",
+        "engine_types": ["Electric"]
+      }
+    ]
+  }
