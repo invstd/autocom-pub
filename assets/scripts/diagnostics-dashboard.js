@@ -587,9 +587,6 @@ tabs.addEventListener('click', (e) => {
 // Scan button demo (toggle scan/stop)
 if (scanBtn && stopBtn) {
   scanBtn.addEventListener('click', () => {
-    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('launchpad-onboarding-demo') === '1' && typeof window.completeOnboardingAndClose === 'function') {
-      window.completeOnboardingAndClose();
-    }
     scanBtn.classList.add('hidden');
     stopBtn.classList.remove('hidden');
     if (filterControls) filterControls.classList.add('hidden');
@@ -908,6 +905,9 @@ function startScanDemo() {
       
       // Stop scan effect overlay
       if (scanEffect) scanEffect.classList.remove('scanning');
+
+      // Notify onboarding drawer to show congratulations step if tutorial is on "Perform scan" step
+      if (typeof window.onboardingAdvanceAfterScan === 'function') window.onboardingAdvanceAfterScan();
 
       // Calculate health score and segments
       const total = scanResults.ok + scanResults.warning + scanResults.error;

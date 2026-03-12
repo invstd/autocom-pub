@@ -612,7 +612,7 @@
 
   
   <section id="onboarding-welcome-block" class="container mx-auto px-4 pt-0 pb-12 md:pb-16 max-w-5xl hidden" aria-labelledby="onboarding-welcome-heading">
-    <div class="card bg-base-200 border border-base-300 rounded-box p-6 md:p-8">
+    <div class="card bg-base-200/50 border border-base-200 rounded-box p-6 md:p-8">
       <h2 id="onboarding-welcome-heading" class="text-2xl font-bold text-base-content mb-2">Welcome to Quick Connect</h2>
       <p class="text-base-content/80 mb-6">Connect your vehicle in a few steps. Choose how you’d like to get started.</p>
       <div class="flex flex-col sm:flex-row gap-3">
@@ -752,7 +752,6 @@
 <script src="/autocom-pub/assets/scripts/scan-vin-modal.js"></script>
 <script src="/autocom-pub/assets/scripts/hero-vin-vrm.js"></script>
 <script src="/autocom-pub/assets/scripts/index-onboarding.js"></script>
-<script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
 
         </div>
       </div>
@@ -778,7 +777,17 @@
   
   <div id="onboarding-right-drawer" class="onboarding-right-drawer fixed top-0 right-0 bottom-0 w-80 max-w-full bg-base-200 border-l border-base-300 shadow-lg z-30 translate-x-full transition-transform duration-200 ease-out flex flex-col" role="dialog" aria-label="Onboarding tutorial" aria-hidden="true">
     <div class="flex items-center justify-between p-4 border-b border-base-300 shrink-0">
-      <h2 class="text-lg font-semibold text-base-content">Tutorial</h2>
+      <div class="flex items-center gap-2 leading-tight">
+        <span class="text-primary -mb-0.5 shrink-0">
+<span class="icon icon-help w-5 h-5 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.93 4.93L9.17 9.17M14.83 14.83L19.07 19.07M19.07 4.93L14.83 9.17L18.36 5.64M4.93 19.07L9.17 14.83M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</span>
+</span>
+        <h2 class="text-lg font-semibold text-base-content leading-tight">Tutorial</h2>
+      </div>
       <button type="button" id="onboarding-drawer-close" class="btn btn-ghost btn-sm btn-square" aria-label="Close">
         
 <span class="icon icon-close w-5 h-5 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
@@ -790,11 +799,17 @@
 
       </button>
     </div>
-    <div id="onboarding-drawer-content" class="flex-1 overflow-auto p-4 text-base-content/90">
-      <p class="text-sm">Loading…</p>
-    </div>
-    <div class="p-4 border-t border-base-300 shrink-0">
-      <button type="button" id="onboarding-drawer-next" class="btn btn-primary btn-block">Next</button>
+    <div id="onboarding-drawer-content" class="flex-1 min-h-0 flex flex-col">
+      <div class="flex-1 overflow-auto p-4 text-base-content/90">
+        <div id="onboarding-drawer-step"></div>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0 p-4 pt-0">
+        <button type="button" id="onboarding-drawer-next" class="btn btn-primary btn-block">Next</button>
+        <div id="onboarding-drawer-footer-actions" class="flex gap-2">
+          <button type="button" id="onboarding-drawer-restart" class="btn btn-neutral flex-1">Restart</button>
+          <button type="button" id="onboarding-drawer-skip" class="btn btn-ghost flex-1">Skip Tutorial</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -810,7 +825,9 @@
 
   </button>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
+<script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
 
 </body>
 </html>
