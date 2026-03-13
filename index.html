@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="Autocom">
+<html lang="en" data-theme="Hi-Tech">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <script>
       (function() {
         var saved = localStorage.getItem('theme');
-        document.documentElement.setAttribute('data-theme', saved || 'Autocom');
+        document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
       })();
     </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
@@ -19,7 +19,8 @@
 </head>
 <body class="bg-base-100 text-base-content">
     
-<nav class="site-nav navbar bg-base-100 shadow-lg">
+<div class="min-h-screen flex flex-col">
+    <nav class="site-nav navbar bg-base-100 shadow-lg">
     <div class="flex-1">
         <a class="btn btn-ghost text-xl" href="/autocom-pub/">Autocom</a>
     </div>
@@ -33,6 +34,7 @@
                         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Autocom'); localStorage.setItem('theme', 'Autocom'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Autocom</a></li>
                         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
                         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Hi-Tech'); localStorage.setItem('theme', 'Hi-Tech'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Hi-Tech</a></li>
                     </ul>
                 </details>
             </li>
@@ -41,10 +43,10 @@
 </nav>
 
 
-<main class="container mx-auto px-4 py-8">
-    <div class="hero min-h-screen bg-base-200">
-        <div class="hero-content text-center">
-            <div class="max-w-md">
+    <main class="flex-1 flex flex-col min-h-0 container mx-auto px-4 py-8">
+        <div class="hero flex-1 flex min-h-0 items-center justify-center">
+            <div class="hero-content text-center w-full max-w-full">
+            <div class="max-w-md mx-auto">
                 <h1 class="mb-5 text-5xl font-bold">Autocom Prototypes</h1>
                 <p class="mb-5">Collection of usability testing prototypes</p>
                 
@@ -57,8 +59,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+</div>
 
 </body>
 </html>

@@ -10,7 +10,7 @@
   var MODE_KEY = 'launchpad-onboarding-mode';
 
   var STEP_CONFIG = [
-    { title: 'Connect the vehicle', copy: 'Click "Auto-detect" or "Scan VIN/QR Code" to connect. In the demo we\'ll take you to the diagnostics dashboard quickly.' },
+    { title: 'Connect the vehicle', copy: 'Choose "Auto-detect" or "Scan VIN/QR Code" to continue. In this demo we\'ll jump straight to the diagnostics dashboard so you can see the next steps.' },
     { title: "You're on the diagnostics dashboard", copy: 'Here you can view systems, run a scan, and manage your vehicle. We\'ll point out the main areas next.' },
     { title: 'Perform the full system scan', copy: 'Click the "Scan all systems" button below to run a full vehicle scan. Once the scan finishes, you will complete the tutorial.', selector: '#onboarding-target-scan-systems' },
     { title: "You're all set!", copy: 'You\'ve completed the tutorial. You can explore the dashboard, run more scans, or close this panel and come back anytime via the Help button.', selector: null }
@@ -102,7 +102,14 @@
         parts.push('<div class="timeline-middle">' + nodeContent + '</div>');
         parts.push('<div class="' + boxClass + '">');
         parts.push('<h3 class="text-base font-semibold text-base-content mb-1">' + (cfg.title || '') + '</h3>');
-        if (!isPrevious) parts.push('<p class="text-sm">' + (cfg.copy || '') + '</p>');
+        if (!isPrevious) {
+          parts.push('<p class="text-sm">' + (cfg.copy || '') + '</p>');
+          if (i === 0) {
+            parts.push('<div role="alert" class="alert alert-soft alert-info text-sm mt-5">');
+            parts.push('<span>No need to connect a real device or scan a VIN. This is a guided walkthrough. Just follow the steps to explore the flow.</span>');
+            parts.push('</div>');
+          }
+        }
         parts.push('</div>');
         if (i < stepIndex) parts.push('<hr/>');
         parts.push('</li>');
@@ -230,7 +237,12 @@
         var scanTarget = e.target && (e.target.id === 'onboarding-drawer-scan-inline' ? e.target : (e.target.closest && e.target.closest('#onboarding-drawer-scan-inline')));
         if (scanTarget) {
           var scanBtn = document.querySelector('#onboarding-target-scan-systems');
-          if (scanBtn) scanBtn.click();
+          if (scanBtn) {
+            scanTarget.disabled = true;
+            scanTarget.classList.add('btn-disabled');
+            scanTarget.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Scanning...';
+            scanBtn.click();
+          }
           return;
         }
         var finishTarget = e.target && (e.target.id === 'onboarding-drawer-finish-inline' ? e.target : (e.target.closest && e.target.closest('#onboarding-drawer-finish-inline')));
@@ -303,6 +315,10 @@
       sessionStorage.setItem(DEMO_KEY, '1');
       sessionStorage.setItem(STEP_KEY, '0');
     }
+    var seeOptionsBtn = document.getElementById('onboarding-cta-see-options');
+    var showMeHowBtn = document.getElementById('onboarding-cta-show-me-how');
+    if (seeOptionsBtn) seeOptionsBtn.classList.remove('onboarding-tour-highlight-glow');
+    if (showMeHowBtn) showMeHowBtn.classList.remove('onboarding-tour-highlight-glow');
     openDrawer();
     updateDrawerForDemo();
     showFab();

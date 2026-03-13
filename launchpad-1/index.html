@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="Autocom">
+<html lang="en" data-theme="Hi-Tech">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <script>
       (function() {
         var saved = localStorage.getItem('theme');
-        document.documentElement.setAttribute('data-theme', saved || 'Autocom');
+        document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
       })();
     </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
@@ -100,6 +100,7 @@
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Autocom'); localStorage.setItem('theme', 'Autocom'); this.closest('details').removeAttribute('open'); return false;">Autocom</a></li>
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); this.closest('details').removeAttribute('open'); return false;">Light</a></li>
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); this.closest('details').removeAttribute('open'); return false;">Dark</a></li>
+        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Hi-Tech'); localStorage.setItem('theme', 'Hi-Tech'); this.closest('details').removeAttribute('open'); return false;">Hi-Tech</a></li>
       </ul>
     </details>
     <a href="/autocom-pub/launchpad-1/settings/" class="btn btn-ghost btn-square" aria-label="Settings">
@@ -612,12 +613,12 @@
 
   
   <section id="onboarding-welcome-block" class="container mx-auto px-4 pt-0 pb-12 md:pb-16 max-w-5xl hidden" aria-labelledby="onboarding-welcome-heading">
-    <div class="card bg-base-200/50 border border-base-200 rounded-box p-6 md:p-8">
+    <div id="onboarding-welcome-card" class="card bg-base-200/50 border border-base-200 rounded-box p-6 md:p-8">
       <h2 id="onboarding-welcome-heading" class="text-2xl font-bold text-base-content mb-2">Welcome to Quick Connect</h2>
       <p class="text-base-content/80 mb-6">Connect your vehicle in a few steps. Choose how you’d like to get started.</p>
       <div class="flex flex-col sm:flex-row gap-3">
-        <button type="button" id="onboarding-cta-see-options" class="btn btn-primary">See the options</button>
-        <button type="button" id="onboarding-cta-show-me-how" class="btn btn-neutral">Show me how</button>
+        <button type="button" id="onboarding-cta-see-options" class="btn btn-primary">1. See the options</button>
+        <button type="button" id="onboarding-cta-show-me-how" class="btn btn-neutral">2. Demo tutorial</button>
       </div>
     </div>
   </section>
@@ -634,7 +635,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE273723" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Peugeot&amp;brandSlug=peugeot&amp;model=308%20T9&amp;year=2017&amp;engine=Petrol&amp;vin=WVWZZZ3CZWE273723" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">
@@ -679,7 +680,7 @@
 
 
 
-<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Kia&amp;brandSlug=kia&amp;model=Ceed%20hatchback&amp;year=2018&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE882901" class="vehicle-item-card card bg-base-200/50 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
+<a href="/autocom-pub/launchpad-1/diagnostics-dashboard/?brand=Kia&amp;brandSlug=kia&amp;model=Ceed%20hatchback&amp;year=2018&amp;engine=Diesel&amp;vin=WVWZZZ3CZWE882901" class="vehicle-item-card card bg-base-100 shadow-sm border border-base-300 rounded-box block no-underline text-base-content cursor-pointer hover:border-primary/50 transition-colors">
 
   <div class="card-body p-4">
     <div class="flex items-center gap-2 md:gap-4">

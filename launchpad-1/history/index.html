@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="Autocom">
+<html lang="en" data-theme="Hi-Tech">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <script>
       (function() {
         var saved = localStorage.getItem('theme');
-        document.documentElement.setAttribute('data-theme', saved || 'Autocom');
+        document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
       })();
     </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
@@ -100,6 +100,7 @@
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Autocom'); localStorage.setItem('theme', 'Autocom'); this.closest('details').removeAttribute('open'); return false;">Autocom</a></li>
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); this.closest('details').removeAttribute('open'); return false;">Light</a></li>
         <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); this.closest('details').removeAttribute('open'); return false;">Dark</a></li>
+        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Hi-Tech'); localStorage.setItem('theme', 'Hi-Tech'); this.closest('details').removeAttribute('open'); return false;">Hi-Tech</a></li>
       </ul>
     </details>
     <a href="/autocom-pub/launchpad-1/settings/" class="btn btn-ghost btn-square" aria-label="Settings">

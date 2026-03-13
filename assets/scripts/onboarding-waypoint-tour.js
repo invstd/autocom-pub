@@ -214,7 +214,10 @@
   }
 
   function startTour() {
-    startTourInternal(TOUR_STEPS, '#onboarding-cta-see-options', null);
+    startTourInternal(TOUR_STEPS, '#onboarding-cta-see-options', function onIndexTourEnd() {
+      var showMeHow = document.getElementById('onboarding-cta-show-me-how');
+      if (showMeHow) showMeHow.classList.add(highlightGlowClass);
+    });
   }
 
   function init() {
