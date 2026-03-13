@@ -175,11 +175,117 @@
 
 
 
+
+<dialog id="scan-complete-dialog" class="modal scan-complete-overlay" aria-labelledby="scan-complete-title" aria-describedby="scan-complete-stats">
+  <div class="modal-box scan-complete-overlay-box max-w-lg cursor-pointer" data-scan-complete-close>
+    <h2 id="scan-complete-title" class="text-lg font-semibold text-base-content mb-4 text-center">Diagnostics complete</h2>
+    <div class="flex flex-row items-stretch gap-6">
+      <div class="flex flex-col items-center justify-center gap-3 flex-1 min-w-0">
+        <div id="scan-complete-gauge" class="shrink-0">
+          
+
+
+
+
+
+
+
+<div 
+  class="health-gauge scan-complete-overlay-gauge" 
+  data-state="idle"
+  style="--gauge-size: 100px; --gauge-thickness: 6px; --gauge-radius: 47; --gauge-circumference: 295.30946; --gauge-arc-length: 221.48209500000002;"
+>
+  <svg 
+    class="health-gauge-svg"
+    width="100" 
+    height="100" 
+    viewBox="0 0 100 100"
+    role="progressbar"
+    aria-valuenow="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  >
+    
+    <circle
+      class="health-gauge-track"
+      cx="50"
+      cy="50"
+      r="47"
+      fill="none"
+      stroke-width="6"
+      stroke-linecap="round"
+      transform="rotate(135 50 50)"
+    />
+    
+    
+    <circle
+      class="health-gauge-progress"
+      cx="50"
+      cy="50"
+      r="47"
+      fill="none"
+      stroke-width="6"
+      stroke-linecap="round"
+      transform="rotate(135 50 50)"
+    />
+    
+    
+    <g class="health-gauge-segments"></g>
+  </svg>
+  
+  
+  <div class="health-gauge-center">
+    <span class="health-gauge-value">READY</span>
+    <span class="health-gauge-label"></span>
+  </div>
+</div>
+
+        </div>
+        <p class="text-xs font-medium text-base-content/70 uppercase tracking-wider m-0">Health score</p>
+      </div>
+      <div class="border-l border-dashed border-base-content/20 self-stretch min-h-16 shrink-0" aria-hidden="true"></div>
+      <div id="scan-complete-stats" class="flex flex-col gap-4 justify-center min-w-0 flex-1 pl-6" aria-live="polite">
+        <p class="text-base font-normal text-base-content m-0 flex items-center gap-2">
+          
+<span class="icon icon-alert-triangle w-5 h-5 text-warning shrink-0 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.9998 8.99996V13M11.9998 17H12.0098M10.2898 3.85996L1.81978 18C1.64514 18.3024 1.55274 18.6453 1.55177 18.9945C1.55079 19.3437 1.64127 19.6871 1.8142 19.9905C1.98714 20.2939 2.2365 20.5467 2.53748 20.7238C2.83847 20.9009 3.18058 20.9961 3.52978 21H20.4698C20.819 20.9961 21.1611 20.9009 21.4621 20.7238C21.7631 20.5467 22.0124 20.2939 22.1854 19.9905C22.3583 19.6871 22.4488 19.3437 22.4478 18.9945C22.4468 18.6453 22.3544 18.3024 22.1798 18L13.7098 3.85996C13.5315 3.56607 13.2805 3.32308 12.981 3.15444C12.6814 2.98581 12.3435 2.89722 11.9998 2.89722C11.656 2.89722 11.3181 2.98581 11.0186 3.15444C10.7191 3.32308 10.468 3.56607 10.2898 3.85996Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</span>
+
+          <span class="text-warning font-bold tabular-nums" data-scan-complete-warnings>0</span>
+          <span class="font-normal" data-scan-complete-warnings-suffix>Warning DTCs</span>
+        </p>
+        <p class="text-base font-normal text-base-content m-0 flex items-center gap-2">
+          
+<span class="icon icon-alert-octagon w-5 h-5 text-error shrink-0 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8V12M12 16H12.01M7.86 2H16.14L22 7.86V16.14L16.14 22H7.86L2 16.14V7.86L7.86 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+</span>
+
+          <span class="text-error font-bold tabular-nums" data-scan-complete-errors>0</span>
+          <span class="font-normal" data-scan-complete-errors-suffix>Critical DTCs</span>
+        </p>
+      </div>
+    </div>
+    <p class="text-xs text-base-content/50 mt-4 text-center">Tap anywhere to close</p>
+  </div>
+  <form method="dialog" class="modal-backdrop" aria-label="Close">
+    <button type="submit" class="cursor-default w-full h-full min-h-screen" aria-label="Close"></button>
+  </form>
+</dialog>
+
+
+
 <div class="diagnostics-dashboard-wrapper w-full flex flex-col flex-1 min-h-0">
 
 
 
 <div class="diagnostics-dashboard-page w-full flex flex-col flex-1 min-h-0 gap-6 lg:max-h-[calc(100vh-7rem)]" data-view="default">
+  <div class="diagnostics-stagger diagnostics-stagger-header flex flex-col gap-4 shrink-0">
   
 <div class="content-header border-b border-base-300 pb-4 shrink-0 flex flex-col gap-4">
   
@@ -237,7 +343,6 @@
 </div>
 
 
-  <div class="diagnostics-dashboard-content flex flex-col gap-4 flex-1 min-h-0 overflow-hidden">
     
     <div class="diagnostics-dashboard-top-row grid grid-cols-1 lg:grid-cols-2 gap-4 items-center shrink-0">
       <label class="input input-bordered flex items-center gap-2 w-full">
@@ -291,7 +396,10 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <div class="diagnostics-dashboard-content flex flex-col gap-4 flex-1 min-h-0 overflow-hidden">
+    <div class="diagnostics-tab-panels grid flex-1 min-h-0 min-w-0">
     <div class="diagnostics-dashboard-columns grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0 min-w-0">
       
       <div class="diagnostics-dashboard-left flex flex-col gap-1 min-w-0 flex-1 min-h-0">
@@ -473,7 +581,7 @@
 </span>
 
         </div>
-        <div class="card bg-base-100 border border-base-200 rounded-box flex-1 min-h-0 flex flex-col" id="onboarding-target-vehicle-tasks">
+        <div class="diagnostics-stagger diagnostics-stagger-tasks card bg-base-100 border border-base-200 rounded-box flex-1 min-h-0 flex flex-col" id="onboarding-target-vehicle-tasks">
           <div class="card-body p-4 gap-3 flex-1 min-h-0 flex flex-col overflow-hidden">
             <h2 class="text-lg font-semibold text-base-content px-2 shrink-0">Vehicle Tasks</h2>
             
@@ -623,7 +731,7 @@
     </div>
 
     
-    <div class="diagnostics-dashboard-right flex flex-col gap-4 min-w-0 flex-1 min-h-0" id="onboarding-target-systems-list">
+    <div class="diagnostics-stagger diagnostics-stagger-systems diagnostics-dashboard-right flex flex-col gap-4 min-w-0 flex-1 min-h-0" id="onboarding-target-systems-list">
       <div class="card bg-base-100 border border-base-200 rounded-box flex-1 min-h-0 flex flex-col overflow-hidden">
         
         
@@ -1682,7 +1790,7 @@
     </div>
 
     
-    <div class="topology-view card bg-base-100 border border-base-200 rounded-box overflow-hidden">
+    <div class="topology-view card bg-base-100 border border-base-200 rounded-box overflow-hidden flex flex-col flex-1 min-h-0">
       
 <div class="topology-map flex flex-col flex-1 min-h-0 overflow-auto p-4" data-topology-map>
   
@@ -2070,6 +2178,7 @@
 </div>
 
     </div>
+    </div>
   </div>
 
 </div>
@@ -2095,6 +2204,8 @@
 
 
 </div>
+
+
 
 <script src="/autocom-pub/assets/scripts/diagnostics-dashboard.js"></script>
 

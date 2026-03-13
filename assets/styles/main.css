@@ -22,6 +22,7 @@
     --container-xs: 20rem;
     --container-sm: 24rem;
     --container-md: 28rem;
+    --container-lg: 32rem;
     --container-2xl: 42rem;
     --container-3xl: 48rem;
     --container-4xl: 56rem;
@@ -5431,6 +5432,9 @@
       }
     }
   }
+  .m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
   .m-2 {
     margin: calc(var(--spacing) * 2);
   }
@@ -6709,6 +6713,9 @@
   .min-h-14 {
     min-height: calc(var(--spacing) * 14);
   }
+  .min-h-16 {
+    min-height: calc(var(--spacing) * 16);
+  }
   .min-h-\[1\.5rem\] {
     min-height: 1.5rem;
   }
@@ -6956,6 +6963,9 @@
   }
   .max-w-full {
     max-width: 100%;
+  }
+  .max-w-lg {
+    max-width: var(--container-lg);
   }
   .max-w-md {
     max-width: var(--container-md);
@@ -7205,6 +7215,9 @@
   }
   .items-start {
     align-items: flex-start;
+  }
+  .items-stretch {
+    align-items: stretch;
   }
   .justify-between {
     justify-content: space-between;
@@ -8386,6 +8399,9 @@
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
   }
+  .pl-6 {
+    padding-left: calc(var(--spacing) * 6);
+  }
   .pl-9 {
     padding-left: calc(var(--spacing) * 9);
   }
@@ -9049,6 +9065,10 @@
   }
   .uppercase {
     text-transform: uppercase;
+  }
+  .tabular-nums {
+    --tw-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
   }
   .btn-link {
     .prose :where(&):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -9986,6 +10006,14 @@
       border-bottom-width: 0px;
     }
   }
+  .hover\:-translate-y-0\.5 {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-y: calc(var(--spacing) * -0.5);
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
   .hover\:border-primary\/50 {
     &:hover {
       @media (hover: hover) {
@@ -10027,6 +10055,14 @@
         @supports (color: color-mix(in lab, red, red)) {
           --tw-shadow: 0 0 0 2px var(--tw-shadow-color, var(--color-accent)), 0 4px 12px 0 var(--tw-shadow-color, color-mix(in oklch,var(--color-accent) 35%,transparent));
         }
+        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      }
+    }
+  }
+  .hover\:shadow-md {
+    &:hover {
+      @media (hover: hover) {
+        --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
     }
@@ -10896,10 +10932,11 @@ html[data-theme="Hi-Tech"] .card-title {
   font-family: var(--font-headline);
 }
 html[data-theme="Hi-Tech"] .modal-box,
-html[data-theme="Hi-Tech"] .dropdown-content {
+html[data-theme="Hi-Tech"] .dropdown-content,
+html[data-theme="Hi-Tech"] .scan-complete-overlay-box {
   background: var(--color-base-100);
   @supports (color: color-mix(in lab, red, red)) {
-    background: color-mix(in oklch, var(--color-base-100) 90%, transparent);
+    background: color-mix(in oklch, var(--color-base-100) 78%, transparent);
   }
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -11074,16 +11111,55 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
   color: var(--color-base-content);
   opacity: 0.7;
 }
-[data-view="topology"] .diagnostics-dashboard-columns {
-  display: none;
+@keyframes diagnostics-stagger-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-[data-view="topology"] .topology-view {
-  display: flex;
+.diagnostics-dashboard-page .diagnostics-stagger {
+  opacity: 0;
+  animation: diagnostics-stagger-fade 0.4s ease-out forwards;
+}
+.diagnostics-dashboard-page .diagnostics-stagger-header {
+  animation-delay: 0.05s;
+}
+.diagnostics-dashboard-page .diagnostics-stagger-tasks {
+  animation-delay: 0.2s;
+}
+.diagnostics-dashboard-page .diagnostics-stagger-systems {
+  animation-delay: 0.35s;
+}
+.diagnostics-tab-panels {
+  grid-template: 1fr / 1fr;
+}
+.diagnostics-tab-panels > .diagnostics-dashboard-columns,
+.diagnostics-tab-panels > .topology-view {
+  grid-area: 1 / 1;
+  transition: opacity 0.22s ease-out;
+}
+[data-view="default"] .diagnostics-tab-panels > .diagnostics-dashboard-columns {
+  opacity: 1;
+  pointer-events: auto;
+}
+[data-view="default"] .diagnostics-tab-panels > .topology-view {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+[data-view="topology"] .diagnostics-tab-panels > .diagnostics-dashboard-columns {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+[data-view="topology"] .diagnostics-tab-panels > .topology-view {
+  opacity: 1;
+  pointer-events: auto;
 }
 .topology-view {
-  display: none;
   flex-direction: column;
-  flex: 1;
   min-height: 0;
 }
 .badge-soft.badge-neutral {
@@ -11357,6 +11433,9 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
 .health-gauge[data-state="idle"] .health-gauge-value {
   opacity: 0.4;
 }
+.scan-complete-overlay-gauge {
+  margin: 0 auto;
+}
 .throttle-gauge {
   width: var(--throttle-size);
   height: var(--throttle-size);
@@ -11418,16 +11497,14 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
     max-height: 14rem;
   }
 }
-.vehicle-image-tinted::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--color-primary);
-  opacity: 0.25;
+.vehicle-image-tinted [data-vehicle-image] {
   mix-blend-mode: darken;
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 0;
+  opacity: 0.88;
+}
+html[data-theme="dark"] .vehicle-image-tinted [data-vehicle-image],
+html[data-theme="Hi-Tech"] .vehicle-image-tinted [data-vehicle-image],
+html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
+  mix-blend-mode: normal;
 }
 .scan-effect-overlay {
   position: absolute;
@@ -12062,6 +12139,26 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
   syntax: "*";
   inherits: false;
 }
+@property --tw-ordinal {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-slashed-zero {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-figure {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-spacing {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-fraction {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-shadow {
   syntax: "*";
   inherits: false;
@@ -12210,6 +12307,11 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
       --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-tracking: initial;
+      --tw-ordinal: initial;
+      --tw-slashed-zero: initial;
+      --tw-numeric-figure: initial;
+      --tw-numeric-spacing: initial;
+      --tw-numeric-fraction: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;

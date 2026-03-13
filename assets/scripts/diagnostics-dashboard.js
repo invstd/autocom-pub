@@ -184,8 +184,8 @@ const errorsOnlyToggle = document.querySelector('[data-errors-only-toggle]');
 const errorCountBadge = document.querySelector('[data-error-count]');
 const clearDtcsBtn = document.querySelector('[data-clear-dtcs-btn]');
 
-// Health gauge elements
-const gauge = document.querySelector('.health-gauge');
+// Health gauge elements (main dashboard gauge only; overlay has its own in #scan-complete-gauge)
+const gauge = document.querySelector('[data-health-gauge-wrapper] .health-gauge');
 const gaugeSvg = gauge ? gauge.querySelector('.health-gauge-svg') : null;
 const gaugeProgress = gauge ? gauge.querySelector('.health-gauge-progress') : null;
 const gaugeSegments = gauge ? gauge.querySelector('.health-gauge-segments') : null;
@@ -199,6 +199,16 @@ const throttleNeedle = throttleGauge ? throttleGauge.querySelector('.throttle-ga
 // Scan effect overlay
 const scanEffect = document.querySelector('[data-scan-effect]');
 const vciStatusBadge = document.getElementById('vci-status-indicator-badge');
+
+// Scan complete overlay (hero moment)
+const scanCompleteDialog = document.getElementById('scan-complete-dialog');
+const scanCompleteGaugeWrapper = document.getElementById('scan-complete-gauge');
+const scanCompleteGauge = scanCompleteGaugeWrapper ? scanCompleteGaugeWrapper.querySelector('.health-gauge') : null;
+const scanCompleteWarningsEl = document.querySelector('[data-scan-complete-warnings]');
+const scanCompleteWarningsSuffixEl = document.querySelector('[data-scan-complete-warnings-suffix]');
+const scanCompleteErrorsEl = document.querySelector('[data-scan-complete-errors]');
+const scanCompleteErrorsSuffixEl = document.querySelector('[data-scan-complete-errors-suffix]');
+const scanCompleteBox = document.querySelector('[data-scan-complete-close]');
 
 // System selection elements
 const systemPresets = document.querySelector('[data-system-presets]');
@@ -228,10 +238,11 @@ function getRandomDtcCodes(count) {
 
 // ===== Health Gauge API =====
 
-// Get gauge geometry from CSS variables
-function getGaugeGeometry() {
-  if (!gauge) return null;
-  const style = getComputedStyle(gauge);
+// Get gauge geometry from CSS variables (optional gauge element, default main gauge)
+function getGaugeGeometry(gaugeEl) {
+  const el = gaugeEl || gauge;
+  if (!el) return null;
+  const style = getComputedStyle(el);
   return {
     size: parseFloat(style.getPropertyValue('--gauge-size')),
     thickness: parseFloat(style.getPropertyValue('--gauge-thickness')),
@@ -239,6 +250,58 @@ function getGaugeGeometry() {
     circumference: parseFloat(style.getPropertyValue('--gauge-circumference')),
     arcLength: parseFloat(style.getPropertyValue('--gauge-arc-length'))
   };
+}
+
+// Set any gauge element to result mode (score + segments with stagger). Used for main gauge and overlay gauge.
+// labelOpt: optional; if omitted, "Health score". Pass "" to hide label (e.g. overlay).
+function setGaugeResult(gaugeEl, score, segments, labelOpt) {
+  if (!gaugeEl) return;
+  const geo = getGaugeGeometry(gaugeEl);
+  if (!geo) return;
+
+  const gaugeProgressEl = gaugeEl.querySelector('.health-gauge-progress');
+  const gaugeSegmentsEl = gaugeEl.querySelector('.health-gauge-segments');
+  const gaugeValueEl = gaugeEl.querySelector('.health-gauge-value');
+  const gaugeLabelEl = gaugeEl.querySelector('.health-gauge-label');
+  const gaugeSvgEl = gaugeEl.querySelector('.health-gauge-svg');
+
+  gaugeEl.dataset.state = 'result';
+  gaugeEl.dataset.health = score >= 80 ? 'good' : score >= 50 ? 'warning' : 'error';
+
+  if (gaugeProgressEl) gaugeProgressEl.style.strokeDasharray = '0 9999';
+
+  if (gaugeSegmentsEl) {
+    gaugeSegmentsEl.innerHTML = '';
+    const center = geo.size / 2;
+    let currentOffset = 0;
+    const segmentStaggerMs = 200;
+    segments.forEach(function (seg, i) {
+      if (seg.value <= 0) return;
+      const segmentArc = (seg.value / 100) * geo.arcLength;
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('class', 'health-gauge-segment');
+      circle.setAttribute('data-color', seg.color);
+      circle.setAttribute('cx', center);
+      circle.setAttribute('cy', center);
+      circle.setAttribute('r', geo.radius);
+      circle.setAttribute('fill', 'none');
+      circle.setAttribute('stroke-width', geo.thickness);
+      circle.setAttribute('stroke-linecap', i === segments.length - 1 ? 'round' : 'butt');
+      circle.setAttribute('transform', 'rotate(135 ' + center + ' ' + center + ')');
+      circle.style.strokeDasharray = '0 ' + geo.circumference;
+      circle.style.strokeDashoffset = '-' + currentOffset;
+      gaugeSegmentsEl.appendChild(circle);
+      const offset = currentOffset;
+      currentOffset += segmentArc;
+      setTimeout(function () {
+        circle.style.strokeDasharray = segmentArc + ' ' + geo.circumference;
+        circle.style.strokeDashoffset = '-' + offset;
+      }, i * segmentStaggerMs);
+    });
+  }
+  if (gaugeValueEl) gaugeValueEl.textContent = Math.round(score);
+  if (gaugeLabelEl) gaugeLabelEl.textContent = labelOpt !== undefined ? labelOpt : 'Health score';
+  if (gaugeSvgEl) gaugeSvgEl.setAttribute('aria-valuenow', Math.round(score));
 }
 
 // Reset gauge to idle state
@@ -293,70 +356,49 @@ function healthGaugeSetProgress(value) {
   }
 }
 
-// Set gauge to result mode with health score and segments
+// Set gauge to result mode with health score and segments (uses main dashboard gauge)
 // segments = [{ value: 80, color: 'success' }, { value: 15, color: 'warning' }, { value: 5, color: 'error' }]
 function healthGaugeSetResult(score, segments) {
-  if (!gauge) return;
-  const geo = getGaugeGeometry();
-  if (!geo) return;
-  
-  gauge.dataset.state = 'result';
-  
-  // Set health indicator for color
-  if (score >= 80) {
-    gauge.dataset.health = 'good';
-  } else if (score >= 50) {
-    gauge.dataset.health = 'warning';
-  } else {
-    gauge.dataset.health = 'error';
+  setGaugeResult(gauge, score, segments);
+  if (gaugeLabel) gaugeLabel.textContent = 'Scan Health Score';
+}
+
+// Show scan-complete overlay (hero moment). Auto-dismiss 3s, tap to close.
+function showScanCompleteOverlay(healthScore, scanResults) {
+  if (!scanCompleteDialog) return;
+
+  const total = (scanResults.ok || 0) + (scanResults.warning || 0) + (scanResults.error || 0);
+  const segments = total > 0
+    ? [
+        { value: (scanResults.ok / total) * 100, color: 'success' },
+        { value: (scanResults.warning / total) * 100, color: 'warning' },
+        { value: (scanResults.error / total) * 100, color: 'error' }
+      ].filter(function (s) { return s.value > 0; })
+    : [];
+
+  if (scanCompleteGauge) setGaugeResult(scanCompleteGauge, healthScore, segments, '');
+  const w = scanResults.warning || 0;
+  const e = scanResults.error || 0;
+  if (scanCompleteWarningsEl) scanCompleteWarningsEl.textContent = String(w);
+  if (scanCompleteWarningsSuffixEl) scanCompleteWarningsSuffixEl.textContent = w === 1 ? 'Warning DTC' : 'Warning DTCs';
+  if (scanCompleteErrorsEl) scanCompleteErrorsEl.textContent = String(e);
+  if (scanCompleteErrorsSuffixEl) scanCompleteErrorsSuffixEl.textContent = e === 1 ? 'Critical DTC' : 'Critical DTCs';
+
+  scanCompleteDialog.showModal();
+
+  let autoCloseId = null;
+  function closeOverlay() {
+    scanCompleteDialog.close();
   }
-  
-  // Hide progress arc
-  if (gaugeProgress) {
-    gaugeProgress.style.strokeDasharray = '0 9999';
+  function cleanup() {
+    if (autoCloseId) clearTimeout(autoCloseId);
+    scanCompleteDialog.removeEventListener('click', closeOverlay);
+    scanCompleteDialog.removeEventListener('close', cleanup);
   }
-  
-  // Create segment arcs
-  if (gaugeSegments) {
-    gaugeSegments.innerHTML = '';
-    
-    const center = geo.size / 2;
-    let currentOffset = 0;
-    
-    segments.forEach((seg, i) => {
-      if (seg.value <= 0) return;
-      
-      const segmentArc = (seg.value / 100) * geo.arcLength;
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      
-      circle.setAttribute('class', 'health-gauge-segment');
-      circle.setAttribute('data-color', seg.color);
-      circle.setAttribute('cx', center);
-      circle.setAttribute('cy', center);
-      circle.setAttribute('r', geo.radius);
-      circle.setAttribute('fill', 'none');
-      circle.setAttribute('stroke-width', geo.thickness);
-      circle.setAttribute('stroke-linecap', i === segments.length - 1 ? 'round' : 'butt');
-      circle.setAttribute('transform', `rotate(135 ${center} ${center})`);
-      
-      // Use stroke-dasharray and stroke-dashoffset for segment positioning
-      circle.style.strokeDasharray = `${segmentArc} ${geo.circumference}`;
-      circle.style.strokeDashoffset = `-${currentOffset}`;
-      
-      gaugeSegments.appendChild(circle);
-      currentOffset += segmentArc;
-    });
-  }
-  
-  if (gaugeValue) {
-    gaugeValue.textContent = Math.round(score);
-  }
-  if (gaugeLabel) {
-    gaugeLabel.textContent = 'Scan Health Score';
-  }
-  if (gaugeSvg) {
-    gaugeSvg.setAttribute('aria-valuenow', Math.round(score));
-  }
+
+  autoCloseId = setTimeout(closeOverlay, 3000);
+  scanCompleteDialog.addEventListener('click', closeOverlay);
+  scanCompleteDialog.addEventListener('close', cleanup);
 }
 
 // ===== Throttle Gauge API =====
@@ -923,9 +965,12 @@ function startScanDemo() {
         ].filter(s => s.value > 0);
         
         healthGaugeSetResult(healthScore, segments);
-        
+
         // Stop throttle gauge animation when scan completes
         throttleGaugeStopAnimation();
+
+        // Hero moment: show scan-complete overlay (auto-dismiss 3s, tap to close)
+        showScanCompleteOverlay(healthScore, scanResults);
       }
       return;
     }
