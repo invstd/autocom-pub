@@ -10,6 +10,15 @@
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
       })();
     </script>
+    <script>
+      (function () {
+        try {
+          if (sessionStorage.getItem('autocom-prototype-gate') === '1') {
+            document.documentElement.classList.add('prototype-gate-unlocked');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
     <script src="https://cdn.jsdelivr.net/npm/theme-change@2.5.0/index.js" defer></script>
     <script>
@@ -302,5 +311,27 @@
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
 
+    
+<div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">
+  <div class="card bg-base-100 border border-base-300 shadow-xl w-full max-w-xs sm:max-w-sm">
+    <div class="card-body p-6 sm:p-8">
+      <h2 id="prototype-gate-title" class="card-title text-xl mb-3">Prototype access</h2>
+      <p id="prototype-gate-desc" class="text-sm text-base-content/80 leading-relaxed mb-8">This build is password-protected. Enter the password to continue.</p>
+      <div class="flex flex-col gap-8">
+        <label class="floating-label w-full">
+          <input type="password" id="prototype-gate-input" class="input input-bordered w-full" placeholder="Password" autocomplete="current-password" />
+          <span>Password</span>
+        </label>
+        <div class="flex flex-col gap-3">
+          <p id="prototype-gate-error" class="text-sm text-error leading-snug hidden min-h-0" role="alert">Incorrect password. Try again.</p>
+          <button type="button" id="prototype-gate-submit" class="btn btn-primary btn-block">Continue</button>
+        </div>
+      </div>
+      <noscript><p class="text-sm text-warning mt-6">JavaScript is required to unlock this prototype.</p></noscript>
+    </div>
+  </div>
+</div>
+
+    <script src="/autocom-pub/assets/scripts/prototype-gate.js"></script>
 </body>
 </html>
