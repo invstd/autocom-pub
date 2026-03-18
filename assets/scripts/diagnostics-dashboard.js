@@ -394,6 +394,9 @@ function showScanCompleteOverlay(healthScore, scanResults) {
     if (autoCloseId) clearTimeout(autoCloseId);
     scanCompleteDialog.removeEventListener('click', closeOverlay);
     scanCompleteDialog.removeEventListener('close', cleanup);
+    if (typeof window.onboardingFireConfettiFromFinishButton === 'function') {
+      window.onboardingFireConfettiFromFinishButton();
+    }
   }
 
   autoCloseId = setTimeout(closeOverlay, 3000);

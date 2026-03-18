@@ -2,7 +2,7 @@
  * Onboarding right drawer and Help FAB.
  * Used on all Launchpad pages (included from launchpad-app.njk).
  * - Drawer: shows tutorial step content when launchpad-onboarding-demo is set; can be toggled by FAB.
- * - FAB: visible when onboarding mode or demo active; toggles drawer.
+ * - FAB: onboarding + no demo → toggles welcome hub; demo active → toggles tutorial drawer.
  */
 (function () {
   var DEMO_KEY = 'launchpad-onboarding-demo';
@@ -10,20 +10,24 @@
   var MODE_KEY = 'launchpad-onboarding-mode';
 
   var STEP_CONFIG = [
-    { title: 'Connect the vehicle', copy: 'Choose "Auto-detect" or "Scan VIN/QR Code" to continue. In this demo we\'ll jump straight to the diagnostics dashboard so you can see the next steps.' },
+    { title: 'Connect the vehicle', copy: 'Choose "Auto-detect" to continue. In this demo we\'ll jump straight to the diagnostics dashboard so you can see the next steps.' },
     { title: "You're on the diagnostics dashboard", copy: 'Here you can view systems, run a scan, and manage your vehicle. We\'ll point out the main areas next.' },
     { title: 'Perform the full system scan', copy: 'Click the "Scan all systems" button below to run a full vehicle scan. Once the scan finishes, you will complete the tutorial.', selector: '#onboarding-target-scan-systems' },
     { title: "You're all set!", copy: 'You\'ve completed the tutorial. You can explore the dashboard, run more scans, or close this panel and come back anytime via the Help button.', selector: null }
   ];
 
   var HIGHLIGHT_CLASS = 'onboarding-tour-highlight';
+  var DEMO_STEP0_AUTO_DETECT_CLASS = 'onboarding-demo-auto-detect-highlight';
 
   function isOnDiagnosticsPage() {
     return typeof window !== 'undefined' && window.location.pathname && window.location.pathname.indexOf('diagnostics-dashboard') !== -1;
   }
 
   function clearHighlight() {
-    document.querySelectorAll('.' + HIGHLIGHT_CLASS).forEach(function (el) { el.classList.remove(HIGHLIGHT_CLASS); });
+    document.querySelectorAll('.' + HIGHLIGHT_CLASS + ', .' + DEMO_STEP0_AUTO_DETECT_CLASS).forEach(function (el) {
+      el.classList.remove(HIGHLIGHT_CLASS);
+      el.classList.remove(DEMO_STEP0_AUTO_DETECT_CLASS);
+    });
   }
 
   function scrollAndHighlight(selector) {
@@ -36,6 +40,10 @@
   }
 
   var drawer = document.getElementById('onboarding-right-drawer');
+  var hubDrawer = document.getElementById('onboarding-welcome-hub-drawer');
+  var hubBackdrop = document.getElementById('onboarding-welcome-hub-backdrop');
+  var tutorialStep1Backdrop = document.getElementById('onboarding-tutorial-step1-backdrop');
+  var hubClose = document.getElementById('onboarding-welcome-hub-close');
   var drawerContent = document.getElementById('onboarding-drawer-content');
   var drawerStep = document.getElementById('onboarding-drawer-step');
   var drawerClose = document.getElementById('onboarding-drawer-close');
@@ -74,10 +82,74 @@
 
   function closeDrawer() {
     if (!drawer) return;
+    hideTutorialStep1Backdrop();
     drawer.classList.add('translate-x-full');
     drawer.classList.remove('translate-x-0');
     drawer.setAttribute('aria-hidden', 'true');
   }
+
+  function showTutorialStep1Backdrop() {
+    if (!tutorialStep1Backdrop) return;
+    tutorialStep1Backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    tutorialStep1Backdrop.classList.add('opacity-100', 'pointer-events-auto');
+    tutorialStep1Backdrop.setAttribute('aria-hidden', 'false');
+  }
+
+  function hideTutorialStep1Backdrop() {
+    if (!tutorialStep1Backdrop) return;
+    tutorialStep1Backdrop.classList.add('opacity-0', 'pointer-events-none');
+    tutorialStep1Backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    tutorialStep1Backdrop.setAttribute('aria-hidden', 'true');
+  }
+
+  function syncTutorialStep1Backdrop() {
+    var step = getStepIndex();
+    if (isDemoActive() && step === 1 && isOnDiagnosticsPage() && isDrawerOpen()) {
+      showTutorialStep1Backdrop();
+    } else {
+      hideTutorialStep1Backdrop();
+    }
+  }
+
+  function isHubOpen() {
+    return hubDrawer && hubDrawer.classList.contains('translate-x-0');
+  }
+
+  function showWelcomeHubBackdrop() {
+    if (!hubBackdrop) return;
+    hubBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+    hubBackdrop.classList.add('opacity-100', 'pointer-events-auto');
+    hubBackdrop.setAttribute('aria-hidden', 'false');
+  }
+
+  function hideWelcomeHubBackdrop() {
+    if (!hubBackdrop) return;
+    hubBackdrop.classList.add('opacity-0', 'pointer-events-none');
+    hubBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    hubBackdrop.setAttribute('aria-hidden', 'true');
+  }
+
+  function openWelcomeHubDrawer() {
+    if (!hubDrawer) return;
+    if (!isDemoActive() && isDrawerOpen()) closeDrawer();
+    showWelcomeHubBackdrop();
+    hubDrawer.classList.remove('translate-x-full');
+    hubDrawer.classList.add('translate-x-0');
+    hubDrawer.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeWelcomeHubDrawer() {
+    if (!hubDrawer) return;
+    var video = document.getElementById('onboarding-video-player');
+    if (video) video.pause();
+    hideWelcomeHubBackdrop();
+    hubDrawer.classList.add('translate-x-full');
+    hubDrawer.classList.remove('translate-x-0');
+    hubDrawer.setAttribute('aria-hidden', 'true');
+  }
+
+  window.openWelcomeHubDrawer = openWelcomeHubDrawer;
+  window.closeWelcomeHubDrawer = closeWelcomeHubDrawer;
 
   function renderStep(index) {
     if (!drawerStep) return;
@@ -131,19 +203,6 @@
         else drawerNext.style.display = '';
       }
       if (drawerFooterActions) drawerFooterActions.style.display = '';
-      if (stepIndex === 3 && typeof window.confetti === 'function') {
-        setTimeout(function () {
-          var btn = document.getElementById('onboarding-drawer-finish-inline');
-          if (btn) {
-            var rect = btn.getBoundingClientRect();
-            var x = (rect.left + rect.width / 2) / window.innerWidth;
-            var y = (rect.top + rect.height / 2) / window.innerHeight;
-            window.confetti({ particleCount: 100, spread: 70, origin: { x: x, y: y } });
-          } else {
-            window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-          }
-        }, 100);
-      }
     } else {
       drawerStep.innerHTML = '<p class="text-sm">Go to Quick Connect to start the tutorial or choose how to connect your vehicle.</p>';
       if (drawerNext) drawerNext.style.display = 'none';
@@ -161,16 +220,30 @@
     }
     if (step === 0) {
       clearHighlight();
-      ['#vci-pair-detect-trigger', '#scan-vin-trigger'].forEach(function (sel) {
-        var el = document.querySelector(sel);
-        if (el) el.classList.add(HIGHLIGHT_CLASS);
-      });
+      var autoDetect = document.querySelector('#vci-pair-detect-trigger');
+      if (autoDetect) autoDetect.classList.add(DEMO_STEP0_AUTO_DETECT_CLASS);
     } else if (isOnDiagnosticsPage() && STEP_CONFIG[step] && STEP_CONFIG[step].selector) {
       scrollAndHighlight(STEP_CONFIG[step].selector);
     } else {
       clearHighlight();
     }
+    syncTutorialStep1Backdrop();
   }
+
+  /** Fire confetti from the "Finish tutorial" button when we're on step 3. Called when the scan-complete modal is dismissed. All particles use Hi-Tech primary (default theme) blue. */
+  window.onboardingFireConfettiFromFinishButton = function () {
+    if (getStepIndex() !== 3 || typeof window.confetti !== 'function') return;
+    var colors = ['#5b9cff', '#7ab2ff', '#4a8cf0'];
+    var opts = { particleCount: 100, spread: 70, colors: colors };
+    var btn = document.getElementById('onboarding-drawer-finish-inline');
+    if (btn) {
+      var rect = btn.getBoundingClientRect();
+      opts.origin = { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight };
+    } else {
+      opts.origin = { y: 0.6 };
+    }
+    window.confetti(opts);
+  };
 
   /** Called by diagnostics dashboard when a full scan completes; advances to congratulations step if on step 2. */
   window.onboardingAdvanceAfterScan = function () {
@@ -205,33 +278,59 @@
 
     if (fab) {
       fab.addEventListener('click', function () {
+        if (isDemoActive()) {
+          if (isHubOpen()) closeWelcomeHubDrawer();
+          if (isDrawerOpen()) closeDrawer();
+          else {
+            openDrawer();
+            updateDrawerForDemo();
+          }
+          return;
+        }
+        if (isOnboardingMode() && hubDrawer) {
+          if (isDrawerOpen()) closeDrawer();
+          if (isHubOpen()) closeWelcomeHubDrawer();
+          else openWelcomeHubDrawer();
+          return;
+        }
+        if (isHubOpen()) closeWelcomeHubDrawer();
         if (isDrawerOpen()) closeDrawer();
         else {
           openDrawer();
-          if (isDemoActive()) updateDrawerForDemo();
-          else renderStep(-1);
+          renderStep(-1);
         }
       });
+    }
+
+    if (hubClose) {
+      hubClose.addEventListener('click', closeWelcomeHubDrawer);
+    }
+    if (hubBackdrop) {
+      hubBackdrop.addEventListener('click', closeWelcomeHubDrawer);
     }
 
     if (drawerClose) {
       drawerClose.addEventListener('click', closeDrawer);
     }
 
+    function runDiagnosticsWaypointTour() {
+      if (typeof window.startOnboardingWaypointTour !== 'function' || !window.DIAGNOSTICS_TOUR_STEPS) return;
+      closeDrawer();
+      window.startOnboardingWaypointTour({
+        steps: window.DIAGNOSTICS_TOUR_STEPS,
+        onEnd: function () {
+          setStepIndex(2);
+          updateDrawerForDemo();
+          openDrawer();
+        }
+      });
+    }
+
     if (drawerContent) {
       drawerContent.addEventListener('click', function (e) {
         var target = e.target && (e.target.id === 'onboarding-drawer-see-options-inline' ? e.target : (e.target.closest && e.target.closest('#onboarding-drawer-see-options-inline')));
         if (target) {
-          var step = getStepIndex();
-          if (step === 1 && typeof window.startOnboardingWaypointTour === 'function' && window.DIAGNOSTICS_TOUR_STEPS) {
-            window.startOnboardingWaypointTour({
-              steps: window.DIAGNOSTICS_TOUR_STEPS,
-              onEnd: function () {
-                setStepIndex(2);
-                updateDrawerForDemo();
-              }
-            });
-          }
+          if (getStepIndex() === 1) runDiagnosticsWaypointTour();
           return;
         }
         var scanTarget = e.target && (e.target.id === 'onboarding-drawer-scan-inline' ? e.target : (e.target.closest && e.target.closest('#onboarding-drawer-scan-inline')));
@@ -260,14 +359,8 @@
     if (drawerNext) {
       drawerNext.addEventListener('click', function () {
         var step = getStepIndex();
-        if (step === 1 && typeof window.startOnboardingWaypointTour === 'function' && window.DIAGNOSTICS_TOUR_STEPS) {
-          window.startOnboardingWaypointTour({
-            steps: window.DIAGNOSTICS_TOUR_STEPS,
-            onEnd: function () {
-              setStepIndex(2);
-              updateDrawerForDemo();
-            }
-          });
+        if (step === 1) {
+          runDiagnosticsWaypointTour();
           return;
         }
         if (step < STEP_CONFIG.length - 1) {
@@ -305,20 +398,24 @@
     var showMeHowBtn = document.getElementById('onboarding-cta-show-me-how');
     if (showMeHowBtn) {
       showMeHowBtn.addEventListener('click', function () {
+        closeWelcomeHubDrawer();
         window.startOnboardingDemo();
       });
     }
   }
 
   window.startOnboardingDemo = function () {
+    closeWelcomeHubDrawer();
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem(DEMO_KEY, '1');
       sessionStorage.setItem(STEP_KEY, '0');
     }
     var seeOptionsBtn = document.getElementById('onboarding-cta-see-options');
     var showMeHowBtn = document.getElementById('onboarding-cta-show-me-how');
+    var seeHowBtn = document.getElementById('onboarding-cta-see-how-it-works');
     if (seeOptionsBtn) seeOptionsBtn.classList.remove('onboarding-tour-highlight-glow');
     if (showMeHowBtn) showMeHowBtn.classList.remove('onboarding-tour-highlight-glow');
+    if (seeHowBtn) seeHowBtn.classList.remove('onboarding-tour-highlight-glow');
     openDrawer();
     updateDrawerForDemo();
     showFab();

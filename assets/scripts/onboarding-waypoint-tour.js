@@ -1,6 +1,6 @@
 /**
  * "See the options" waypoint tour: overlay, spotlight, tooltip with Back/Next.
- * - Index (Quick Connect): six steps; started by #onboarding-cta-see-options.
+ * - Index (Quick Connect): six steps; started by #onboarding-cta-see-options (welcome hub).
  * - Diagnostics dashboard: four steps; started by drawer "See the options" (step 2).
  * Exposes window.startOnboardingWaypointTour(opts) for drawer-triggered diagnostics tour.
  */
@@ -10,7 +10,7 @@
     { selector: '#vci-pair-detect-trigger', title: 'Auto-detect', copy: 'Connect your VCI device to the OBD-II port and let the app detect the vehicle automatically.' },
     { selector: '#scan-vin-trigger', title: 'Scan VIN/QR Code', copy: 'Use your camera to scan a QR code or the vehicle\'s VIN.' },
     { selector: '#onboarding-target-select-manually', title: 'Manual selection', copy: 'Choose your vehicle by brand, model, year, and engine.' },
-    { selector: '#onboarding-cta-show-me-how', title: 'Show me how', copy: 'Start a step-by-step guided tutorial that walks you through the process.' },
+    { selector: '#onboarding-cta-see-how-it-works', title: 'See how it works', copy: 'Open this panel for the video tutorial, a tour of the main options, or the full guided demo with a system scan.' },
     { selector: '#onboarding-help-fab', title: 'Help', copy: 'Open the help drawer anytime from this button in the corner.' }
   ];
 
@@ -214,15 +214,21 @@
   }
 
   function startTour() {
-    startTourInternal(TOUR_STEPS, '#onboarding-cta-see-options', function onIndexTourEnd() {
-      var showMeHow = document.getElementById('onboarding-cta-show-me-how');
-      if (showMeHow) showMeHow.classList.add(highlightGlowClass);
+    startTourInternal(TOUR_STEPS, '#onboarding-cta-see-how-it-works', function onIndexTourEnd() {
+      var seeHow = document.getElementById('onboarding-cta-see-how-it-works');
+      if (seeHow) seeHow.classList.add(highlightGlowClass);
+      if (typeof window.openWelcomeHubDrawer === 'function') window.openWelcomeHubDrawer();
     });
   }
 
   function init() {
     var btn = document.getElementById('onboarding-cta-see-options');
-    if (btn) btn.addEventListener('click', function () { startTour(); });
+    if (btn) {
+      btn.addEventListener('click', function () {
+        if (typeof window.closeWelcomeHubDrawer === 'function') window.closeWelcomeHubDrawer();
+        startTour();
+      });
+    }
   }
 
   window.startOnboardingWaypointTour = function (opts) {
