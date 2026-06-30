@@ -1,6 +1,6 @@
 /**
  * "See the options" waypoint tour: overlay, spotlight, tooltip with Back/Next.
- * - Index (Quick Connect): six steps; started by #onboarding-cta-see-options (welcome hub).
+ * - Index (Quick Connect): five steps; started by #onboarding-cta-see-options (welcome hub).
  * - Diagnostics dashboard: four steps; started by drawer "See the options" (step 2).
  * Exposes window.startOnboardingWaypointTour(opts) for drawer-triggered diagnostics tour.
  */
@@ -8,8 +8,7 @@
   var TOUR_STEPS = [
     { selector: '#hero-vin-vrm-form', title: 'VIN / VRM input', copy: 'Enter your vehicle identification number or registration here for a quick lookup.' },
     { selector: '#vci-pair-detect-trigger', title: 'Auto-detect', copy: 'Connect your VCI device to the OBD-II port and let the app detect the vehicle automatically.' },
-    { selector: '#scan-vin-trigger', title: 'Scan VIN/QR Code', copy: 'Use your camera to scan a QR code or the vehicle\'s VIN.' },
-    { selector: '#onboarding-target-select-manually', title: 'Manual selection', copy: 'Choose your vehicle by brand, model, year, and engine.' },
+    { selector: '#scan-vin-trigger', title: 'Scan VIN/QR Code', copy: 'Use your camera to scan a QR code or the vehicle\'s VIN. To pick brand, model, and engine yourself, use Select manually or Add details manually when those options appear in the connection flows.' },
     { selector: '#onboarding-cta-see-how-it-works', title: 'See how it works', copy: 'Open this panel for the video tutorial, a tour of the main options, or the full guided demo with a system scan.' },
     { selector: '#onboarding-help-fab', title: 'Help', copy: 'Open the help drawer anytime from this button in the corner.' }
   ];
