@@ -7,6 +7,12 @@
   var DIALOG_ID = "scan-vin-dialog";
   var TRIGGER_ID = "scan-vin-trigger";
 
+  // Detects which prototype folder (launchpad-1, launchpad-2, …) the current page lives in.
+  function currentAppPath() {
+    var m = window.location.pathname.match(/\/(launchpad-\d+)\//);
+    return m ? m[1] : "launchpad-1";
+  }
+
   var VEHICLE_DATABASE = [
     { brand: "Volkswagen", brandSlug: "volkswagen", models: ["Golf", "Passat", "Tiguan", "Touareg", "Polo", "T-Roc", "Arteon"] },
     { brand: "Audi", brandSlug: "audi", models: ["A3", "A4", "A6", "Q3", "Q5", "Q7", "Q8", "e-tron"] },
@@ -157,7 +163,7 @@
         params.set("year", currentVehicle.year);
         if (currentVehicle.engine) params.set("engine", currentVehicle.engine);
         closeAndReset();
-        redirect("launchpad-1/diagnostics-dashboard/?" + params.toString());
+        redirect(currentAppPath() + "/diagnostics-dashboard/?" + params.toString());
       }, isDemo ? 500 : 1500));
     }, state3Delay));
   }
@@ -221,7 +227,7 @@
         e.preventDefault();
         closeAndReset();
         dialog.close();
-        redirect("launchpad-1/vehicle-selection/");
+        redirect(currentAppPath() + "/vehicle-selection/");
       });
     }
 

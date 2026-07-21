@@ -3,6 +3,12 @@
  * Depends on: #vehicle-selection-brands-data (JSON), filter-select globals (filterSelectSetValue, etc.).
  */
 (function() {
+  // Detects which prototype folder (launchpad-1, launchpad-2, …) the current page lives in.
+  function currentAppPath() {
+    var m = window.location.pathname.match(/\/(launchpad-\d+)\//);
+    return m ? m[1] : "launchpad-1";
+  }
+
   // Read brands from page (injected by Nunjucks)
   var brandsEl = document.getElementById("vehicle-selection-brands-data");
   window.__vehicleSelectionBrands = brandsEl ? JSON.parse(brandsEl.textContent) : [];
@@ -247,7 +253,7 @@
     if (filterSelectWrapper) {
       filterSelectWrapper.addEventListener("filter-select-change", function(e) {
         if (e.detail && e.detail.value) {
-          var url = basePathMobile + "launchpad-1/vehicle-selection/?brand=" + encodeURIComponent(e.detail.value);
+          var url = basePathMobile + currentAppPath() + "/vehicle-selection/?brand=" + encodeURIComponent(e.detail.value);
           setTimeout(function() { window.location = url; }, 120);
         }
       });

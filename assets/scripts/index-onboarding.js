@@ -15,17 +15,27 @@
     var welcomeBlock = document.getElementById('onboarding-welcome-block');
     var recentSection = document.getElementById('recent-vehicles-section');
     var seeHowBtn = document.getElementById('onboarding-cta-see-how-it-works');
+    // Launchpad 2 only: daisyUI Aura wrapper around the button (Launchpad 1 keeps the plain button + glow class).
+    var seeHowAura = document.getElementById('onboarding-cta-see-how-it-works-aura');
 
     if (welcomeBlock) welcomeBlock.classList.toggle('hidden', !isOnboarding);
     if (recentSection) recentSection.classList.toggle('hidden', isOnboarding);
 
     if (seeHowBtn && isOnboarding && !isDemoActive) {
-      seeHowBtn.classList.add('onboarding-tour-highlight-glow');
+      if (seeHowAura) {
+        seeHowAura.classList.add('aura', 'aura-dual');
+      } else {
+        seeHowBtn.classList.add('onboarding-tour-highlight-glow');
+      }
       seeHowBtn.addEventListener('click', function openHub() {
         if (typeof window.openWelcomeHubDrawer === 'function') window.openWelcomeHubDrawer();
       });
       seeHowBtn.addEventListener('click', function removeGlow() {
-        seeHowBtn.classList.remove('onboarding-tour-highlight-glow');
+        if (seeHowAura) {
+          seeHowAura.classList.remove('aura', 'aura-dual');
+        } else {
+          seeHowBtn.classList.remove('onboarding-tour-highlight-glow');
+        }
         seeHowBtn.removeEventListener('click', removeGlow);
       }, { once: true });
     }

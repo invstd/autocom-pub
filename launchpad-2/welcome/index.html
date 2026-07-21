@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autocom Prototypes - Autocom Prototypes</title>
+    <title>Welcome — Launchpad 2 - Autocom Prototypes</title>
     <script>
       (function() {
         // Usability-test / demo links can carry presets as URL params (?theme=&language=&mode=),
@@ -56,46 +56,59 @@
 </head>
 <body class="bg-base-100 text-base-content">
     
-<div class="min-h-screen flex flex-col">
-    <nav class="site-nav navbar bg-base-100 shadow-lg">
-    <div class="flex-1">
-        <a class="btn btn-ghost text-xl" href="/autocom-pub/">Autocom</a>
+
+
+
+
+<script>
+(function () {
+  try {
+    if (localStorage.getItem('air-app-installed') !== '1') {
+      window.location.replace('/autocom-pub/launchpad-2/install/');
+    } else if (localStorage.getItem('air-session-active') === '1') {
+      window.location.replace('/autocom-pub/launchpad-2/');
+    }
+  } catch (e) {}
+})();
+</script>
+<div class="welcome-page relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+  
+<video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
+  <source src="/autocom-pub/assets/videos/pouring-oil.mp4" type="video/mp4" />
+</video>
+<div class="welcome-video-tint absolute inset-0" aria-hidden="true"></div>
+
+
+  <div class="relative z-10 w-full max-w-sm mx-auto px-6 py-12 flex flex-col items-center text-center gap-8">
+    <div class="flex flex-col items-center">
+      <img src="/autocom-pub/assets/images/autocom-symbol.svg" alt="" class="h-16 w-auto" />
+      <h1 class="font-headline font-semibold text-3xl tracking-wide text-white">Apex</h1>
     </div>
-    <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
-            <li><a href="/autocom-pub/">Home</a></li>
-            <li>
-                <details id="theme-dropdown">
-                    <summary>Theme</summary>
-                    <ul class="bg-base-100 rounded-t-none p-2 z-50">
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Autocom'); localStorage.setItem('theme', 'Autocom'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Autocom</a></li>
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Light</a></li>
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Dark</a></li>
-                        <li><a href="#" onclick="event.preventDefault(); document.documentElement.setAttribute('data-theme', 'Hi-Tech'); localStorage.setItem('theme', 'Hi-Tech'); document.getElementById('theme-dropdown').removeAttribute('open'); return false;">Hi-Tech</a></li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
+
+    <div class="flex flex-col items-center gap-3">
+      <h2 class="text-xl font-semibold text-white">Welcome</h2>
+      <p class="text-sm text-white/80 max-w-xs min-h-10 transition-opacity duration-300" id="welcome-tagline">Access thousands of vehicle systems with fast, secure diagnostics — always up to date.</p>
+      <div class="flex items-center gap-1.5 mt-1" id="welcome-tagline-dots" aria-hidden="true">
+        <span class="w-1.5 h-1.5 rounded-full bg-white" data-dot="0"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/40" data-dot="1"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/40" data-dot="2"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/40" data-dot="3"></span>
+      </div>
     </div>
-</nav>
 
-
-    <main class="flex-1 flex flex-col min-h-0 container mx-auto px-4 py-8">
-        <div class="hero flex-1 flex min-h-0 items-center justify-center">
-            <div class="hero-content text-center w-full max-w-full">
-            <div class="max-w-md mx-auto">
-                <h1 class="mb-5 text-5xl font-bold">Autocom</h1>
-                <p class="mb-5">Thanks for taking part. When you're ready to begin, click below to start the session.</p>
-
-                <div class="grid gap-4">
-                    <a href="/autocom-pub/splash/?redirect=launchpad-2/install/" class="btn btn-primary btn-lg">
-                        Start
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
+    <div class="flex flex-col gap-3 w-full">
+      <a href="/autocom-pub/launchpad-2/login/" class="btn btn-primary btn-lg btn-block">Login</a>
+      <a href="/autocom-pub/launchpad-2/get-started/" class="btn btn-lg btn-block bg-white text-neutral border-none hover:bg-white/90">Create account</a>
+      <div class="flex items-center gap-3 text-white/50 text-xs py-1">
+        <span class="flex-1 h-px bg-white/20"></span>
+        <span>or</span>
+        <span class="flex-1 h-px bg-white/20"></span>
+      </div>
+      <a href="/autocom-pub/launchpad-2/" class="link link-hover text-white/80 text-sm">Try the demo</a>
+    </div>
+  </div>
 </div>
+<script src="/autocom-pub/assets/scripts/welcome.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">

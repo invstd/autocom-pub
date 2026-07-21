@@ -39,6 +39,33 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  // "How it works" hub checkmarks: marks an item seen the moment the user engages with it
+  // (video starts playing, or a CTA is clicked), not on full completion — skipping the tour or
+  // the demo partway through still counts. Someone who already knows how it works shouldn't be
+  // penalized for skipping ahead.
+  var HUB_SEEN_KEYS = { video: 'onboarding-hub-seen-video', options: 'onboarding-hub-seen-options', demo: 'onboarding-hub-seen-demo' };
+  var HUB_CHECK_IDS = { video: 'onboarding-hub-check-video', options: 'onboarding-hub-check-options', demo: 'onboarding-hub-check-demo' };
+
+  function syncHubCheckmark(item) {
+    var el = document.getElementById(HUB_CHECK_IDS[item]);
+    if (!el) return;
+    var seen = false;
+    try { seen = localStorage.getItem(HUB_SEEN_KEYS[item]) === '1'; } catch (e) {}
+    el.classList.toggle('hidden', !seen);
+  }
+
+  function markHubItemSeen(item) {
+    if (!HUB_SEEN_KEYS[item]) return;
+    try { localStorage.setItem(HUB_SEEN_KEYS[item], '1'); } catch (e) {}
+    syncHubCheckmark(item);
+  }
+
+  function syncAllHubCheckmarks() {
+    Object.keys(HUB_SEEN_KEYS).forEach(syncHubCheckmark);
+  }
+
+  window.onboardingHubMarkSeen = markHubItemSeen;
+
   var drawer = document.getElementById('onboarding-right-drawer');
   var hubDrawer = document.getElementById('onboarding-welcome-hub-drawer');
   var hubBackdrop = document.getElementById('onboarding-welcome-hub-backdrop');
@@ -309,6 +336,14 @@
       hubBackdrop.addEventListener('click', closeWelcomeHubDrawer);
     }
 
+    syncAllHubCheckmarks();
+    var hubVideo = document.getElementById('onboarding-video-player');
+    if (hubVideo) {
+      hubVideo.addEventListener('play', function () {
+        markHubItemSeen('video');
+      }, { once: true });
+    }
+
     if (drawerClose) {
       drawerClose.addEventListener('click', closeDrawer);
     }
@@ -398,6 +433,7 @@
     var showMeHowBtn = document.getElementById('onboarding-cta-show-me-how');
     if (showMeHowBtn) {
       showMeHowBtn.addEventListener('click', function () {
+        markHubItemSeen('demo');
         closeWelcomeHubDrawer();
         window.startOnboardingDemo();
       });
@@ -413,9 +449,11 @@
     var seeOptionsBtn = document.getElementById('onboarding-cta-see-options');
     var showMeHowBtn = document.getElementById('onboarding-cta-show-me-how');
     var seeHowBtn = document.getElementById('onboarding-cta-see-how-it-works');
+    var seeHowAura = document.getElementById('onboarding-cta-see-how-it-works-aura');
     if (seeOptionsBtn) seeOptionsBtn.classList.remove('onboarding-tour-highlight-glow');
     if (showMeHowBtn) showMeHowBtn.classList.remove('onboarding-tour-highlight-glow');
     if (seeHowBtn) seeHowBtn.classList.remove('onboarding-tour-highlight-glow');
+    if (seeHowAura) seeHowAura.classList.remove('aura', 'aura-dual');
     openDrawer();
     updateDrawerForDemo();
     showFab();

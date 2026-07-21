@@ -13,6 +13,12 @@
   var TRIGGER_ID = "vci-pair-detect-trigger";
   var VEHICLE_CONNECT_BTN_ID = "vehicle-connect-btn";
 
+  // Detects which prototype folder (launchpad-1, launchpad-2, …) the current page lives in.
+  function currentAppPath() {
+    var m = window.location.pathname.match(/\/(launchpad-\d+)\//);
+    return m ? m[1] : "launchpad-1";
+  }
+
   // Random vehicle database for auto-detect
   var VEHICLE_DATABASE = [
     { brand: "Volkswagen", brandSlug: "volkswagen", models: ["Golf", "Passat", "Tiguan", "Touareg", "Polo", "T-Roc", "Arteon"] },
@@ -242,7 +248,7 @@
             vehicleParams.set("year", currentVehicle.year);
             if (currentVehicle.engine) vehicleParams.set("engine", currentVehicle.engine);
             closeAndReset();
-            redirect("launchpad-1/diagnostics-dashboard/?" + vehicleParams.toString());
+            redirect(currentAppPath() + "/diagnostics-dashboard/?" + vehicleParams.toString());
           }, 500));
         }, 800));
       } else {
@@ -274,7 +280,7 @@
           vehicleParams.set("year", currentVehicle.year);
           if (currentVehicle.engine) vehicleParams.set("engine", currentVehicle.engine);
           closeAndReset();
-          redirect("launchpad-1/diagnostics-dashboard/?" + vehicleParams.toString());
+          redirect(currentAppPath() + "/diagnostics-dashboard/?" + vehicleParams.toString());
         }, 1500));
       }, 8000));
       }
@@ -359,7 +365,7 @@
         e.preventDefault();
         closeAndReset();
         dialog.close();
-        redirect("launchpad-1/vehicle-selection/");
+        redirect(currentAppPath() + "/vehicle-selection/");
       });
     }
 

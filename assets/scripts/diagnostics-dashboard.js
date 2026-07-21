@@ -175,6 +175,38 @@ if (vehicleData.vin || vehicleData.model || vehicleData.brandSlug) {
   }
 }
 
+// Simulated battery voltage reading — single source of truth for the status-badge-row's badge
+// text/color and the low-voltage notification below, so all three always agree. Same red/amber
+// (orange)/green severity language as everywhere else in the app (notifications, VCI unstable).
+const mockVoltage = 11.4;
+const voltageBadge = document.getElementById('vehicle-voltage-stat-badge');
+if (voltageBadge) {
+  voltageBadge.textContent = mockVoltage.toFixed(1) + 'V';
+  let voltageBadgeClass = 'badge-success';
+  if (mockVoltage < 11.0) {
+    voltageBadgeClass = 'badge-error';
+  } else if (mockVoltage < 12.0) {
+    voltageBadgeClass = 'badge-warning';
+  }
+  voltageBadge.className = 'badge ' + voltageBadgeClass + ' badge-sm shrink-0';
+}
+
+// Surfaced as a notification shortly after landing on the dashboard (mirrors a real VCI
+// reporting voltage once connected), only when the reading is actually low. Deduped per VIN so
+// revisiting the same vehicle in-session doesn't re-fire it. AutocomNotifications loads via a
+// script tag later in the document, so the check happens inside the timeout, not at parse time.
+if (mockVoltage < 12.0) {
+  setTimeout(function () {
+    if (!window.AutocomNotifications) return;
+    window.AutocomNotifications.push(
+      'voltage',
+      'Low battery voltage detected',
+      'This vehicle\'s battery is reading ' + mockVoltage.toFixed(1) + 'V, below the healthy 12V+ range. Check the battery or charging system before your next scan.',
+      { dedupeKey: 'voltage-' + (vehicleData.vin || 'unknown') }
+    );
+  }, 2000);
+}
+
 const page = document.querySelector('.diagnostics-dashboard-page');
 const tabs = document.querySelector('[data-diagnostics-tabs]');
 const scanBtn = document.querySelector('[data-scan-btn]');
@@ -202,8 +234,6 @@ const vciStatusBadge = document.getElementById('vci-status-indicator-badge');
 
 // Scan complete overlay (hero moment)
 const scanCompleteDialog = document.getElementById('scan-complete-dialog');
-const scanCompleteGaugeWrapper = document.getElementById('scan-complete-gauge');
-const scanCompleteGauge = scanCompleteGaugeWrapper ? scanCompleteGaugeWrapper.querySelector('.health-gauge') : null;
 const scanCompleteWarningsEl = document.querySelector('[data-scan-complete-warnings]');
 const scanCompleteWarningsSuffixEl = document.querySelector('[data-scan-complete-warnings-suffix]');
 const scanCompleteErrorsEl = document.querySelector('[data-scan-complete-errors]');
@@ -363,20 +393,47 @@ function healthGaugeSetResult(score, segments) {
   if (gaugeLabel) gaugeLabel.textContent = 'Scan Health Score';
 }
 
+// ===== VCI connection status + live scan progress =====
+// Scan progress lives inside the VCI status row itself now (status-badge-row.njk, Launchpad 2's
+// diagnostics dashboard only — vciProgressBar is null on Launchpad 1, so these no-op there via
+// the null checks, same defensive pattern as the rest of this shared script): the badge shows a
+// live percentage instead of "IN PROCESS" while scanning, plus a thin bottom progress bar. No
+// numeric score is shown on completion (dropped per usability research); it just reverts to
+// "READY".
+const vciProgressBar = document.getElementById('vci-status-indicator-progress-bar');
+let vciUnstableActive = false;
+let lastScanProgress = 0;
+
+function vciConnectionSetScanning(value) {
+  const v = Math.max(0, Math.min(100, Math.round(value)));
+  lastScanProgress = v;
+  if (vciProgressBar) vciProgressBar.style.width = v + '%';
+  // Don't clobber the "UNSTABLE" badge text/color while the connection wobble is showing —
+  // the bar keeps advancing underneath, the badge resumes showing % once it recovers.
+  if (vciUnstableActive) return;
+  if (vciStatusBadge) {
+    vciStatusBadge.textContent = v + '%';
+    vciStatusBadge.className = 'badge badge-success badge-sm shrink-0';
+  }
+}
+
+function vciConnectionSetReady() {
+  lastScanProgress = 0;
+  vciUnstableActive = false;
+  if (vciProgressBar) vciProgressBar.style.width = '0%';
+  if (vciStatusBadge) {
+    vciStatusBadge.textContent = 'READY';
+    vciStatusBadge.className = 'badge badge-info badge-sm shrink-0';
+  }
+}
+
 // Show scan-complete overlay (hero moment). Auto-dismiss 3s, tap to close.
+// healthScore is unused here (the overlay no longer shows a health-score gauge — dropped per
+// usability research finding it wasn't valued); kept as a param so callers still computing it
+// for the main dashboard gauge don't need to change their call site.
 function showScanCompleteOverlay(healthScore, scanResults) {
   if (!scanCompleteDialog) return;
 
-  const total = (scanResults.ok || 0) + (scanResults.warning || 0) + (scanResults.error || 0);
-  const segments = total > 0
-    ? [
-        { value: (scanResults.ok / total) * 100, color: 'success' },
-        { value: (scanResults.warning / total) * 100, color: 'warning' },
-        { value: (scanResults.error / total) * 100, color: 'error' }
-      ].filter(function (s) { return s.value > 0; })
-    : [];
-
-  if (scanCompleteGauge) setGaugeResult(scanCompleteGauge, healthScore, segments, '');
   const w = scanResults.warning || 0;
   const e = scanResults.error || 0;
   if (scanCompleteWarningsEl) scanCompleteWarningsEl.textContent = String(w);
@@ -866,6 +923,31 @@ function resetSystemList() {
 let scanTimeout;
 let scanResults = { ok: 0, warning: 0, error: 0 };
 
+// Simulates a real risk research flagged: Wi-Fi/Bluetooth can fluctuate mid-scan and affect
+// readings. Fires once per scan run, partway through, then recovers — same "unstable" VCI
+// status badge state used by the header indicator on every page that renders it.
+function triggerConnectionWobble() {
+  vciUnstableActive = true;
+  if (vciStatusBadge) {
+    vciStatusBadge.textContent = 'UNSTABLE';
+    vciStatusBadge.className = 'badge badge-warning badge-sm shrink-0';
+  }
+  if (window.AutocomNotifications) {
+    window.AutocomNotifications.push(
+      'connection',
+      'Connection unstable during scan',
+      'Wi-Fi/Bluetooth signal fluctuated mid-scan — some readings may be affected. Re-scan affected systems if results look off.'
+    );
+  }
+  setTimeout(() => {
+    vciUnstableActive = false;
+    // Only resume if nothing else (completion/stop) has already changed the badge meanwhile.
+    if (vciStatusBadge && vciStatusBadge.textContent.trim() === 'UNSTABLE') {
+      vciConnectionSetScanning(lastScanProgress);
+    }
+  }, 1400);
+}
+
 function startScanDemo() {
   // Get all system list items and check selection state
   const allSystemItems = document.querySelectorAll('.system-list-item');
@@ -894,7 +976,8 @@ function startScanDemo() {
   
   const totalNodes = nodes.length;
   let index = 0;
-  
+  let connectionWobbleTriggered = false;
+
   if (totalNodes === 0 || (selectedSystems.length === 0 && !allSelected)) {
     alert('Please select at least one system to scan.');
     return;
@@ -918,23 +1001,20 @@ function startScanDemo() {
   // Reset and start health gauge
   healthGaugeReset();
   healthGaugeSetProgress(0);
-  
+
   // Start throttle gauge animation
   throttleGaugeStartAnimation();
 
   // Start scan effect overlay
   if (scanEffect) scanEffect.classList.add('scanning');
 
-  // VCI status: show "In process" (green) while scanning
-  if (vciStatusBadge) {
-    vciStatusBadge.textContent = 'IN PROCESS';
-    vciStatusBadge.className = 'badge badge-success badge-sm shrink-0';
-  }
+  // VCI status: live percentage + progress bar while scanning (Launchpad 2's merged row)
+  vciConnectionSetScanning(0);
 
   // Set OBD to ok (always connected)
   const obd = document.querySelector('[data-node-id="obd"]');
   if (obd) obd.dataset.state = 'ok';
-  
+
   function scanNext() {
     if (index >= totalNodes) {
       // Scan complete - show results
@@ -942,12 +1022,9 @@ function startScanDemo() {
       scanBtn.classList.remove('hidden');
       updateFilterControls();
 
-      // VCI status: back to "Ready" (blue)
-      if (vciStatusBadge) {
-        vciStatusBadge.textContent = 'READY';
-        vciStatusBadge.className = 'badge badge-info badge-sm shrink-0';
-      }
-      
+      // VCI status: back to "Ready"
+      vciConnectionSetReady();
+
       // Stop scan effect overlay
       if (scanEffect) scanEffect.classList.remove('scanning');
 
@@ -977,13 +1054,20 @@ function startScanDemo() {
       }
       return;
     }
-    
+
+    // Mid-scan connection wobble: fires once, roughly 40% through, then self-recovers.
+    if (!connectionWobbleTriggered && totalNodes > 2 && index === Math.floor(totalNodes * 0.4)) {
+      connectionWobbleTriggered = true;
+      triggerConnectionWobble();
+    }
+
     const node = nodes[index];
     const nodeId = node.dataset.nodeId;
-    
+
     // Update gauge progress
     const progress = ((index + 1) / totalNodes) * 100;
     healthGaugeSetProgress(progress);
+    vciConnectionSetScanning(progress);
 
     // Set scanning state
     node.dataset.state = 'scanning';
@@ -1030,11 +1114,8 @@ function stopScanDemo() {
   clearTimeout(scanTimeout);
   // Stop scan effect overlay
   if (scanEffect) scanEffect.classList.remove('scanning');
-  // VCI status: back to "Ready" (blue)
-  if (vciStatusBadge) {
-    vciStatusBadge.textContent = 'READY';
-    vciStatusBadge.className = 'badge badge-info badge-sm shrink-0';
-  }
+  // VCI status: back to "Ready"
+  vciConnectionSetReady();
   // Stop throttle gauge animation
   throttleGaugeStopAnimation();
   // Show partial results if stopped mid-scan

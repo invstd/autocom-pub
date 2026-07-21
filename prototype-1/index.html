@@ -6,6 +6,34 @@
     <title>Vehicle - Prototype 1 - Autocom Prototypes</title>
     <script>
       (function() {
+        // Usability-test / demo links can carry presets as URL params (?theme=&language=&mode=),
+        // generated from Launchpad 2 Settings. Seed localStorage from them before first paint —
+        // same place base.njk already reads 'theme' from — then strip just those keys from the
+        // URL (preserving any other params, e.g. diagnostics-dashboard's vehicle data) so a
+        // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
+        // in-session changes.
+        var params = new URLSearchParams(location.search);
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode' };
+        var paramsChanged = false;
+        Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
+          if (params.has(param)) {
+            localStorage.setItem(PRESET_PARAM_TO_STORAGE_KEY[param], params.get(param));
+            params.delete(param);
+            paramsChanged = true;
+          }
+        });
+        // ?gate=1 bypasses the prototype password gate (sessionStorage, same key/value the gate
+        // itself writes on a correct password) — runs before the next script block below reads
+        // it, so the gate never flashes. Not real security either way, see prototype-gate.js.
+        if (params.get('gate') === '1') {
+          try { sessionStorage.setItem('autocom-prototype-gate', '1'); } catch (e) {}
+          params.delete('gate');
+          paramsChanged = true;
+        }
+        if (paramsChanged) {
+          var newSearch = params.toString();
+          history.replaceState(null, '', location.pathname + (newSearch ? '?' + newSearch : '') + location.hash);
+        }
         var saved = localStorage.getItem('theme');
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
       })();
