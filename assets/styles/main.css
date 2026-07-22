@@ -12951,47 +12951,14 @@
 }
 .launchpad-main-bg {
   background-color: var(--color-base-200);
-  background-image: radial-gradient(
-    ellipse 120% 100% at 50% 100%,
-    var(--color-primary) 0%,
-    var(--color-primary) 45%,
-    transparent 70%
-  );
-  @supports (color: color-mix(in lab, red, red)) {
-    background-image: radial-gradient(
-    ellipse 120% 100% at 50% 100%,
-    color-mix(in oklch, var(--color-primary) 22%, transparent) 0%,
-    color-mix(in oklch, var(--color-primary) 8%, transparent) 45%,
-    transparent 70%
-  );
-  }
 }
 .welcome-video-tint {
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.82) 100%),
-    radial-gradient(ellipse 90% 60% at 50% 100%, var(--color-primary) 0%, transparent 70%);
-  @supports (color: color-mix(in lab, red, red)) {
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.82) 100%),
-    radial-gradient(ellipse 90% 60% at 50% 100%, color-mix(in oklch, var(--color-primary) 40%, transparent) 0%, transparent 70%);
-  }
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.82) 100%);
 }
 .setup-video-tint {
   background-color: var(--color-base-200);
   @supports (color: color-mix(in lab, red, red)) {
     background-color: color-mix(in oklch, var(--color-base-200) 78%, transparent);
-  }
-  background-image: radial-gradient(
-    ellipse 120% 100% at 50% 100%,
-    var(--color-primary) 0%,
-    var(--color-primary) 45%,
-    transparent 70%
-  );
-  @supports (color: color-mix(in lab, red, red)) {
-    background-image: radial-gradient(
-    ellipse 120% 100% at 50% 100%,
-    color-mix(in oklch, var(--color-primary) 22%, transparent) 0%,
-    color-mix(in oklch, var(--color-primary) 8%, transparent) 45%,
-    transparent 70%
-  );
   }
 }
 .scan-flash {
@@ -13126,7 +13093,7 @@
 .hero-cta-delay-2 {
   animation-delay: 0.50s;
 }
-html[data-theme="Autocom"] {
+html[data-theme="Autocom Dark"] {
   color-scheme: dark;
   font-family: var(--font-body);
   background-color: var(--color-base-200);
@@ -13135,117 +13102,291 @@ html[data-theme="Autocom"] {
   --color-base-100: #06224C;
   --color-base-200: #001A3F;
   --color-base-300: #001732;
-  --color-base-content: #ecf2f9;
-  --color-primary: oklch(78% 0.154 211.53);
-  --color-primary-content: oklch(30% 0.056 229.695);
-  --color-secondary: oklch(90% 0.076 70.697);
-  --color-secondary-content: oklch(26% 0.079 36.259);
-  --color-accent: oklch(90% 0.058 230.902);
-  --color-accent-content: oklch(29% 0.066 243.157);
-  --color-neutral: oklch(37% 0.044 257.287);
-  --color-neutral-content: oklch(97% 0.014 254.604);
-  --color-info: oklch(70% 0.165 254.624);
-  --color-info-content: oklch(28% 0.091 267.935);
-  --color-success: oklch(70% 0.14 182.503);
-  --color-success-content: oklch(27% 0.046 192.524);
-  --color-warning: oklch(79% 0.184 86.047);
-  --color-warning-content: oklch(28% 0.066 53.813);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
+  --color-base-content: #ECF2F9;
+  --color-primary: #3CD2A5;
+  --color-primary-content: #001A3F;
+  --color-secondary: #23C8FA;
+  --color-secondary-content: #00122D;
+  --color-accent: #23C8FA;
+  --color-accent-content: #00122D;
+  --color-neutral: #34508B;
+  --color-neutral-content: #ECF2F9;
+  --color-info: #23C8FA;
+  --color-info-content: #00122D;
+  --color-success: #3CD2A5;
+  --color-success-content: #001A3F;
+  --color-warning: #FADC50;
+  --color-warning-content: #000E23;
+  --color-error: #FF2955;
+  --color-error-content: #FFFFFF;
   --radius-selector: 0.25rem;
   --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
+  --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
 }
-html[data-theme="Autocom"] body {
+html[data-theme="Autocom Dark"] body {
   background-color: var(--color-base-200);
 }
-html[data-theme="Autocom"] h1,
-html[data-theme="Autocom"] h2,
-html[data-theme="Autocom"] h3,
-html[data-theme="Autocom"] h4,
-html[data-theme="Autocom"] h5,
-html[data-theme="Autocom"] h6,
-html[data-theme="Autocom"] .card-title {
+html[data-theme="Autocom Dark"] h1,
+html[data-theme="Autocom Dark"] h2,
+html[data-theme="Autocom Dark"] h3,
+html[data-theme="Autocom Dark"] h4,
+html[data-theme="Autocom Dark"] h5,
+html[data-theme="Autocom Dark"] h6,
+html[data-theme="Autocom Dark"] .card-title {
   font-family: var(--font-headline);
 }
-html[data-theme="light"] {
+html[data-theme="Autocom Light"] {
   color-scheme: light;
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0 0);
-  --color-base-300: oklch(95% 0 0);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(62% 0.214 259.815);
-  --color-primary-content: oklch(98% 0.003 247.858);
-  --color-secondary: oklch(44% 0.011 73.639);
-  --color-secondary-content: oklch(97% 0.001 106.424);
-  --color-accent: oklch(57% 0.245 27.325);
-  --color-accent-content: oklch(97% 0.013 17.38);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(98% 0.004 286.32);
-  --color-info: oklch(74% 0.16 232.661);
-  --color-info-content: oklch(29% 0.066 243.157);
-  --color-success: oklch(76% 0.177 163.223);
-  --color-success-content: oklch(37% 0.077 168.94);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
+  font-family: var(--font-body);
+  background-color: var(--color-base-200);
+  --font-headline: "Fabrikat", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #F3F4F7;
+  --color-base-300: #CCD4E0;
+  --color-base-content: #040911;
+  --color-primary: #1F447A;
+  --color-primary-content: #FAFBFC;
+  --color-secondary: #198EB2;
+  --color-secondary-content: #001A3F;
+  --color-accent: #198EB2;
+  --color-accent-content: #001A3F;
+  --color-neutral: #3B639B;
+  --color-neutral-content: #FAFBFC;
+  --color-info: #198EB2;
+  --color-info-content: #001A3F;
+  --color-success: #63DBB7;
+  --color-success-content: #001A3F;
+  --color-warning: #FDCF33;
+  --color-warning-content: #000E23;
+  --color-error: #FF2955;
+  --color-error-content: #FFFFFF;
+  --radius-selector: 0.25rem;
   --radius-field: 0.5rem;
-  --radius-box: 1rem;
+  --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
 }
-html[data-theme="light"] {
+html[data-theme="Autocom Light"] body {
   background-color: var(--color-base-200);
 }
-html[data-theme="light"] body {
+html[data-theme="Autocom Light"] h1,
+html[data-theme="Autocom Light"] h2,
+html[data-theme="Autocom Light"] h3,
+html[data-theme="Autocom Light"] h4,
+html[data-theme="Autocom Light"] h5,
+html[data-theme="Autocom Light"] h6,
+html[data-theme="Autocom Light"] .card-title {
+  font-family: var(--font-headline);
+}
+html[data-theme="WOW Light"] {
+  color-scheme: light;
+  font-family: var(--font-body);
+  background-color: var(--color-base-200);
+  --font-headline: "Wuerth", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Wuerth", ui-sans-serif, system-ui, sans-serif;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #F5F5F5;
+  --color-base-300: #DDD9D9;
+  --color-base-content: #000000;
+  --color-primary: #CC0000;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #00689D;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #00689D;
+  --color-accent-content: #FFFFFF;
+  --color-neutral: #6A5959;
+  --color-neutral-content: #FFFFFF;
+  --color-info: #00689D;
+  --color-info-content: #FFFFFF;
+  --color-success: #008448;
+  --color-success-content: #FFFFFF;
+  --color-warning: #EE7F00;
+  --color-warning-content: #000000;
+  --color-error: #BA0000;
+  --color-error-content: #FFFFFF;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+html[data-theme="WOW Light"] body {
   background-color: var(--color-base-200);
 }
-html[data-theme="dark"] {
+html[data-theme="WOW Light"] h1,
+html[data-theme="WOW Light"] h2,
+html[data-theme="WOW Light"] h3,
+html[data-theme="WOW Light"] h4,
+html[data-theme="WOW Light"] h5,
+html[data-theme="WOW Light"] h6,
+html[data-theme="WOW Light"] .card-title {
+  font-family: var(--font-headline);
+}
+html[data-theme="WOW Dark"] {
   color-scheme: dark;
-  --color-base-100: oklch(31% 0.014 253.1);
-  --color-base-200: oklch(28% 0.016 252.42);
-  --color-base-300: oklch(25.33% 0.016 252.42);
-  --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(54% 0.245 262.881);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(65% 0.241 354.308);
-  --color-secondary-content: oklch(94% 0.028 342.258);
-  --color-accent: oklch(57% 0.245 27.325);
-  --color-accent-content: oklch(93% 0.032 17.717);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(98% 0.004 286.32);
-  --color-info: oklch(74% 0.16 232.661);
-  --color-info-content: oklch(29% 0.066 243.157);
-  --color-success: oklch(76% 0.177 163.223);
-  --color-success-content: oklch(37% 0.077 168.94);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 1rem;
+  font-family: var(--font-body);
+  background-color: var(--color-base-200);
+  --font-headline: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --color-base-100: #292524;
+  --color-base-200: #1C1917;
+  --color-base-300: #161313;
+  --color-base-content: #FFFFFF;
+  --color-primary: #CC0000;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #54B7E8;
+  --color-secondary-content: #281515;
+  --color-accent: #54B7E8;
+  --color-accent-content: #281515;
+  --color-neutral: #C4B8B8;
+  --color-neutral-content: #281515;
+  --color-info: #54B7E8;
+  --color-info-content: #281515;
+  --color-success: #339D6D;
+  --color-success-content: #281515;
+  --color-warning: #F19933;
+  --color-warning-content: #281515;
+  --color-error: #FF8888;
+  --color-error-content: #281515;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
 }
-html[data-theme="dark"] {
+html[data-theme="WOW Dark"] body {
   background-color: var(--color-base-200);
 }
-html[data-theme="dark"] body {
+html[data-theme="WOW Dark"] h1,
+html[data-theme="WOW Dark"] h2,
+html[data-theme="WOW Dark"] h3,
+html[data-theme="WOW Dark"] h4,
+html[data-theme="WOW Dark"] h5,
+html[data-theme="WOW Dark"] h6,
+html[data-theme="WOW Dark"] .card-title {
+  font-family: var(--font-headline);
+}
+html[data-theme="WOW Dark"] .bg-neutral-content\/90 {
+  background-color: #F4F4F4;
+}
+html[data-theme="Wabco Light"] {
+  color-scheme: light;
+  font-family: var(--font-body);
   background-color: var(--color-base-200);
+  --font-headline: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #F4F5F6;
+  --color-base-300: #CBD7E2;
+  --color-base-content: #000000;
+  --color-primary: #00519E;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #E2001A;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #E2001A;
+  --color-accent-content: #FFFFFF;
+  --color-neutral: #5190CD;
+  --color-neutral-content: #000000;
+  --color-info: #00519E;
+  --color-info-content: #FFFFFF;
+  --color-success: #74B133;
+  --color-success-content: #000000;
+  --color-warning: #F19933;
+  --color-warning-content: #000000;
+  --color-error: #CE0018;
+  --color-error-content: #FFFFFF;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+html[data-theme="Wabco Light"] body {
+  background-color: var(--color-base-200);
+}
+html[data-theme="Wabco Light"] h1,
+html[data-theme="Wabco Light"] h2,
+html[data-theme="Wabco Light"] h3,
+html[data-theme="Wabco Light"] h4,
+html[data-theme="Wabco Light"] h5,
+html[data-theme="Wabco Light"] h6,
+html[data-theme="Wabco Light"] .card-title {
+  font-family: var(--font-headline);
+}
+html[data-theme="Wabco Light"] .bg-neutral-content\/90 {
+  background-color: #FFFFFF;
+}
+html[data-theme="Wabco Dark"] {
+  color-scheme: dark;
+  font-family: var(--font-body);
+  background-color: var(--color-base-200);
+  --font-headline: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --color-base-100: #033463;
+  --color-base-200: #03172B;
+  --color-base-300: #040C13;
+  --color-base-content: #FFFFFF;
+  --color-primary: #3374B1;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #E2001A;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #E2001A;
+  --color-accent-content: #FFFFFF;
+  --color-neutral: #E7EBEE;
+  --color-neutral-content: #040C13;
+  --color-info: #3374B1;
+  --color-info-content: #FFFFFF;
+  --color-success: #74B133;
+  --color-success-content: #040C13;
+  --color-warning: #F19933;
+  --color-warning-content: #040C13;
+  --color-error: #E2001A;
+  --color-error-content: #FFFFFF;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+html[data-theme="Wabco Dark"] body {
+  background-color: var(--color-base-200);
+}
+html[data-theme="Wabco Dark"] h1,
+html[data-theme="Wabco Dark"] h2,
+html[data-theme="Wabco Dark"] h3,
+html[data-theme="Wabco Dark"] h4,
+html[data-theme="Wabco Dark"] h5,
+html[data-theme="Wabco Dark"] h6,
+html[data-theme="Wabco Dark"] .card-title {
+  font-family: var(--font-headline);
+}
+html[data-theme="Wabco Dark"] .bg-neutral-content\/90 {
+  background-color: #FFFFFF;
+}
+html[data-theme="Wabco Dark"] .text-accent,
+html[data-theme="Wabco Dark"] .text-secondary {
+  color: #FF5C72;
 }
 html[data-theme="Hi-Tech"] {
   color-scheme: dark;
@@ -13329,6 +13470,30 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
     color-mix(in oklch, var(--color-primary) 25%, transparent) 0%,
     color-mix(in oklch, var(--color-primary) 10%, transparent) 50%,
     transparent 75%
+  );
+  }
+}
+html[data-theme="Hi-Tech"] .welcome-video-tint {
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.82) 100%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, var(--color-primary) 0%, transparent 70%);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.82) 100%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, color-mix(in oklch, var(--color-primary) 40%, transparent) 0%, transparent 70%);
+  }
+}
+html[data-theme="Hi-Tech"] .setup-video-tint {
+  background-image: radial-gradient(
+    ellipse 120% 100% at 50% 100%,
+    var(--color-primary) 0%,
+    var(--color-primary) 45%,
+    transparent 70%
+  );
+  @supports (color: color-mix(in lab, red, red)) {
+    background-image: radial-gradient(
+    ellipse 120% 100% at 50% 100%,
+    color-mix(in oklch, var(--color-primary) 22%, transparent) 0%,
+    color-mix(in oklch, var(--color-primary) 8%, transparent) 45%,
+    transparent 70%
   );
   }
 }
@@ -13533,6 +13698,29 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
   flex-direction: column;
   min-height: 0;
 }
+[data-brand-logo="wow"],
+[data-brand-logo="wabco"] {
+  display: none;
+}
+html[data-theme="WOW Dark"] [data-brand-logo="autocom"],
+html[data-theme="WOW Light"] [data-brand-logo="autocom"] {
+  display: none;
+}
+html[data-theme="WOW Dark"] [data-brand-logo="wow"],
+html[data-theme="WOW Light"] [data-brand-logo="wow"] {
+  display: inline-block;
+}
+html[data-theme="Wabco Light"] [data-brand-logo="autocom"],
+html[data-theme="Wabco Dark"] [data-brand-logo="autocom"] {
+  display: none;
+}
+html[data-theme="Wabco Light"] [data-brand-logo="wabco"],
+html[data-theme="Wabco Dark"] [data-brand-logo="wabco"] {
+  display: inline-block;
+}
+[data-brand-logo="wabco"] {
+  height: 1.75rem;
+}
 .badge-soft.badge-neutral {
   color: var(--color-base-content);
   background-color: var(--color-base-content);
@@ -13544,8 +13732,7 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
     border-color: color-mix(in oklch, var(--color-base-content) 15%, transparent);
   }
 }
-[data-theme="dark"] .badge-soft.badge-neutral,
-[data-theme="autocom"] .badge-soft.badge-neutral {
+[data-theme="Autocom Dark"] .badge-soft.badge-neutral {
   color: oklch(80% 0.01 250);
 }
 .splash-page {
@@ -13872,9 +14059,10 @@ html[data-theme="Hi-Tech"] .launchpad-main-bg {
   mix-blend-mode: darken;
   opacity: 0.88;
 }
-html[data-theme="dark"] .vehicle-image-tinted [data-vehicle-image],
 html[data-theme="Hi-Tech"] .vehicle-image-tinted [data-vehicle-image],
-html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
+html[data-theme="Autocom Dark"] .vehicle-image-tinted [data-vehicle-image],
+html[data-theme="WOW Dark"] .vehicle-image-tinted [data-vehicle-image],
+html[data-theme="Wabco Dark"] .vehicle-image-tinted [data-vehicle-image] {
   mix-blend-mode: normal;
 }
 .scan-effect-overlay {
@@ -14136,72 +14324,6 @@ html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
   overflow-y: auto;
 }
 @layer base {
-  :root:has(input.0theme-controller[value=light]:checked),[data-theme=light] {
-    color-scheme: light;
-    --color-base-100: oklch(100% 0 0);
-    --color-base-200: oklch(98% 0 0);
-    --color-base-300: oklch(95% 0 0);
-    --color-base-content: oklch(21% 0.006 285.885);
-    --color-primary: oklch(45% 0.24 277.023);
-    --color-primary-content: oklch(93% 0.034 272.788);
-    --color-secondary: oklch(65% 0.241 354.308);
-    --color-secondary-content: oklch(94% 0.028 342.258);
-    --color-accent: oklch(77% 0.152 181.912);
-    --color-accent-content: oklch(38% 0.063 188.416);
-    --color-neutral: oklch(14% 0.005 285.823);
-    --color-neutral-content: oklch(92% 0.004 286.32);
-    --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(29% 0.066 243.157);
-    --color-success: oklch(76% 0.177 163.223);
-    --color-success-content: oklch(37% 0.077 168.94);
-    --color-warning: oklch(82% 0.189 84.429);
-    --color-warning-content: oklch(41% 0.112 45.904);
-    --color-error: oklch(71% 0.194 13.428);
-    --color-error-content: oklch(27% 0.105 12.094);
-    --radius-selector: 0.5rem;
-    --radius-field: 0.25rem;
-    --radius-box: 0.5rem;
-    --size-selector: 0.25rem;
-    --size-field: 0.25rem;
-    --border: 1px;
-    --depth: 1;
-    --noise: 0;
-  }
-}
-@layer base {
-  :root:has(input.0theme-controller[value=dark]:checked),[data-theme=dark] {
-    color-scheme: dark;
-    --color-base-100: oklch(25.33% 0.016 252.42);
-    --color-base-200: oklch(23.26% 0.014 253.1);
-    --color-base-300: oklch(21.15% 0.012 254.09);
-    --color-base-content: oklch(97.807% 0.029 256.847);
-    --color-primary: oklch(58% 0.233 277.117);
-    --color-primary-content: oklch(96% 0.018 272.314);
-    --color-secondary: oklch(65% 0.241 354.308);
-    --color-secondary-content: oklch(94% 0.028 342.258);
-    --color-accent: oklch(77% 0.152 181.912);
-    --color-accent-content: oklch(38% 0.063 188.416);
-    --color-neutral: oklch(14% 0.005 285.823);
-    --color-neutral-content: oklch(92% 0.004 286.32);
-    --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(29% 0.066 243.157);
-    --color-success: oklch(76% 0.177 163.223);
-    --color-success-content: oklch(37% 0.077 168.94);
-    --color-warning: oklch(82% 0.189 84.429);
-    --color-warning-content: oklch(41% 0.112 45.904);
-    --color-error: oklch(71% 0.194 13.428);
-    --color-error-content: oklch(27% 0.105 12.094);
-    --radius-selector: 0.5rem;
-    --radius-field: 0.25rem;
-    --radius-box: 0.5rem;
-    --size-selector: 0.25rem;
-    --size-field: 0.25rem;
-    --border: 1px;
-    --depth: 1;
-    --noise: 0;
-  }
-}
-@layer base {
   @property --radialprogress {
     syntax: "<percentage>";
     inherits: true;
@@ -14360,26 +14482,26 @@ html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
       --color-base-100: #06224C;
       --color-base-200: #001A3F;
       --color-base-300: #001732;
-      --color-base-content: #ecf2f9;
-      --color-primary: oklch(78% 0.154 211.53);
-      --color-primary-content: oklch(30% 0.056 229.695);
-      --color-secondary: oklch(82% 0.12 346.018);
-      --color-secondary-content: oklch(28% 0.109 3.907);
-      --color-accent: oklch(43% 0.218 303.724);
-      --color-accent-content: oklch(94% 0.033 307.174);
-      --color-neutral: oklch(37% 0.044 257.287);
-      --color-neutral-content: oklch(97% 0.014 254.604);
-      --color-info: oklch(70% 0.165 254.624);
-      --color-info-content: oklch(28% 0.091 267.935);
-      --color-success: oklch(70% 0.14 182.503);
-      --color-success-content: oklch(27% 0.046 192.524);
-      --color-warning: oklch(79% 0.184 86.047);
-      --color-warning-content: oklch(28% 0.066 53.813);
-      --color-error: oklch(71% 0.194 13.428);
-      --color-error-content: oklch(27% 0.105 12.094);
+      --color-base-content: #ECF2F9;
+      --color-primary: #3CD2A5;
+      --color-primary-content: #001A3F;
+      --color-secondary: #23C8FA;
+      --color-secondary-content: #00122D;
+      --color-accent: #23C8FA;
+      --color-accent-content: #00122D;
+      --color-neutral: #34508B;
+      --color-neutral-content: #ECF2F9;
+      --color-info: #23C8FA;
+      --color-info-content: #00122D;
+      --color-success: #3CD2A5;
+      --color-success-content: #001A3F;
+      --color-warning: #FADC50;
+      --color-warning-content: #000E23;
+      --color-error: #FF2955;
+      --color-error-content: #FFFFFF;
       --radius-selector: 0.25rem;
       --radius-field: 0.5rem;
-      --radius-box: 0.75rem;
+      --radius-box: 0.5rem;
       --size-selector: 0.25rem;
       --size-field: 0.25rem;
       --border: 1px;
@@ -14389,31 +14511,31 @@ html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
   }
 }
 @layer base {
-  :root:has(input.theme-controller[value=Autocom]:checked),[data-theme="Autocom"] {
+  :root:has(input.theme-controller[value=Autocom Dark]:checked),[data-theme="Autocom Dark"] {
     color-scheme: dark;
     --color-base-100: #06224C;
     --color-base-200: #001A3F;
     --color-base-300: #001732;
-    --color-base-content: #ecf2f9;
-    --color-primary: oklch(78% 0.154 211.53);
-    --color-primary-content: oklch(30% 0.056 229.695);
-    --color-secondary: oklch(82% 0.12 346.018);
-    --color-secondary-content: oklch(28% 0.109 3.907);
-    --color-accent: oklch(43% 0.218 303.724);
-    --color-accent-content: oklch(94% 0.033 307.174);
-    --color-neutral: oklch(37% 0.044 257.287);
-    --color-neutral-content: oklch(97% 0.014 254.604);
-    --color-info: oklch(70% 0.165 254.624);
-    --color-info-content: oklch(28% 0.091 267.935);
-    --color-success: oklch(70% 0.14 182.503);
-    --color-success-content: oklch(27% 0.046 192.524);
-    --color-warning: oklch(79% 0.184 86.047);
-    --color-warning-content: oklch(28% 0.066 53.813);
-    --color-error: oklch(71% 0.194 13.428);
-    --color-error-content: oklch(27% 0.105 12.094);
+    --color-base-content: #ECF2F9;
+    --color-primary: #3CD2A5;
+    --color-primary-content: #001A3F;
+    --color-secondary: #23C8FA;
+    --color-secondary-content: #00122D;
+    --color-accent: #23C8FA;
+    --color-accent-content: #00122D;
+    --color-neutral: #34508B;
+    --color-neutral-content: #ECF2F9;
+    --color-info: #23C8FA;
+    --color-info-content: #00122D;
+    --color-success: #3CD2A5;
+    --color-success-content: #001A3F;
+    --color-warning: #FADC50;
+    --color-warning-content: #000E23;
+    --color-error: #FF2955;
+    --color-error-content: #FFFFFF;
     --radius-selector: 0.25rem;
     --radius-field: 0.5rem;
-    --radius-box: 0.75rem;
+    --radius-box: 0.5rem;
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
     --border: 1px;
@@ -14422,31 +14544,31 @@ html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
   }
 }
 @layer base {
-  :root:has(input.theme-controller[value=light]:checked),[data-theme="light"] {
+  :root:has(input.theme-controller[value=Autocom Light]:checked),[data-theme="Autocom Light"] {
     color-scheme: light;
-    --color-base-100: oklch(100% 0 0);
-    --color-base-200: oklch(98% 0 0);
-    --color-base-300: oklch(95% 0 0);
-    --color-base-content: oklch(21% 0.006 285.885);
-    --color-primary: oklch(62% 0.214 259.815);
-    --color-primary-content: oklch(98% 0.003 247.858);
-    --color-secondary: oklch(44% 0.011 73.639);
-    --color-secondary-content: oklch(97% 0.001 106.424);
-    --color-accent: oklch(57% 0.245 27.325);
-    --color-accent-content: oklch(97% 0.013 17.38);
-    --color-neutral: oklch(14% 0.005 285.823);
-    --color-neutral-content: oklch(98% 0.004 286.32);
-    --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(29% 0.066 243.157);
-    --color-success: oklch(76% 0.177 163.223);
-    --color-success-content: oklch(37% 0.077 168.94);
-    --color-warning: oklch(82% 0.189 84.429);
-    --color-warning-content: oklch(41% 0.112 45.904);
-    --color-error: oklch(71% 0.194 13.428);
-    --color-error-content: oklch(27% 0.105 12.094);
-    --radius-selector: 0.5rem;
+    --color-base-100: #FFFFFF;
+    --color-base-200: #F3F4F7;
+    --color-base-300: #CCD4E0;
+    --color-base-content: #040911;
+    --color-primary: #1F447A;
+    --color-primary-content: #FAFBFC;
+    --color-secondary: #198EB2;
+    --color-secondary-content: #001A3F;
+    --color-accent: #198EB2;
+    --color-accent-content: #001A3F;
+    --color-neutral: #3B639B;
+    --color-neutral-content: #FAFBFC;
+    --color-info: #198EB2;
+    --color-info-content: #001A3F;
+    --color-success: #63DBB7;
+    --color-success-content: #001A3F;
+    --color-warning: #FDCF33;
+    --color-warning-content: #000E23;
+    --color-error: #FF2955;
+    --color-error-content: #FFFFFF;
+    --radius-selector: 0.25rem;
     --radius-field: 0.5rem;
-    --radius-box: 1rem;
+    --radius-box: 0.5rem;
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
     --border: 1px;
@@ -14455,31 +14577,130 @@ html[data-theme="Autocom"] .vehicle-image-tinted [data-vehicle-image] {
   }
 }
 @layer base {
-  :root:has(input.theme-controller[value=dark]:checked),[data-theme="dark"] {
+  :root:has(input.theme-controller[value=WOW Light]:checked),[data-theme="WOW Light"] {
+    color-scheme: light;
+    --color-base-100: #FFFFFF;
+    --color-base-200: #F5F5F5;
+    --color-base-300: #DDD9D9;
+    --color-base-content: #000000;
+    --color-primary: #CC0000;
+    --color-primary-content: #FFFFFF;
+    --color-secondary: #00689D;
+    --color-secondary-content: #FFFFFF;
+    --color-accent: #00689D;
+    --color-accent-content: #FFFFFF;
+    --color-neutral: #6A5959;
+    --color-neutral-content: #FFFFFF;
+    --color-info: #00689D;
+    --color-info-content: #FFFFFF;
+    --color-success: #008448;
+    --color-success-content: #FFFFFF;
+    --color-warning: #EE7F00;
+    --color-warning-content: #000000;
+    --color-error: #BA0000;
+    --color-error-content: #FFFFFF;
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+  }
+}
+@layer base {
+  :root:has(input.theme-controller[value=WOW Dark]:checked),[data-theme="WOW Dark"] {
     color-scheme: dark;
-    --color-base-100: oklch(31% 0.014 253.1);
-    --color-base-200: oklch(28% 0.016 252.42);
-    --color-base-300: oklch(25.33% 0.016 252.42);
-    --color-base-content: oklch(97.807% 0.029 256.847);
-    --color-primary: oklch(54% 0.245 262.881);
-    --color-primary-content: oklch(96% 0.018 272.314);
-    --color-secondary: oklch(65% 0.241 354.308);
-    --color-secondary-content: oklch(94% 0.028 342.258);
-    --color-accent: oklch(57% 0.245 27.325);
-    --color-accent-content: oklch(93% 0.032 17.717);
-    --color-neutral: oklch(14% 0.005 285.823);
-    --color-neutral-content: oklch(98% 0.004 286.32);
-    --color-info: oklch(74% 0.16 232.661);
-    --color-info-content: oklch(29% 0.066 243.157);
-    --color-success: oklch(76% 0.177 163.223);
-    --color-success-content: oklch(37% 0.077 168.94);
-    --color-warning: oklch(82% 0.189 84.429);
-    --color-warning-content: oklch(41% 0.112 45.904);
-    --color-error: oklch(71% 0.194 13.428);
-    --color-error-content: oklch(27% 0.105 12.094);
-    --radius-selector: 0.5rem;
-    --radius-field: 0.5rem;
-    --radius-box: 1rem;
+    --color-base-100: #292524;
+    --color-base-200: #1C1917;
+    --color-base-300: #161313;
+    --color-base-content: #FFFFFF;
+    --color-primary: #CC0000;
+    --color-primary-content: #FFFFFF;
+    --color-secondary: #54B7E8;
+    --color-secondary-content: #281515;
+    --color-accent: #54B7E8;
+    --color-accent-content: #281515;
+    --color-neutral: #C4B8B8;
+    --color-neutral-content: #281515;
+    --color-info: #54B7E8;
+    --color-info-content: #281515;
+    --color-success: #339D6D;
+    --color-success-content: #281515;
+    --color-warning: #F19933;
+    --color-warning-content: #281515;
+    --color-error: #FF8888;
+    --color-error-content: #281515;
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+  }
+}
+@layer base {
+  :root:has(input.theme-controller[value=Wabco Light]:checked),[data-theme="Wabco Light"] {
+    color-scheme: light;
+    --color-base-100: #FFFFFF;
+    --color-base-200: #F4F5F6;
+    --color-base-300: #CBD7E2;
+    --color-base-content: #000000;
+    --color-primary: #00519E;
+    --color-primary-content: #FFFFFF;
+    --color-secondary: #E2001A;
+    --color-secondary-content: #FFFFFF;
+    --color-accent: #E2001A;
+    --color-accent-content: #FFFFFF;
+    --color-neutral: #5190CD;
+    --color-neutral-content: #000000;
+    --color-info: #00519E;
+    --color-info-content: #FFFFFF;
+    --color-success: #74B133;
+    --color-success-content: #000000;
+    --color-warning: #F19933;
+    --color-warning-content: #000000;
+    --color-error: #CE0018;
+    --color-error-content: #FFFFFF;
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+  }
+}
+@layer base {
+  :root:has(input.theme-controller[value=Wabco Dark]:checked),[data-theme="Wabco Dark"] {
+    color-scheme: dark;
+    --color-base-100: #033463;
+    --color-base-200: #03172B;
+    --color-base-300: #040C13;
+    --color-base-content: #FFFFFF;
+    --color-primary: #3374B1;
+    --color-primary-content: #FFFFFF;
+    --color-secondary: #E2001A;
+    --color-secondary-content: #FFFFFF;
+    --color-accent: #E2001A;
+    --color-accent-content: #FFFFFF;
+    --color-neutral: #E7EBEE;
+    --color-neutral-content: #040C13;
+    --color-info: #3374B1;
+    --color-info-content: #FFFFFF;
+    --color-success: #74B133;
+    --color-success-content: #040C13;
+    --color-warning: #F19933;
+    --color-warning-content: #040C13;
+    --color-error: #E2001A;
+    --color-error-content: #FFFFFF;
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
     --border: 1px;
