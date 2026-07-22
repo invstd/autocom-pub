@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -48,13 +48,10 @@
       })();
     </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.5.0/index.js" defer></script>
-    <script>
-      if (typeof themeChange !== 'undefined') themeChange();
-      else document.addEventListener('DOMContentLoaded', function() { if (typeof themeChange !== 'undefined') themeChange(); });
-    </script>
+
 </head>
 <body class="bg-base-100 text-base-content">
+
     
 <div class="splash-page min-h-screen w-full flex items-center justify-center" data-base-path="/autocom-pub/">
   <div class="splash-particles" aria-hidden="true"></div>

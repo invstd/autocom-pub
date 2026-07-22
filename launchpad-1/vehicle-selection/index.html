@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -48,13 +48,10 @@
       })();
     </script>
     <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.5.0/index.js" defer></script>
-    <script>
-      if (typeof themeChange !== 'undefined') themeChange();
-      else document.addEventListener('DOMContentLoaded', function() { if (typeof themeChange !== 'undefined') themeChange(); });
-    </script>
+
 </head>
 <body class="bg-base-100 text-base-content">
+
     
 <div class="drawer min-h-screen">
   <input id="launchpad-drawer" type="checkbox" class="drawer-toggle" />
@@ -3001,8 +2998,8 @@
         <h3 class="text-base font-semibold text-base-content">1. Video tutorial</h3>
         <p class="text-sm text-base-content/80">Watch how to connect and pair your VCI device.</p>
         <div class="w-full aspect-video bg-base-300 rounded-box overflow-hidden border border-base-300">
-          <video id="onboarding-video-player" class="w-full h-full object-contain bg-black" controls preload="metadata" poster="https://image.mux.com/006Z9sNIothLn38FJHnWVKf1A01fxttxAw/thumbnail.png">
-            <source src="https://stream.mux.com/006Z9sNIothLn38FJHnWVKf1A01fxttxAw/high.mp4" type="video/mp4" />
+          <video id="onboarding-video-player" class="w-full h-full object-contain bg-black" controls preload="metadata" poster="/autocom-pub/assets/images/vci-pairing-tutorial-poster.png">
+            <source src="/autocom-pub/assets/videos/vci-pairing-tutorial.mp4" type="video/mp4" />
             <p class="p-4 text-base-content/80 text-sm">Your browser does not support the video tag.</p>
           </video>
         </div>
@@ -3034,7 +3031,7 @@
 
   </button>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="/autocom-pub/assets/scripts/vendor/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
 

@@ -1,0 +1,278 @@
+/**
+ * Automechanika trade-show offline shell. Cache-first, and precaches essentially everything
+ * (pages, scripts, styles, fonts, videos, brand data, and the FULL images folder — vehicles/,
+ * brands/, mock avatars, icons) on install, not just a "core shell" subset. Images requested by
+ * a page's own <img> tags before this worker takes control of that page are never
+ * opportunistically cached by the fetch handler below — a page's first load isn't "controlled"
+ * yet — so anything left out of PRECACHE_URLS would silently stay missing offline regardless of
+ * how much of the demo gets clicked through beforehand. Precaching everything up front (~40MB)
+ * means one good load is genuinely enough; no rehearsal walkthrough required.
+ *
+ * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
+ * one is dropped on activate — no manual version bump needed.
+ */
+var CACHE_NAME = 'automechanika-1784721883416';
+
+var PRECACHE_URLS = [
+  '/autocom-pub/automechanika/',
+  '/autocom-pub/automechanika/add-vci/',
+  '/autocom-pub/automechanika/dashboard/',
+  '/autocom-pub/automechanika/diagnostics-dashboard/',
+  '/autocom-pub/automechanika/get-started/',
+  '/autocom-pub/automechanika/history/',
+  '/autocom-pub/automechanika/install/',
+  '/autocom-pub/automechanika/login/',
+  '/autocom-pub/automechanika/my-garage/',
+  '/autocom-pub/automechanika/settings/',
+  '/autocom-pub/automechanika/tech-data/',
+  '/autocom-pub/automechanika/theme-test/',
+  '/autocom-pub/automechanika/vehicle-selection/',
+  '/autocom-pub/automechanika/welcome/',
+  '/autocom-pub/automechanika/manifest.webmanifest',
+  '/autocom-pub/assets/styles/main.css',
+  '/autocom-pub/assets/videos/pouring-oil.mp4',
+  '/autocom-pub/assets/videos/vci-pairing-tutorial.mp4',
+  '/autocom-pub/assets/fonts/Fabrikat-Black.otf',
+  '/autocom-pub/assets/fonts/Fabrikat-Bold.otf',
+  '/autocom-pub/assets/fonts/Fabrikat.otf',
+  '/autocom-pub/assets/fonts/WorkSans-Bold.woff2',
+  '/autocom-pub/assets/fonts/WorkSans-Medium.woff2',
+  '/autocom-pub/assets/fonts/WorkSans-Regular.woff2',
+  '/autocom-pub/assets/fonts/WorkSans-SemiBold.woff2',
+  '/autocom-pub/assets/scripts/vendor/confetti.browser.min.js',
+  '/autocom-pub/assets/scripts/add-vci.js',
+  '/autocom-pub/assets/scripts/connectivity-check.js',
+  '/autocom-pub/assets/scripts/diagnostics-dashboard.js',
+  '/autocom-pub/assets/scripts/get-started.js',
+  '/autocom-pub/assets/scripts/hero-vin-vrm.js',
+  '/autocom-pub/assets/scripts/index-onboarding.js',
+  '/autocom-pub/assets/scripts/install.js',
+  '/autocom-pub/assets/scripts/login.js',
+  '/autocom-pub/assets/scripts/my-garage.js',
+  '/autocom-pub/assets/scripts/notifications.js',
+  '/autocom-pub/assets/scripts/onboarding-drawer.js',
+  '/autocom-pub/assets/scripts/onboarding-waypoint-tour.js',
+  '/autocom-pub/assets/scripts/prototype-gate.js',
+  '/autocom-pub/assets/scripts/scan-vin-modal.js',
+  '/autocom-pub/assets/scripts/vci-pair-detect-modal.js',
+  '/autocom-pub/assets/scripts/vehicle-selection.js',
+  '/autocom-pub/assets/scripts/welcome.js',
+  '/autocom-pub/assets/data/brands_models/abarth_models.json',
+  '/autocom-pub/assets/data/brands_models/alfa_romeo_models.json',
+  '/autocom-pub/assets/data/brands_models/audi_models.json',
+  '/autocom-pub/assets/data/brands_models/bentley_models.json',
+  '/autocom-pub/assets/data/brands_models/bmw_models.json',
+  '/autocom-pub/assets/data/brands_models/byd_models.json',
+  '/autocom-pub/assets/data/brands_models/cadillac_models.json',
+  '/autocom-pub/assets/data/brands_models/chevrolet_models.json',
+  '/autocom-pub/assets/data/brands_models/chrysler_models.json',
+  '/autocom-pub/assets/data/brands_models/citroen_models.json',
+  '/autocom-pub/assets/data/brands_models/cupra_models.json',
+  '/autocom-pub/assets/data/brands_models/dacia_models.json',
+  '/autocom-pub/assets/data/brands_models/daewoo_models.json',
+  '/autocom-pub/assets/data/brands_models/daihatsu_models.json',
+  '/autocom-pub/assets/data/brands_models/dodge_models.json',
+  '/autocom-pub/assets/data/brands_models/ds_automobiles_models.json',
+  '/autocom-pub/assets/data/brands_models/ferrari_models.json',
+  '/autocom-pub/assets/data/brands_models/fiat_models.json',
+  '/autocom-pub/assets/data/brands_models/ford_models.json',
+  '/autocom-pub/assets/data/brands_models/foton_models.json',
+  '/autocom-pub/assets/data/brands_models/gaz_models.json',
+  '/autocom-pub/assets/data/brands_models/gwm_models.json',
+  '/autocom-pub/assets/data/brands_models/honda_models.json',
+  '/autocom-pub/assets/data/brands_models/hyundai_models.json',
+  '/autocom-pub/assets/data/brands_models/infiniti_models.json',
+  '/autocom-pub/assets/data/brands_models/isuzu_models.json',
+  '/autocom-pub/assets/data/brands_models/iveco_models.json',
+  '/autocom-pub/assets/data/brands_models/jaguar_models.json',
+  '/autocom-pub/assets/data/brands_models/jeep_models.json',
+  '/autocom-pub/assets/data/brands_models/jinbei_models.json',
+  '/autocom-pub/assets/data/brands_models/jmc_models.json',
+  '/autocom-pub/assets/data/brands_models/kia_models.json',
+  '/autocom-pub/assets/data/brands_models/lada_models.json',
+  '/autocom-pub/assets/data/brands_models/lamborghini_models.json',
+  '/autocom-pub/assets/data/brands_models/lancia_models.json',
+  '/autocom-pub/assets/data/brands_models/land_rover_models.json',
+  '/autocom-pub/assets/data/brands_models/lexus_models.json',
+  '/autocom-pub/assets/data/brands_models/lotus_models.json',
+  '/autocom-pub/assets/data/brands_models/maserati_models.json',
+  '/autocom-pub/assets/data/brands_models/mazda_models.json',
+  '/autocom-pub/assets/data/brands_models/mercedes-benz_models.json',
+  '/autocom-pub/assets/data/brands_models/mg_models.json',
+  '/autocom-pub/assets/data/brands_models/mini_models.json',
+  '/autocom-pub/assets/data/brands_models/mitsubishi_models.json',
+  '/autocom-pub/assets/data/brands_models/nissan_models.json',
+  '/autocom-pub/assets/data/brands_models/opel_models.json',
+  '/autocom-pub/assets/data/brands_models/peugeot_models.json',
+  '/autocom-pub/assets/data/brands_models/porsche_models.json',
+  '/autocom-pub/assets/data/brands_models/renault_models.json',
+  '/autocom-pub/assets/data/brands_models/seat_models.json',
+  '/autocom-pub/assets/data/brands_models/skoda_models.json',
+  '/autocom-pub/assets/data/brands_models/smart_models.json',
+  '/autocom-pub/assets/data/brands_models/suzuki_models.json',
+  '/autocom-pub/assets/data/brands_models/toyota_models.json',
+  '/autocom-pub/assets/data/brands_models/volkswagen_models.json',
+  '/autocom-pub/assets/data/brands_models/volvo_models.json',
+  '/autocom-pub/assets/images/1730130528-mechanic-2-icon-highres.avif',
+  '/autocom-pub/assets/images/1749557346-emdoor-em-120a-tablet.avif',
+  '/autocom-pub/assets/images/autocom-symbol.svg',
+  '/autocom-pub/assets/images/beehive.svg',
+  '/autocom-pub/assets/images/brands/abarth.png',
+  '/autocom-pub/assets/images/brands/alfa-romeo.png',
+  '/autocom-pub/assets/images/brands/audi.png',
+  '/autocom-pub/assets/images/brands/bentley.png',
+  '/autocom-pub/assets/images/brands/bmw.png',
+  '/autocom-pub/assets/images/brands/byd.png',
+  '/autocom-pub/assets/images/brands/cadillac.png',
+  '/autocom-pub/assets/images/brands/chevrolet.png',
+  '/autocom-pub/assets/images/brands/chrysler.png',
+  '/autocom-pub/assets/images/brands/citroen.png',
+  '/autocom-pub/assets/images/brands/cupra.png',
+  '/autocom-pub/assets/images/brands/dacia.png',
+  '/autocom-pub/assets/images/brands/daewoo.png',
+  '/autocom-pub/assets/images/brands/daihatsu.png',
+  '/autocom-pub/assets/images/brands/dodge.png',
+  '/autocom-pub/assets/images/brands/ds-automobiles.png',
+  '/autocom-pub/assets/images/brands/ferrari.png',
+  '/autocom-pub/assets/images/brands/fiat.png',
+  '/autocom-pub/assets/images/brands/ford.png',
+  '/autocom-pub/assets/images/brands/foton.png',
+  '/autocom-pub/assets/images/brands/gaz.png',
+  '/autocom-pub/assets/images/brands/gwm.png',
+  '/autocom-pub/assets/images/brands/honda.png',
+  '/autocom-pub/assets/images/brands/hyundai.png',
+  '/autocom-pub/assets/images/brands/infiniti.png',
+  '/autocom-pub/assets/images/brands/isuzu.png',
+  '/autocom-pub/assets/images/brands/iveco.png',
+  '/autocom-pub/assets/images/brands/jaguar.png',
+  '/autocom-pub/assets/images/brands/jeep.png',
+  '/autocom-pub/assets/images/brands/jinbei.png',
+  '/autocom-pub/assets/images/brands/jmc.png',
+  '/autocom-pub/assets/images/brands/kia.png',
+  '/autocom-pub/assets/images/brands/lada.png',
+  '/autocom-pub/assets/images/brands/ladog.png',
+  '/autocom-pub/assets/images/brands/lamborghini.png',
+  '/autocom-pub/assets/images/brands/lancia.png',
+  '/autocom-pub/assets/images/brands/land-rover.png',
+  '/autocom-pub/assets/images/brands/lexus.png',
+  '/autocom-pub/assets/images/brands/lotus.png',
+  '/autocom-pub/assets/images/brands/maserati.png',
+  '/autocom-pub/assets/images/brands/mazda.png',
+  '/autocom-pub/assets/images/brands/mercedes-benz.png',
+  '/autocom-pub/assets/images/brands/mg.png',
+  '/autocom-pub/assets/images/brands/mini.png',
+  '/autocom-pub/assets/images/brands/mitsubishi.png',
+  '/autocom-pub/assets/images/brands/nissan.png',
+  '/autocom-pub/assets/images/brands/opel.png',
+  '/autocom-pub/assets/images/brands/peugeot.png',
+  '/autocom-pub/assets/images/brands/porsche.png',
+  '/autocom-pub/assets/images/brands/renault.png',
+  '/autocom-pub/assets/images/brands/seat.png',
+  '/autocom-pub/assets/images/brands/skoda.png',
+  '/autocom-pub/assets/images/brands/smart.png',
+  '/autocom-pub/assets/images/brands/suzuki.png',
+  '/autocom-pub/assets/images/brands/toyota.png',
+  '/autocom-pub/assets/images/brands/volkswagen.png',
+  '/autocom-pub/assets/images/brands/volvo.png',
+  '/autocom-pub/assets/images/icons/icon-192.png',
+  '/autocom-pub/assets/images/icons/icon-512.png',
+  '/autocom-pub/assets/images/icons/icon-maskable-512.png',
+  '/autocom-pub/assets/images/pragmatic-follower.png',
+  '/autocom-pub/assets/images/risk-owner.png',
+  '/autocom-pub/assets/images/sms-trusted.svg',
+  '/autocom-pub/assets/images/sms-verify.svg',
+  '/autocom-pub/assets/images/tinkerer.png',
+  '/autocom-pub/assets/images/vci-pairing-tutorial-poster.png',
+  '/autocom-pub/assets/images/vehicles/Audi_A3_sedan_2024.png',
+  '/autocom-pub/assets/images/vehicles/Audi_A4_2017.png',
+  '/autocom-pub/assets/images/vehicles/Audi_A6_sedan_S-Line_2023.png',
+  '/autocom-pub/assets/images/vehicles/Citroen_C3_2017.png',
+  '/autocom-pub/assets/images/vehicles/Citroen_C3_L_sedan_2020.png',
+  '/autocom-pub/assets/images/vehicles/Citroen_C4_Cactus_2015.png',
+  '/autocom-pub/assets/images/vehicles/Citroen_C4_Picasso_2016.png',
+  '/autocom-pub/assets/images/vehicles/Dacia_Duster_Extreme_2024.png',
+  '/autocom-pub/assets/images/vehicles/Dacia_Sandero_2021.png',
+  '/autocom-pub/assets/images/vehicles/Fiat_Argo_2017.png',
+  '/autocom-pub/assets/images/vehicles/Fiat_Panda_Cross_2014.png',
+  '/autocom-pub/assets/images/vehicles/Fiat_Pulse_Impetus_2021.png',
+  '/autocom-pub/assets/images/vehicles/Fiat_Tipo_2020.png',
+  '/autocom-pub/assets/images/vehicles/Ford_Focus_ST_Line_2018.png',
+  '/autocom-pub/assets/images/vehicles/Ford_Focus_Titanium_2018.png',
+  '/autocom-pub/assets/images/vehicles/Honda_Civic_coupe_2016.png',
+  '/autocom-pub/assets/images/vehicles/Hyundai_i30_GD_2015.png',
+  '/autocom-pub/assets/images/vehicles/Hyundai_i30_PD_2024.png',
+  '/autocom-pub/assets/images/vehicles/Kia_Ceed_hatchback_2018.png',
+  '/autocom-pub/assets/images/vehicles/Mazda_3_sedan_2019.png',
+  '/autocom-pub/assets/images/vehicles/Nissan_Qashqai_2017.png',
+  '/autocom-pub/assets/images/vehicles/Opel_Astra_K_2016.png',
+  '/autocom-pub/assets/images/vehicles/Opel_Astra_L_Hybrid_2021.png',
+  '/autocom-pub/assets/images/vehicles/Peugeot_308_P5_HYBRID_2021.png',
+  '/autocom-pub/assets/images/vehicles/Peugeot_308_T9_2017.png',
+  '/autocom-pub/assets/images/vehicles/Peugeot_308_T9_sedan_2017.png',
+  '/autocom-pub/assets/images/vehicles/Renault_Megane_hatchback_2014.png',
+  '/autocom-pub/assets/images/vehicles/Renault_Megane_sedan_2020.png',
+  '/autocom-pub/assets/images/vehicles/Seat_Leon_5F_FR_2016.png',
+  '/autocom-pub/assets/images/vehicles/Seat_Leon_FR_eHybrid_2020.png',
+  '/autocom-pub/assets/images/vehicles/Skoda_Octavia_1Z_liftback_2005.png',
+  '/autocom-pub/assets/images/vehicles/Skoda_Octavia_5E_liftback_2017.png',
+  '/autocom-pub/assets/images/vehicles/Skoda_Octavia_liftback_2013.png',
+  '/autocom-pub/assets/images/vehicles/Toyota_Corolla_E210_hybrid_2018.png',
+  '/autocom-pub/assets/images/vehicles/Toyota_Corolla_E210_sedan_Hybrid_2019.png',
+  '/autocom-pub/assets/images/vehicles/Volkswagen_Golf_2024.png',
+  '/autocom-pub/assets/images/vehicles/Volkswagen_Golf__2018.png',
+  '/autocom-pub/assets/images/vehicles/Volkswagen_T-Cross_2022.png',
+  '/autocom-pub/assets/images/vehicles/Volkswagen_Touareg_2023.png',
+  '/autocom-pub/assets/images/vehicles/Volvo_V60_D4_2015.png',
+  '/autocom-pub/assets/images/vehicles/Volvo_XC60_2014.png',
+  '/autocom-pub/assets/images/vehicles/Volvo_XC60_T6_2017.png'
+];
+
+self.addEventListener('install', function (event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.addAll(PRECACHE_URLS);
+    }).then(function () {
+      return self.skipWaiting();
+    })
+  );
+});
+
+self.addEventListener('activate', function (event) {
+  event.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(
+        keys.filter(function (key) { return key !== CACHE_NAME; })
+          .map(function (key) { return caches.delete(key); })
+      );
+    }).then(function () {
+      return self.clients.claim();
+    })
+  );
+});
+
+self.addEventListener('fetch', function (event) {
+  if (event.request.method !== 'GET') return;
+  var url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Page navigations carry demo-state query params (e.g. diagnostics-dashboard?vin=...&brand=...)
+  // that vary per session — the underlying HTML shell is identical and precached without a query
+  // string, so match those ignoring search, or every such navigation would cache-miss and (while
+  // offline) silently fall back to the dashboard instead of showing the actual page.
+  var isNavigate = event.request.mode === 'navigate';
+
+  event.respondWith(
+    (isNavigate ? caches.match(event.request, { ignoreSearch: true }) : caches.match(event.request)).then(function (cached) {
+      if (cached) return cached;
+      return fetch(event.request).then(function (response) {
+        if (response && response.ok) {
+          var copy = response.clone();
+          caches.open(CACHE_NAME).then(function (cache) { cache.put(event.request, copy); });
+        }
+        return response;
+      }).catch(function () {
+        if (isNavigate) return caches.match('/autocom-pub/automechanika/');
+      });
+    })
+  );
+});

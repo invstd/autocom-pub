@@ -17,7 +17,8 @@
   }
 
   function goToQuickConnect() {
-    window.location.href = basePath + 'launchpad-2/';
+    var appFolder = (window.location.pathname.match(/\/(launchpad-\d+|automechanika)\//) || [null, 'launchpad-2'])[1];
+    window.location.href = basePath + appFolder + '/';
   }
 
   function checkmarkSvg() {

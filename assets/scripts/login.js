@@ -60,7 +60,8 @@
       // next time this device opens the app, instead of showing Login/Create account again.
       if (typeof localStorage !== 'undefined') localStorage.setItem('air-session-active', '1');
       var base = (card.getAttribute('data-base-path')) || '/';
-      window.location.href = base + 'launchpad-2/';
+      var appFolder = (window.location.pathname.match(/\/(launchpad-\d+|automechanika)\//) || [null, 'launchpad-2'])[1];
+      window.location.href = base + appFolder + '/';
     }, 700);
   });
 

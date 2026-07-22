@@ -5,7 +5,7 @@
 (function() {
   // Detects which prototype folder (launchpad-1, launchpad-2, …) the current page lives in.
   function currentAppPath() {
-    var m = window.location.pathname.match(/\/(launchpad-\d+)\//);
+    var m = window.location.pathname.match(/\/(launchpad-\d+|automechanika)\//);
     return m ? m[1] : "launchpad-1";
   }
 

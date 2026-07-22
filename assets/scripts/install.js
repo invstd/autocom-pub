@@ -118,7 +118,8 @@
   if (openAppBtn) {
     openAppBtn.addEventListener('click', function () {
       var base = root.getAttribute('data-base-path') || '/';
-      window.location.href = base + 'launchpad-2/welcome/';
+      var appFolder = (window.location.pathname.match(/\/(launchpad-\d+|automechanika)\//) || [null, 'launchpad-2'])[1];
+      window.location.href = base + appFolder + '/welcome/';
     });
   }
 
