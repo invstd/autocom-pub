@@ -11,7 +11,7 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1785224357693';
+var CACHE_NAME = 'automechanika-1785251103182';
 
 var PRECACHE_URLS = [
   '/autocom-pub/automechanika/',
@@ -41,6 +41,7 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/fonts/WorkSans-SemiBold.woff2',
   '/autocom-pub/assets/scripts/vendor/confetti.browser.min.js',
   '/autocom-pub/assets/scripts/add-vci.js',
+  '/autocom-pub/assets/scripts/battery-soh-modal.js',
   '/autocom-pub/assets/scripts/connectivity-check.js',
   '/autocom-pub/assets/scripts/diagnostics-dashboard.js',
   '/autocom-pub/assets/scripts/get-started.js',
