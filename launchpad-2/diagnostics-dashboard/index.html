@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -327,7 +327,7 @@
 
 </span>
 
-    <span class="text-base-content text-sm">Security Gateway:</span>
+    <span class="text-base-content text-sm">Secure Gateway:</span>
     <span class="badge badge-success badge-sm shrink-0" id="sg-status-indicator-badge">UNLOCKED</span>
     
   </div>

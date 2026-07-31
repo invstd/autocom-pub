@@ -9,6 +9,14 @@
     return m ? m[1] : "launchpad-1";
   }
 
+  // Detects which vehicle-selection page (cars vs. trucks) is currently active, so this one
+  // shared script can redirect back to whichever page it's already on instead of always the
+  // cars one — used by the mobile brand-select redirect below.
+  function currentPageSlug() {
+    var m = window.location.pathname.match(/\/(vehicle-selection(?:-trucks)?)\//);
+    return m ? m[1] : "vehicle-selection";
+  }
+
   // Read brands from page (injected by Nunjucks)
   var brandsEl = document.getElementById("vehicle-selection-brands-data");
   window.__vehicleSelectionBrands = brandsEl ? JSON.parse(brandsEl.textContent) : [];
@@ -253,7 +261,7 @@
     if (filterSelectWrapper) {
       filterSelectWrapper.addEventListener("filter-select-change", function(e) {
         if (e.detail && e.detail.value) {
-          var url = basePathMobile + currentAppPath() + "/vehicle-selection/?brand=" + encodeURIComponent(e.detail.value);
+          var url = basePathMobile + currentAppPath() + "/" + currentPageSlug() + "/?brand=" + encodeURIComponent(e.detail.value);
           setTimeout(function() { window.location = url; }, 120);
         }
       });
@@ -267,6 +275,10 @@
   var formEl = document.getElementById("vehicle-cascade-form");
   if (card && promptEl && formEl) {
     var basePath = (card.getAttribute("data-base-path") || "").replace(/\/?$/, "/");
+    // Cars and trucks brand JSON live in separate folders (brand names can collide across the
+    // two — e.g. Volvo Cars vs. Volvo Trucks — so they can't safely share one folder). Defaults
+    // to the cars folder; the trucks page sets data-brands-models-path to override it.
+    var brandsModelsPath = (card.getAttribute("data-brands-models-path") || "assets/data/brands_models/").replace(/\/?$/, "/");
     var brandSlugC = new URLSearchParams(window.location.search).get("brand");
     var brandData = null;
 
@@ -318,7 +330,7 @@
       showPrompt();
     } else {
       showForm(true);
-      fetch(basePath + "assets/data/brands_models/" + encodeURIComponent(brandSlugC) + "_models.json")
+      fetch(basePath + brandsModelsPath + encodeURIComponent(brandSlugC) + "_models.json")
         .then(function(r) { return r.ok ? r.json() : Promise.reject(new Error("Brand data not found")); })
         .then(function(data) {
           brandData = data;
