@@ -11,13 +11,14 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1785523818870';
+var CACHE_NAME = 'automechanika-1787037979096';
 
 var PRECACHE_URLS = [
   '/autocom-pub/automechanika/',
   '/autocom-pub/automechanika/add-vci/',
   '/autocom-pub/automechanika/dashboard/',
   '/autocom-pub/automechanika/diagnostics-dashboard/',
+  '/autocom-pub/automechanika/diagnostics-dashboard-trucks/',
   '/autocom-pub/automechanika/get-started/',
   '/autocom-pub/automechanika/history/',
   '/autocom-pub/automechanika/install/',
@@ -117,6 +118,7 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/data/brands_models/volkswagen_models.json',
   '/autocom-pub/assets/data/brands_models/volvo_models.json',
   '/autocom-pub/assets/data/brands_models_trucks/volvo_trucks_models.json',
+  '/autocom-pub/assets/data/brands_models_trucks/man_trucks_models.json',
   '/autocom-pub/assets/images/1730130528-mechanic-2-icon-highres.avif',
   '/autocom-pub/assets/images/1749557346-emdoor-em-120a-tablet.avif',
   '/autocom-pub/assets/images/autocom-symbol.svg',
@@ -178,6 +180,7 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/images/brands/toyota.png',
   '/autocom-pub/assets/images/brands/volkswagen.png',
   '/autocom-pub/assets/images/brands/volvo.png',
+  '/autocom-pub/assets/images/brands-trucks/man-trucks.png',
   '/autocom-pub/assets/images/brands-trucks/volvo-trucks.png',
   '/autocom-pub/assets/images/icons/icon-192.png',
   '/autocom-pub/assets/images/icons/icon-512.png',
@@ -230,6 +233,7 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/images/vehicles/Volvo_V60_D4_2015.png',
   '/autocom-pub/assets/images/vehicles/Volvo_XC60_2014.png',
   '/autocom-pub/assets/images/vehicles/Volvo_XC60_T6_2017.png',
+  '/autocom-pub/assets/images/vehicles-trucks/man-truck-demo.png',
   '/autocom-pub/assets/images/vehicles-trucks/volvo-fh-xl-chassis-truck-4-axle-2025.png'
 ];
 

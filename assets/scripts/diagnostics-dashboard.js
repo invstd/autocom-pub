@@ -133,11 +133,32 @@ const vehicleImageMap = {
   "_default": "Volkswagen_Touareg_2023.png"
 };
 
+// Trucks brand/vehicle images live in separate brands-trucks/ and vehicles-trucks/ folders, not
+// brands/ and vehicles/ (see [[trucks-feature-wabco-weasy]] — car "Volvo" already exists, so
+// truck brand data uses its own namespace and its own image folders to avoid colliding with it).
+const vehicleImageMapTrucks = {
+  "volvo_trucks": {
+    "fh": "volvo-fh-xl-chassis-truck-4-axle-2025.png",
+    "_default": "volvo-fh-xl-chassis-truck-4-axle-2025.png"
+  },
+  "man_trucks": {
+    "_default": "man-truck-demo.png"
+  },
+  "_default": "volvo-fh-xl-chassis-truck-4-axle-2025.png"
+};
+
+// Cars/Trucks is a Settings preference, not something the diagnostics-dashboard URL params say
+// directly — same source of truth used by the sidebar/vehicle-selection redirect gates.
+const isTrucksMode = localStorage.getItem('automechanika-vehicle-type') === 'trucks';
+const brandsImageFolder = isTrucksMode ? 'brands-trucks' : 'brands';
+const vehiclesImageFolder = isTrucksMode ? 'vehicles-trucks' : 'vehicles';
+
 function getVehicleImage(brandSlug, model) {
-  const brandImages = vehicleImageMap[brandSlug] || vehicleImageMap["_default"];
+  const map = isTrucksMode ? vehicleImageMapTrucks : vehicleImageMap;
+  const brandImages = map[brandSlug] || map["_default"];
   if (typeof brandImages === 'string') return brandImages;
   const modelSlug = (model || '').toLowerCase().replace(/\s+/g, '-');
-  return brandImages[modelSlug] || brandImages["_default"] || vehicleImageMap["_default"];
+  return brandImages[modelSlug] || brandImages["_default"] || map["_default"];
 }
 
 // Update vehicle display if URL params are present
@@ -146,12 +167,13 @@ if (vehicleData.vin || vehicleData.model || vehicleData.brandSlug) {
   const vehicleTitle = document.querySelector('[data-vehicle-title]');
   const vehicleVin = document.querySelector('[data-vehicle-vin]');
   const vehicleImage = document.querySelector('[data-vehicle-image]');
-  
+  const vehicleImageWrapper = document.querySelector('[data-car-image-wrapper]');
+
   // Brand logo: URL may pass dataSlug (e.g. alfa_romeo); image files use logoSlug (e.g. alfa-romeo)
   if (brandLogo && vehicleData.brandSlug) {
     const basePath = brandLogo.dataset.basePath || '/';
     const logoSlug = vehicleData.brandSlug.replace(/_/g, '-');
-    brandLogo.src = basePath + 'assets/images/brands/' + logoSlug + '.png';
+    brandLogo.src = basePath + 'assets/images/' + brandsImageFolder + '/' + logoSlug + '.png';
     brandLogo.alt = vehicleData.brand;
   }
   
@@ -170,8 +192,25 @@ if (vehicleData.vin || vehicleData.model || vehicleData.brandSlug) {
   if (vehicleImage && vehicleData.brandSlug) {
     const basePath = vehicleImage.dataset.basePath || '/';
     const imageName = getVehicleImage(vehicleData.brandSlug, vehicleData.model);
-    vehicleImage.src = basePath + 'assets/images/vehicles/' + imageName;
+    vehicleImage.src = basePath + 'assets/images/' + vehiclesImageFolder + '/' + imageName;
     vehicleImage.alt = vehicleData.brand + ' ' + vehicleData.model + (vehicleData.year ? ' ' + vehicleData.year : '');
+    // Car photos are pre-cropped to roughly match the 16:10 frame, so object-cover fills it
+    // edge-to-edge on purpose. The truck photo (and likely future ones) is a square studio shot —
+    // object-cover was cutting off the cab roof and rear wheels to force it into that wide, short
+    // frame. object-contain alone fixed the cropping but then shrank the image a lot to fit inside
+    // the same wide/short box, leaving big empty gutters on both sides. Squaring the wrapper's own
+    // aspect ratio for trucks (below) instead of just changing object-fit means the image fills
+    // the frame at full size, correct regardless of the source photo's own aspect ratio.
+    vehicleImage.classList.toggle('object-cover', !isTrucksMode);
+    vehicleImage.classList.toggle('object-contain', isTrucksMode);
+  }
+
+  // Tailwind's aspect-[16/10]/aspect-square utilities don't reliably win here — main.css has a
+  // hand-written .diagnostics-dashboard-vehicle-image rule at the same specificity that also sets
+  // aspect-ratio/max-height, so toggling Tailwind classes was fighting a coin-flip on source
+  // order. A dedicated CSS class (see main.css) sidesteps that instead of trying to out-order it.
+  if (vehicleImageWrapper) {
+    vehicleImageWrapper.classList.toggle('diagnostics-dashboard-vehicle-image--trucks', isTrucksMode);
   }
 }
 

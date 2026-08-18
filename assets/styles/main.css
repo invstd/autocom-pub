@@ -14147,6 +14147,9 @@ html[data-theme="Wabco Dark"] [data-brand-logo="wabco"] {
     max-height: 14rem;
   }
 }
+.diagnostics-dashboard-vehicle-image--trucks {
+  aspect-ratio: 32 / 22;
+}
 .vehicle-image-tinted [data-vehicle-image] {
   mix-blend-mode: darken;
   opacity: 0.88;
