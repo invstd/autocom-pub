@@ -11,7 +11,7 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1787037979096';
+var CACHE_NAME = 'automechanika-1787148740978';
 
 var PRECACHE_URLS = [
   '/autocom-pub/automechanika/',
@@ -47,6 +47,10 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/scripts/battery-soh-modal.js',
   '/autocom-pub/assets/scripts/connectivity-check.js',
   '/autocom-pub/assets/scripts/diagnostics-dashboard.js',
+  '/autocom-pub/assets/scripts/data-lists-library.js',
+  '/autocom-pub/assets/scripts/data-lists-modal.js',
+  '/autocom-pub/assets/scripts/dtc-detail-modal.js',
+  '/autocom-pub/assets/scripts/dtc-library.js',
   '/autocom-pub/assets/scripts/get-started.js',
   '/autocom-pub/assets/scripts/hero-vin-vrm.js',
   '/autocom-pub/assets/scripts/index-onboarding.js',
@@ -60,6 +64,7 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/scripts/scan-vin-modal.js',
   '/autocom-pub/assets/scripts/vci-pair-detect-modal.js',
   '/autocom-pub/assets/scripts/vehicle-selection.js',
+  '/autocom-pub/assets/scripts/vehicle-tasks-modal.js',
   '/autocom-pub/assets/scripts/welcome.js',
   '/autocom-pub/assets/data/brands_models/abarth_models.json',
   '/autocom-pub/assets/data/brands_models/alfa_romeo_models.json',

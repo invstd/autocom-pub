@@ -217,14 +217,20 @@ if (vehicleData.vin || vehicleData.model || vehicleData.brandSlug) {
 // Simulated battery voltage reading — single source of truth for the status-badge-row's badge
 // text/color and the low-voltage notification below, so all three always agree. Same red/amber
 // (orange)/green severity language as everywhere else in the app (notifications, VCI unstable).
-const mockVoltage = 11.4;
+//
+// Heavy trucks run a 24V electrical system (two 12V batteries in series), not a car's 12V system —
+// showing a car-style ~11-12V reading on a truck dashboard would be wrong. Nominal voltage and
+// thresholds scale with isTrucksMode; the mock reading keeps the same proportional "slightly low"
+// deficit (~5% under nominal) either way, so both land in the same warning severity for the demo.
+const nominalVoltage = isTrucksMode ? 24 : 12;
+const mockVoltage = isTrucksMode ? 22.8 : 11.4;
 const voltageBadge = document.getElementById('vehicle-voltage-stat-badge');
 if (voltageBadge) {
   voltageBadge.textContent = mockVoltage.toFixed(1) + 'V';
   let voltageBadgeClass = 'badge-success';
-  if (mockVoltage < 11.0) {
+  if (mockVoltage < nominalVoltage - 2) {
     voltageBadgeClass = 'badge-error';
-  } else if (mockVoltage < 12.0) {
+  } else if (mockVoltage < nominalVoltage) {
     voltageBadgeClass = 'badge-warning';
   }
   voltageBadge.className = 'badge ' + voltageBadgeClass + ' badge-sm shrink-0';
@@ -234,13 +240,13 @@ if (voltageBadge) {
 // reporting voltage once connected), only when the reading is actually low. Deduped per VIN so
 // revisiting the same vehicle in-session doesn't re-fire it. AutocomNotifications loads via a
 // script tag later in the document, so the check happens inside the timeout, not at parse time.
-if (mockVoltage < 12.0) {
+if (mockVoltage < nominalVoltage) {
   setTimeout(function () {
     if (!window.AutocomNotifications) return;
     window.AutocomNotifications.push(
       'voltage',
       'Low battery voltage detected',
-      'This vehicle\'s battery is reading ' + mockVoltage.toFixed(1) + 'V, below the healthy 12V+ range. Check the battery or charging system before your next scan.',
+      'This vehicle\'s battery is reading ' + mockVoltage.toFixed(1) + 'V, below the healthy ' + nominalVoltage + 'V+ range. Check the battery or charging system before your next scan.',
       { dedupeKey: 'voltage-' + (vehicleData.vin || 'unknown') }
     );
   }, 2000);
@@ -303,6 +309,46 @@ function getRandomDtcCodes(count) {
     codes.push(sampleDtcCodes[Math.floor(Math.random() * sampleDtcCodes.length)]);
   }
   return codes;
+}
+
+// Systems with curated content in AutocomDtcLibrary (dtc-library.js) surface those real,
+// deterministic codes instead of the random sample above — see dtc-detail-modal.njk for why.
+function getDtcCodesForSystem(nodeId, count) {
+  const libraryEntries = (window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || [];
+  if (libraryEntries.length > 0) {
+    return libraryEntries.map(function (entry) { return entry.code; });
+  }
+  return getRandomDtcCodes(count);
+}
+
+// Curated systems (ones with real drill-down content in AutocomDtcLibrary) get a deterministic
+// "appears every other scan, once it first appears" pattern instead of a fresh coin flip each
+// scan — built for trade-show demos, so a demonstrator can run one scan showing a fault + AI Assist
+// explanation, then a follow-up scan showing it resolved, reliably. Systems with no curated
+// content (most of them) keep the original random 80/15/5 roll below, unchanged — there's no
+// drill-down story to walk through for those, so predictable alternation wouldn't add anything
+// and would just look repetitive over several demo runs.
+function getScanCount() {
+  return parseInt(localStorage.getItem('automechanika-scan-count') || '0', 10);
+}
+
+function isCuratedSystem(nodeId) {
+  return !!(window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId] && window.AutocomDtcLibrary[nodeId].length > 0);
+}
+
+function shouldCuratedSystemFail(nodeId, scanCount) {
+  const key = 'automechanika-fault-parity-' + nodeId;
+  const storedParity = localStorage.getItem(key);
+  if (storedParity !== null) {
+    return (scanCount % 2) === parseInt(storedParity, 10);
+  }
+  // Parity not decided yet: this scan is a coin flip. If it fails, lock in this scan's parity
+  // so future scans alternate predictably from here on.
+  if (Math.random() < 0.5) {
+    localStorage.setItem(key, String(scanCount % 2));
+    return true;
+  }
+  return false;
 }
 
 // ===== Health Gauge API =====
@@ -872,14 +918,14 @@ function syncSystemListItem(nodeId, state, dtcCodes) {
       if (warningIcon) warningIcon.classList.remove('hidden');
       if (badges && dtcCodes.length > 0) {
         badges.classList.remove('hidden');
-        renderDtcBadges(badges, dtcCodes, 'warning');
+        renderDtcBadges(badges, dtcCodes, 'warning', nodeId);
       }
       break;
     case 'error':
       if (errorIcon) errorIcon.classList.remove('hidden');
       if (badges && dtcCodes.length > 0) {
         badges.classList.remove('hidden');
-        renderDtcBadges(badges, dtcCodes, 'error');
+        renderDtcBadges(badges, dtcCodes, 'error', nodeId);
       }
       break;
     case 'cleared':
@@ -892,56 +938,89 @@ function syncSystemListItem(nodeId, state, dtcCodes) {
   }
   
   // Update sub-system items within this system
-  syncSubsystemItems(systemItem, state, dtcCodes);
+  syncSubsystemItems(systemItem, state, dtcCodes, nodeId);
 }
 
-// Sync sub-system item states based on parent state
-function syncSubsystemItems(systemItem, parentState, dtcCodes) {
+// Sync sub-system item states based on parent state. The highlighted subsystem row (not the small
+// header badge) is the primary "this is the DTC" affordance in this UI, so it needs the same
+// library-backed click-through as renderDtcBadges below.
+function syncSubsystemItems(systemItem, parentState, dtcCodes, nodeId) {
   const subsystems = systemItem.querySelectorAll('.subsystem-item');
   if (subsystems.length === 0) return;
-  
+  const libraryCodes = new Set(
+    ((window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || []).map(function (e) { return e.code; })
+  );
+
   // Reset all subsystems first
   subsystems.forEach(sub => {
     sub.removeAttribute('data-status');
+    sub.classList.remove('subsystem-item--clickable');
+    sub.onclick = null;
     const statusEl = sub.querySelector('.subsystem-status');
     if (statusEl) statusEl.textContent = '';
   });
-  
+
   if (parentState === 'ok') {
     // All subsystems are OK - no need to mark individually
     return;
   }
-  
+
   if (parentState === 'warning' || parentState === 'error') {
     // Assign each DTC code to a random subsystem
     const subsystemArray = Array.from(subsystems);
     const shuffled = subsystemArray.sort(() => 0.5 - Math.random());
     const numAffected = Math.min(dtcCodes.length, shuffled.length);
-    
+
     for (let i = 0; i < numAffected; i++) {
       const sub = shuffled[i];
+      const code = dtcCodes[i];
       sub.dataset.status = parentState;
       const statusEl = sub.querySelector('.subsystem-status');
       if (statusEl) {
-        statusEl.textContent = dtcCodes[i];
+        statusEl.textContent = code;
+      }
+      if (libraryCodes.has(code) && typeof window.openDtcDetailModal === 'function') {
+        sub.classList.add('subsystem-item--clickable');
+        sub.onclick = function () { window.openDtcDetailModal(code, nodeId); };
       }
     }
   }
 }
 
-// Render DTC code badges
-function renderDtcBadges(container, codes, severity) {
+// Render DTC code badges. Codes backed by AutocomDtcLibrary[nodeId] (see dtc-library.js) render
+// as clickable buttons opening the DTC detail modal; other codes stay plain, non-interactive badges.
+function renderDtcBadges(container, codes, severity, nodeId) {
   container.innerHTML = '';
   const badgeClass = severity === 'error' ? 'badge-error' : 'badge-warning';
-  
+  const libraryCodes = new Set(
+    ((window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || []).map(function (e) { return e.code; })
+  );
+
   if (codes.length === 0) return;
-  
+
+  function makeBadge(code, extraClass) {
+    const isClickable = libraryCodes.has(code) && typeof window.openDtcDetailModal === 'function';
+    const el = document.createElement(isClickable ? 'button' : 'span');
+    if (isClickable) {
+      el.type = 'button';
+      // relative z-10: collapse-arrow's invisible toggle checkbox sits at z-index:1 covering the
+      // whole .collapse-title row (DaisyUI, by design) — without this, real clicks land on the
+      // checkbox (toggling expand/collapse) instead of this button.
+      el.className = `badge badge-sm ${extraClass} cursor-pointer relative z-10`;
+      el.addEventListener('click', function (e) {
+        e.stopPropagation();
+        window.openDtcDetailModal(code, nodeId);
+      });
+    } else {
+      el.className = `badge badge-sm ${extraClass}`;
+    }
+    el.textContent = code;
+    return el;
+  }
+
   // First code badge
-  const firstBadge = document.createElement('span');
-  firstBadge.className = `badge badge-sm ${badgeClass}`;
-  firstBadge.textContent = codes[0];
-  container.appendChild(firstBadge);
-  
+  container.appendChild(makeBadge(codes[0], badgeClass));
+
   // "+N more" badge if multiple codes
   if (codes.length > 1) {
     const moreBadge = document.createElement('span');
@@ -1022,6 +1101,11 @@ function startScanDemo() {
     return;
   }
   
+  // Advance the persisted scan counter once per full scan run — drives shouldCuratedSystemFail's
+  // "appears every other scan" pattern below.
+  const scanCount = getScanCount() + 1;
+  localStorage.setItem('automechanika-scan-count', String(scanCount));
+
   // Reset scan results
   scanResults = { ok: 0, warning: 0, error: 0 };
   
@@ -1120,17 +1204,26 @@ function startScanDemo() {
       let dtcCodes = [];
       
       // Only assign error/warning states to nodes with matching system items
-      if (hasSystemItem) {
+      if (hasSystemItem && isCuratedSystem(nodeId)) {
+        // Deterministic "every other scan" pattern — see shouldCuratedSystemFail's comment.
+        if (shouldCuratedSystemFail(nodeId, scanCount)) {
+          state = 'error';
+          dtcCodes = getDtcCodesForSystem(nodeId, 1);
+          scanResults.error++;
+        } else {
+          scanResults.ok++;
+        }
+      } else if (hasSystemItem) {
         // Random result: 80% ok, 15% warning, 5% error
         const rand = Math.random();
-        
+
         if (rand > 0.95) {
           state = 'error';
-          dtcCodes = getRandomDtcCodes(Math.floor(Math.random() * 3) + 1);
+          dtcCodes = getDtcCodesForSystem(nodeId, Math.floor(Math.random() * 3) + 1);
           scanResults.error++;
         } else if (rand > 0.8) {
           state = 'warning';
-          dtcCodes = getRandomDtcCodes(Math.floor(Math.random() * 2) + 1);
+          dtcCodes = getDtcCodesForSystem(nodeId, Math.floor(Math.random() * 2) + 1);
           scanResults.warning++;
         } else {
           scanResults.ok++;
