@@ -1,0 +1,109 @@
+(function () {
+  var page = document.querySelector(".my-garage-page");
+  if (!page) return;
+
+  // --- Sessions: left-list row selection -> matching detail panel ---
+  var sessionRows = page.querySelectorAll(".garage-vehicle-row");
+  sessionRows.forEach(function (row) {
+    row.addEventListener("click", function () {
+      var id = row.getAttribute("data-vehicle-id");
+
+      sessionRows.forEach(function (r) {
+        r.classList.toggle("bg-base-200", r === row);
+      });
+
+      page.querySelectorAll(".garage-detail-panel").forEach(function (panel) {
+        var active = panel.getAttribute("data-detail-panel") === id;
+        panel.classList.toggle("hidden", !active);
+        panel.classList.toggle("flex", active);
+      });
+    });
+  });
+  if (sessionRows.length) sessionRows[0].classList.add("bg-base-200");
+
+  // --- Repair Orders: left-list row selection -> matching detail panel ---
+  var repairOrderRows = page.querySelectorAll(".repair-order-row");
+  repairOrderRows.forEach(function (row) {
+    row.addEventListener("click", function () {
+      var id = row.getAttribute("data-vehicle-id");
+
+      repairOrderRows.forEach(function (r) {
+        r.classList.toggle("bg-base-200", r === row);
+      });
+
+      page.querySelectorAll(".garage-ro-detail-panel").forEach(function (panel) {
+        var active = panel.getAttribute("data-ro-detail-panel") === id;
+        panel.classList.toggle("hidden", !active);
+        panel.classList.toggle("flex", active);
+      });
+    });
+  });
+  if (repairOrderRows.length) repairOrderRows[0].classList.add("bg-base-200");
+
+  // --- Search filter (both row sets; also hides date-group headers left with no visible rows) ---
+  var searchEl = page.querySelector("#garage-search");
+  if (searchEl) {
+    var filterRows = function (rows) {
+      var q = (searchEl.value || "").trim().toLowerCase();
+      rows.forEach(function (row) {
+        var text = (row.getAttribute("data-searchable") || "").toLowerCase();
+        row.classList.toggle("hidden", Boolean(q) && text.indexOf(q) === -1);
+      });
+    };
+    var filterGroupHeaders = function (list) {
+      list.querySelectorAll(".garage-group-header").forEach(function (header) {
+        var sibling = header.nextElementSibling;
+        var hasVisibleRow = false;
+        while (sibling && !sibling.classList.contains("garage-group-header")) {
+          if (!sibling.classList.contains("hidden")) hasVisibleRow = true;
+          sibling = sibling.nextElementSibling;
+        }
+        header.classList.toggle("hidden", !hasVisibleRow);
+      });
+    };
+    var filter = function () {
+      filterRows(sessionRows);
+      filterRows(repairOrderRows);
+      page.querySelectorAll("[data-garage-list]").forEach(filterGroupHeaders);
+    };
+    searchEl.addEventListener("input", filter);
+    searchEl.addEventListener("search", filter);
+  }
+
+  // --- Top pill tabs: Repair Orders / Sessions ---
+  var topTabs = page.querySelectorAll("[data-garage-top-tabs] [data-garage-tab]");
+  topTabs.forEach(function (tabBtn) {
+    tabBtn.addEventListener("click", function () {
+      var target = tabBtn.getAttribute("data-garage-tab");
+      topTabs.forEach(function (b) {
+        b.classList.toggle("tab-active", b === tabBtn);
+      });
+      page.querySelectorAll("[data-garage-list]").forEach(function (list) {
+        list.classList.toggle("hidden", list.getAttribute("data-garage-list") !== target);
+      });
+      page.querySelectorAll("[data-garage-detail-set]").forEach(function (set) {
+        var active = set.getAttribute("data-garage-detail-set") === target;
+        set.classList.toggle("hidden", !active);
+        set.classList.toggle("flex", active);
+      });
+    });
+  });
+
+  // --- Per-vehicle detail tabs: Sessions / Documents ---
+  var detailTabs = page.querySelectorAll("[data-garage-detail-tab]");
+  detailTabs.forEach(function (tabBtn) {
+    tabBtn.addEventListener("click", function () {
+      var tabsWrap = tabBtn.closest("[data-garage-detail-tabs]");
+      var panelWrap = tabBtn.closest(".garage-detail-panel");
+      if (!tabsWrap || !panelWrap) return;
+      var target = tabBtn.getAttribute("data-garage-detail-tab");
+
+      tabsWrap.querySelectorAll("[data-garage-detail-tab]").forEach(function (b) {
+        b.classList.toggle("tab-active", b === tabBtn);
+      });
+      panelWrap.querySelectorAll("[data-garage-detail-panel]").forEach(function (p) {
+        p.classList.toggle("hidden", p.getAttribute("data-garage-detail-panel") !== target);
+      });
+    });
+  });
+})();

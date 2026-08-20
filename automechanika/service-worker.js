@@ -11,7 +11,7 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1787148740978';
+var CACHE_NAME = 'automechanika-1787214569356';
 
 var PRECACHE_URLS = [
   '/autocom-pub/automechanika/',
@@ -20,10 +20,10 @@ var PRECACHE_URLS = [
   '/autocom-pub/automechanika/diagnostics-dashboard/',
   '/autocom-pub/automechanika/diagnostics-dashboard-trucks/',
   '/autocom-pub/automechanika/get-started/',
-  '/autocom-pub/automechanika/history/',
   '/autocom-pub/automechanika/install/',
   '/autocom-pub/automechanika/login/',
   '/autocom-pub/automechanika/my-garage/',
+  '/autocom-pub/automechanika/my-garage-trucks/',
   '/autocom-pub/automechanika/settings/',
   '/autocom-pub/automechanika/tech-data/',
   '/autocom-pub/automechanika/theme-test/',
@@ -52,11 +52,11 @@ var PRECACHE_URLS = [
   '/autocom-pub/assets/scripts/dtc-detail-modal.js',
   '/autocom-pub/assets/scripts/dtc-library.js',
   '/autocom-pub/assets/scripts/get-started.js',
+  '/autocom-pub/assets/scripts/garage.js',
   '/autocom-pub/assets/scripts/hero-vin-vrm.js',
   '/autocom-pub/assets/scripts/index-onboarding.js',
   '/autocom-pub/assets/scripts/install.js',
   '/autocom-pub/assets/scripts/login.js',
-  '/autocom-pub/assets/scripts/my-garage.js',
   '/autocom-pub/assets/scripts/notifications.js',
   '/autocom-pub/assets/scripts/onboarding-drawer.js',
   '/autocom-pub/assets/scripts/onboarding-waypoint-tour.js',
