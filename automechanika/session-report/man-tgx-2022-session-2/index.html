@@ -154,7 +154,8 @@
 
 
 
-<div class="session-report-page w-full max-w-3xl mx-auto p-4 sm:p-6 print:p-0 print:max-w-none flex flex-col gap-4" data-report-slug="man-tgx-2022-session-2">
+
+<div class="session-report-page w-full max-w-3xl mx-auto p-4 sm:p-6 print:p-0 print:max-w-none flex flex-col gap-4" data-report-slug="man-tgx-2022-session-2" >
   <div class="flex items-center justify-between print:hidden">
     <a href="/autocom-pub/automechanika/my-garage-trucks/" class="btn btn-ghost btn-sm gap-1.5">
       
@@ -305,14 +306,14 @@
       <dl class="flex flex-col gap-1 text-sm">
         <div class="flex justify-between gap-4"><dt class="text-base-content/60">Name</dt><dd class="text-base-content text-right" data-field="customerName">Vägtransport Öst</dd></div>
         <div class="flex justify-between gap-4"><dt class="text-base-content/60">Telephone</dt><dd class="text-base-content" data-field="customerPhone">070-541 604</dd></div>
-        <div class="flex justify-between gap-4"><dt class="text-base-content/60">Session</dt><dd class="text-base-content text-right">Today · 08:27 – 08:43 · 16 min</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-base-content/60">Session</dt><dd class="text-base-content text-right" data-field="sessionSummary">Today · 08:27 – 08:43 · 16 min</dd></div>
       </dl>
     </div>
   </div>
 
   <div>
     <p class="text-xs font-semibold uppercase tracking-wide text-base-content/50 mb-2">Diagnostic Events</p>
-    <div class="flex flex-col border-t border-base-200">
+    <div class="flex flex-col border-t border-base-200" data-event-rows>
       
       
       
@@ -408,7 +409,14 @@
 </div>
 
 
+<div class="hidden" data-icon-pool aria-hidden="true">
+  
+</div>
+
+
 <script type="application/json" id="report-defaults-data">{"fileName":"MAN-TGX-2022-Session-2-Report","mechanic":"Christer Savefors","customerName":"Vägtransport Öst","customerPhone":"070-541 604","notes":"","eventCount":4}</script>
+<script src="/autocom-pub/assets/scripts/live-session.js"></script>
+<script src="/autocom-pub/assets/scripts/live-report.js"></script>
 <script src="/autocom-pub/assets/scripts/report-shared.js"></script>
 <script>
   (function () {

@@ -3,6 +3,7 @@
 // Read vehicle info from URL params (passed from VCI pairing flow)
 const urlParams = new URLSearchParams(window.location.search);
 const vehicleData = {
+  vehicleId: urlParams.get('vehicleId') || '',
   vin: urlParams.get('vin') || '',
   brand: urlParams.get('brand') || '',
   brandSlug: urlParams.get('brandSlug') || '',
@@ -252,6 +253,52 @@ if (mockVoltage < nominalVoltage) {
   }, 2000);
 }
 
+// ===== Live session: real dashboard actions → this vehicle's Garage session history =====
+// See live-session.js for the storage/append contract. Every append site below reuses that one
+// function so there's a single place that decides what "logging an event" means.
+const currentSessionBadge = document.querySelector('[data-current-session-badge]');
+const currentSessionText = document.querySelector('[data-current-session-text]');
+
+function refreshCurrentSessionBadge() {
+  if (!currentSessionBadge || !window.AutocomLiveSession || !vehicleData.vehicleId) return;
+  const label = window.AutocomLiveSession.summaryLabel(vehicleData.vehicleId);
+  if (label) {
+    if (currentSessionText) currentSessionText.textContent = label.replace('Current session · ', '');
+    currentSessionBadge.classList.remove('hidden');
+  } else {
+    currentSessionBadge.classList.add('hidden');
+  }
+}
+
+// icon/label/tone/value match the exact event shape genSessions() produces in
+// garageVehiclesCars.js/-Trucks.js (icon, label, tone, value) — no second shape to keep in sync.
+function logLiveEvent(iconName, label, tone, value) {
+  if (!window.AutocomLiveSession || !vehicleData.vehicleId) return;
+  window.AutocomLiveSession.append(vehicleData.vehicleId, { icon: iconName, label: label, tone: tone, value: value });
+  refreshCurrentSessionBadge();
+}
+
+refreshCurrentSessionBadge();
+// Exposed so other modals (Battery SoH, Data Lists) can refresh the badge immediately after
+// logging their own event, instead of waiting for the next dashboard action to do it.
+window.refreshCurrentSessionBadgeFromLiveSession = refreshCurrentSessionBadge;
+
+// Generic handler for Vehicle Task tiles that don't have their own real flow (everything except
+// BMS, which opens the Battery SoH modal). These tiles have no per-task simulated behavior to
+// speak of, so "performing" one just confirms + logs it — same "believable outcome, not a full
+// wizard" scope call as the rest of this restructuring (see PROGRESS.md).
+const VEHICLE_TASK_VALUES = {
+  'oil-service-reset': 'Reset', 'tpms': 'Recalibrated', 'srs-airbag-reset': 'Cleared',
+  'dpf-regeneration': 'Completed', 'key-programming': '1 key added',
+  'service-reset': 'Reset', 'adblue-reset': 'Reset', 'brake-pad-reset': 'Reset', 'retarder-reset': 'Reset'
+};
+window.runVehicleTask = function (id, label, iconName) {
+  logLiveEvent(iconName, label, 'success', VEHICLE_TASK_VALUES[id] || 'Completed');
+  if (window.AutocomNotifications) {
+    window.AutocomNotifications.push('task', label + ' completed', 'Logged to this session’s event history.');
+  }
+};
+
 const page = document.querySelector('.diagnostics-dashboard-page');
 const tabs = document.querySelector('[data-diagnostics-tabs]');
 const scanBtn = document.querySelector('[data-scan-btn]');
@@ -286,7 +333,6 @@ const scanCompleteErrorsSuffixEl = document.querySelector('[data-scan-complete-e
 const scanCompleteBox = document.querySelector('[data-scan-complete-close]');
 
 // System selection elements
-const systemPresets = document.querySelector('[data-system-presets]');
 const scanCountEl = document.querySelector('[data-scan-count]');
 const systemListWrapper = document.querySelector('[data-system-list-wrapper]');
 const systemCheckboxes = document.querySelectorAll('.system-select-checkbox');
@@ -311,10 +357,18 @@ function getRandomDtcCodes(count) {
   return codes;
 }
 
+// AutocomDtcLibrary (dtc-library.js) is scoped by vehicle type first, then systemId — Cars and
+// Trucks can both have an "engine" systemId that means a different real system, so they don't
+// share one lookup table (see dtc-library.js's header comment).
+function getDtcLibraryForVehicleType() {
+  const library = window.AutocomDtcLibrary || {};
+  return library[isTrucksMode ? 'trucks' : 'cars'] || {};
+}
+
 // Systems with curated content in AutocomDtcLibrary (dtc-library.js) surface those real,
 // deterministic codes instead of the random sample above — see dtc-detail-modal.njk for why.
 function getDtcCodesForSystem(nodeId, count) {
-  const libraryEntries = (window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || [];
+  const libraryEntries = getDtcLibraryForVehicleType()[nodeId] || [];
   if (libraryEntries.length > 0) {
     return libraryEntries.map(function (entry) { return entry.code; });
   }
@@ -333,7 +387,8 @@ function getScanCount() {
 }
 
 function isCuratedSystem(nodeId) {
-  return !!(window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId] && window.AutocomDtcLibrary[nodeId].length > 0);
+  const entries = getDtcLibraryForVehicleType()[nodeId];
+  return !!(entries && entries.length > 0);
 }
 
 function shouldCuratedSystemFail(nodeId, scanCount) {
@@ -665,51 +720,49 @@ function updateMasterCheckboxLabel() {
   masterCheckboxLabel.textContent = masterCheckbox.checked ? 'Unselect all systems' : 'Select all systems';
 }
 
-// Select systems by group preset
-function selectByPreset(preset) {
-  const allItems = document.querySelectorAll('.system-list-item');
-  
-  // Handle custom mode separately
-  if (preset === 'custom') {
-    setCustomMode(true);
-  } else {
-    setCustomMode(false);
-    
-    allItems.forEach(item => {
-      let shouldSelect = false;
-      
-      if (preset === 'all') {
-        shouldSelect = true;
-      } else {
-        shouldSelect = item.dataset.group === preset;
-      }
-      
-      toggleSystemSelection(item, shouldSelect);
-    });
-  }
-  
-  // Update preset button states
-  if (systemPresets) {
-    systemPresets.querySelectorAll('[data-preset]').forEach(btn => {
-      btn.classList.remove('btn-primary');
-      btn.classList.add('btn-ghost');
-    });
-    const activeBtn = systemPresets.querySelector(`[data-preset="${preset}"]`);
-    if (activeBtn) {
-      activeBtn.classList.remove('btn-ghost');
-      activeBtn.classList.add('btn-primary');
-    }
-  }
+// Custom toggle (sticky footer, next to Scan): replaces the old group-preset filter bar
+// (All/Powertrain/Safety/Body/Comfort/Custom), which stopped making sense once systems became 15
+// real, individually-named ECUs instead of a handful of broad categories. Toggling ON reveals
+// checkboxes at both LV1 and LV2 and starts every ECU deselected — with up to 28 functional groups
+// under one ECU (CEM), "start full and uncheck what you don't want" would be far more clicks than
+// "start empty and check the few things you do" for the realistic case of picking 2-3 ECUs to
+// scan. Toggling OFF always resets to "everything selected" (i.e. off = scan everything, same as
+// this page's default before Custom exists at all) rather than remembering a partial pick.
+const customToggleBtn = document.querySelector('[data-custom-toggle-btn]');
+function setAllSystemsSelected(selected) {
+  document.querySelectorAll('.system-list-item').forEach(item => toggleSystemSelection(item, selected));
+  document.querySelectorAll('.subsystem-select-checkbox').forEach(cb => { cb.checked = false; });
 }
-
-// Handle preset button clicks
-if (systemPresets) {
-  systemPresets.addEventListener('click', (e) => {
-    const presetBtn = e.target.closest('[data-preset]');
-    if (!presetBtn) return;
-    selectByPreset(presetBtn.dataset.preset);
+if (customToggleBtn) {
+  customToggleBtn.addEventListener('click', () => {
+    const enabling = !customModeActive;
+    // Selection state must land before setCustomMode() runs — it syncs the master "select
+    // all"/"unselect all" checkbox from the row checkboxes' current state, so doing this in the
+    // other order made it briefly show stale state (checked/"Unselect all" right as everything
+    // was actually being cleared to deselected).
+    setAllSystemsSelected(!enabling);
+    setCustomMode(enabling);
+    customToggleBtn.classList.toggle('btn-primary', enabling);
+    customToggleBtn.classList.toggle('btn-outline', !enabling);
+    customToggleBtn.setAttribute('aria-pressed', String(enabling));
   });
 }
+
+// A functional-group (LV2) checkbox implies its parent ECU should be scanned — a real OBD scan
+// reads a whole ECU's fault memory at once, there's no such thing as scanning just one function
+// within it, so checking any of an ECU's functional groups is really shorthand for checking that
+// ECU. One-directional on purpose (unchecking a functional group does not auto-uncheck the
+// parent): the parent might still be wanted for its own sake or for another checked group under
+// it, and inferring "should the parent come off too" would need real tri-state tracking for very
+// little benefit here.
+document.addEventListener('change', (e) => {
+  const cb = e.target.closest('.subsystem-select-checkbox');
+  if (!cb || !cb.checked) return;
+  const lv2Panel = cb.closest('[data-lv2-panel]');
+  if (!lv2Panel) return;
+  const parentRow = document.querySelector(`.system-list-item[data-system-id="${lv2Panel.dataset.lv2Panel}"]`);
+  if (parentRow) toggleSystemSelection(parentRow, true);
+});
 
 // Handle individual checkbox changes
 systemCheckboxes.forEach(checkbox => {
@@ -754,6 +807,51 @@ if (masterCheckbox) {
 // Initialize selection count
 updateSelectionCount();
 
+// ===== Systems list: LV1 <-> LV2 drill-down =====
+// Replaces the old accordion-per-row interaction (see collapse-list.njk's header comment): LV1
+// (the flat ECU/category list) and LV2 (one item's functional groups/subsystems) are two sibling
+// panels, only one visible at a time, swapped by JS rather than DaisyUI collapse state.
+const lv1List = document.querySelector('[data-lv1-list]');
+
+function showLv1() {
+  if (lv1List) lv1List.classList.remove('hidden');
+  document.querySelectorAll('[data-lv2-panel]').forEach(p => { p.classList.add('hidden'); p.classList.remove('flex'); });
+  if (filterControls) filterControls.classList.toggle('hidden', errorCountBadge && errorCountBadge.textContent === '0');
+  if (systemListWrapper) delete systemListWrapper.dataset.drillMode;
+}
+
+function showLv2(systemId) {
+  const panel = document.querySelector(`[data-lv2-panel="${systemId}"]`);
+  if (!panel) return;
+  if (lv1List) lv1List.classList.add('hidden');
+  document.querySelectorAll('[data-lv2-panel]').forEach(p => { p.classList.add('hidden'); p.classList.remove('flex'); });
+  panel.classList.remove('hidden');
+  panel.classList.add('flex');
+  if (filterControls) filterControls.classList.add('hidden');
+  if (systemListWrapper) systemListWrapper.dataset.drillMode = 'lv2';
+}
+
+if (lv1List) {
+  lv1List.addEventListener('click', (e) => {
+    if (e.target.closest('.system-select-checkbox')) return;
+    const row = e.target.closest('.system-list-item[data-system-id]');
+    if (!row) return;
+    showLv2(row.dataset.systemId);
+  });
+}
+document.querySelectorAll('[data-lv2-back]').forEach(btn => btn.addEventListener('click', showLv1));
+
+// ecu-detail.njk's back arrow is a true "back" (LV3 -> LV2), not a reset to the top of the list —
+// it keeps `systemId` in the URL when returning here specifically so this page knows which ECU's
+// functional-group view to reopen, instead of always landing back on LV1.
+const drillToSystemId = urlParams.get('systemId');
+if (drillToSystemId) {
+  showLv2(drillToSystemId);
+  urlParams.delete('systemId');
+  const cleanUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+  window.history.replaceState(null, '', cleanUrl);
+}
+
 // Tab switching
 tabs.addEventListener('click', (e) => {
   const tab = e.target.closest('[data-tab]');
@@ -768,6 +866,9 @@ tabs.addEventListener('click', (e) => {
   } else {
     page.dataset.view = 'default';
   }
+  // Leaving/returning to the Systems list shouldn't strand it drilled into whatever ECU was open
+  // before — reset to LV1 on every tab switch (a no-op if already there).
+  showLv1();
   applyErrorsFilter();
 });
 
@@ -787,7 +888,8 @@ if (scanBtn && stopBtn) {
   });
 }
 
-// Clear DTCs button
+// Clear DTCs button — this is the dashboard's real "erase fault codes" action, matching the
+// EVENT_TEMPLATES entry of the same name in garageVehiclesCars.js/-Trucks.js.
 if (clearDtcsBtn) {
   clearDtcsBtn.addEventListener('click', () => {
     // Set all topology nodes with errors/warnings to 'cleared' state
@@ -796,14 +898,20 @@ if (clearDtcsBtn) {
         n.dataset.state = 'cleared';
       }
     });
-    // Set all system list items with errors/warnings to 'cleared' state
+    // Set all system list items with errors/warnings to 'cleared' state, counting how many
+    // actually had DTCs to erase so the logged event reflects real work done, not a no-op click.
+    let erasedCount = 0;
     document.querySelectorAll('.system-list-item[data-system-id]').forEach(item => {
       if (item.dataset.state === 'error' || item.dataset.state === 'warning') {
+        erasedCount++;
         syncSystemListItem(item.dataset.systemId, 'cleared', []);
       }
     });
     updateFilterControls();
     applyErrorsFilter();
+    if (erasedCount > 0) {
+      logLiveEvent('alert-octagon', 'Erase fault codes', 'error', erasedCount + ' DTC erased');
+    }
   });
 }
 
@@ -937,55 +1045,71 @@ function syncSystemListItem(nodeId, state, dtcCodes) {
       break;
   }
   
-  // Update sub-system items within this system
-  syncSubsystemItems(systemItem, state, dtcCodes, nodeId);
+  // Update the LV2 panel's functional-group/subsystem rows for this ECU
+  syncSubsystemItems(nodeId, state, dtcCodes);
 }
 
-// Sync sub-system item states based on parent state. The highlighted subsystem row (not the small
-// header badge) is the primary "this is the DTC" affordance in this UI, so it needs the same
-// library-backed click-through as renderDtcBadges below.
-function syncSubsystemItems(systemItem, parentState, dtcCodes, nodeId) {
-  const subsystems = systemItem.querySelectorAll('.subsystem-item');
+// Highlights the specific functional-group row a DTC actually belongs to (dtc-library.js's
+// `functionalGroupId`, real only for the two curated codes) — no more random assignment across
+// every row for codes we don't have real data about, which invented a precision the app doesn't
+// have (see PROGRESS.md's real-ECU restructuring notes). Rows live in the LV2 drill-down panel
+// now, not nested inside the LV1 row (see collapse-list.njk), so this looks the panel up by nodeId
+// directly rather than being handed the LV1 element.
+function syncSubsystemItems(nodeId, parentState, dtcCodes) {
+  const panel = document.querySelector(`[data-lv2-panel="${nodeId}"]`);
+  if (!panel) return;
+  const subsystems = panel.querySelectorAll('.subsystem-item');
   if (subsystems.length === 0) return;
-  const libraryCodes = new Set(
-    ((window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || []).map(function (e) { return e.code; })
-  );
 
   // Reset all subsystems first
   subsystems.forEach(sub => {
     sub.removeAttribute('data-status');
-    sub.classList.remove('subsystem-item--clickable');
-    sub.onclick = null;
     const statusEl = sub.querySelector('.subsystem-status');
     if (statusEl) statusEl.textContent = '';
   });
 
-  if (parentState === 'ok') {
-    // All subsystems are OK - no need to mark individually
-    return;
-  }
-
   if (parentState === 'warning' || parentState === 'error') {
-    // Assign each DTC code to a random subsystem
-    const subsystemArray = Array.from(subsystems);
-    const shuffled = subsystemArray.sort(() => 0.5 - Math.random());
-    const numAffected = Math.min(dtcCodes.length, shuffled.length);
-
-    for (let i = 0; i < numAffected; i++) {
-      const sub = shuffled[i];
-      const code = dtcCodes[i];
-      sub.dataset.status = parentState;
-      const statusEl = sub.querySelector('.subsystem-status');
-      if (statusEl) {
-        statusEl.textContent = code;
-      }
-      if (libraryCodes.has(code) && typeof window.openDtcDetailModal === 'function') {
-        sub.classList.add('subsystem-item--clickable');
-        sub.onclick = function () { window.openDtcDetailModal(code, nodeId); };
-      }
-    }
+    const libraryEntries = getDtcLibraryForVehicleType()[nodeId] || [];
+    dtcCodes.forEach(function (code) {
+      const entry = libraryEntries.find(function (e) { return e.code === code; });
+      if (!entry || !entry.functionalGroupId) return;
+      const row = panel.querySelector(`.subsystem-item[data-subsystem="${entry.functionalGroupId}"]`);
+      if (!row) return;
+      row.dataset.status = parentState;
+      const statusEl = row.querySelector('.subsystem-status');
+      if (statusEl) statusEl.textContent = code;
+    });
   }
 }
+
+// Every LV2 row (functional group / legacy subsystem, see collapse-list.njk) is a real link to
+// its ECU detail page (ecu-detail.njk), carrying the same vehicle-context params this page was
+// loaded with. `data-nav-mode="direct"` (Cars' real-ECU shape — every functional group belongs to
+// the one ECU already identified by the LV2 panel's own systemId, so no further id is needed) vs
+// `data-nav-mode="subsystem"` (Trucks/legacy shape — each row is treated as its own separate
+// "ECU", so subsystemId is required to tell them apart). One delegated listener (rows are re-used
+// across scans, only their status changes) rather than re-binding per sync.
+document.querySelectorAll('.subsystem-item[data-subsystem]').forEach(function (sub) {
+  sub.classList.add('subsystem-item--clickable');
+});
+document.addEventListener('click', function (e) {
+  if (e.target.closest('.subsystem-select-checkbox')) return;
+  const sub = e.target.closest('.subsystem-item[data-subsystem]');
+  if (!sub) return;
+  const lv2Panel = sub.closest('[data-lv2-panel]');
+  if (!lv2Panel) return;
+  e.stopPropagation();
+  const ecuParams = new URLSearchParams(window.location.search);
+  ecuParams.set('systemId', lv2Panel.dataset.lv2Panel);
+  if (sub.dataset.navMode === 'subsystem') {
+    ecuParams.set('subsystemId', sub.dataset.subsystem);
+  } else {
+    ecuParams.delete('subsystemId');
+  }
+  const basePathMatch = window.location.pathname.match(/^(.*?\/)automechanika\//);
+  const basePath = basePathMatch ? basePathMatch[1] : '/';
+  window.location.href = basePath + 'automechanika/ecu-detail/?' + ecuParams.toString();
+});
 
 // Render DTC code badges. Codes backed by AutocomDtcLibrary[nodeId] (see dtc-library.js) render
 // as clickable buttons opening the DTC detail modal; other codes stay plain, non-interactive badges.
@@ -993,7 +1117,7 @@ function renderDtcBadges(container, codes, severity, nodeId) {
   container.innerHTML = '';
   const badgeClass = severity === 'error' ? 'badge-error' : 'badge-warning';
   const libraryCodes = new Set(
-    ((window.AutocomDtcLibrary && window.AutocomDtcLibrary[nodeId]) || []).map(function (e) { return e.code; })
+    (getDtcLibraryForVehicleType()[nodeId] || []).map(function (e) { return e.code; })
   );
 
   if (codes.length === 0) return;
@@ -1172,6 +1296,11 @@ function startScanDemo() {
         // Stop throttle gauge animation when scan completes
         throttleGaugeStopAnimation();
 
+        // Real dashboard action → this vehicle's live session, same "System Scan" event shape
+        // genSessions() already produces for the mocked history.
+        const issues = scanResults.warning + scanResults.error;
+        logLiveEvent('search', 'System Scan', scanResults.error > 0 ? 'error' : (scanResults.warning > 0 ? 'warning' : 'success'), issues > 0 ? issues + ' DTC found' : 'No DTC\'s');
+
         // Hero moment: show scan-complete overlay (auto-dismiss 3s, tap to close)
         showScanCompleteOverlay(healthScore, scanResults);
       }
@@ -1260,6 +1389,8 @@ function stopScanDemo() {
       { value: (scanResults.error / total) * 100, color: 'error' }
     ].filter(s => s.value > 0);
     healthGaugeSetResult(healthScore, segments);
+    const issues = scanResults.warning + scanResults.error;
+    logLiveEvent('search', 'System Scan', scanResults.error > 0 ? 'error' : (scanResults.warning > 0 ? 'warning' : 'success'), issues > 0 ? issues + ' DTC found' : 'No DTC\'s');
   }
 }
 })();

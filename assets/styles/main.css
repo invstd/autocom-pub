@@ -6366,6 +6366,9 @@
       isolation: isolate;
     }
   }
+  .isolate {
+    isolation: isolate;
+  }
   .mockup-phone-camera {
     @layer daisyui.l1.l2.l3 {
       grid-column: 1/1;
@@ -7409,9 +7412,6 @@
   .-ml-12 {
     margin-left: calc(var(--spacing) * -12);
   }
-  .ml-0\.5 {
-    margin-left: calc(var(--spacing) * 0.5);
-  }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
@@ -8211,6 +8211,10 @@
     width: calc(var(--spacing) * 16);
     height: calc(var(--spacing) * 16);
   }
+  .size-28 {
+    width: calc(var(--spacing) * 28);
+    height: calc(var(--spacing) * 28);
+  }
   .size-\[1em\] {
     width: 1em;
     height: 1em;
@@ -8697,6 +8701,9 @@
       }
     }
   }
+  .-rotate-90 {
+    rotate: calc(90deg * -1);
+  }
   .swap-flip {
     @layer daisyui.l1 {
       transform-style: preserve-3d;
@@ -8828,6 +8835,9 @@
   }
   .list-decimal {
     list-style-type: decimal;
+  }
+  .list-disc {
+    list-style-type: disc;
   }
   .list-none {
     list-style-type: none;
@@ -9036,6 +9046,10 @@
     -moz-column-gap: calc(var(--spacing) * 3);
          column-gap: calc(var(--spacing) * 3);
   }
+  .gap-x-4 {
+    -moz-column-gap: calc(var(--spacing) * 4);
+         column-gap: calc(var(--spacing) * 4);
+  }
   .gap-x-6 {
     -moz-column-gap: calc(var(--spacing) * 6);
          column-gap: calc(var(--spacing) * 6);
@@ -9069,6 +9083,9 @@
   }
   .self-center {
     align-self: center;
+  }
+  .self-start {
+    align-self: flex-start;
   }
   .self-stretch {
     align-self: stretch;
@@ -9241,6 +9258,10 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
+  .border-4 {
+    border-style: var(--tw-border-style);
+    border-width: 4px;
+  }
   .border-y {
     border-block-style: var(--tw-border-style);
     border-block-width: 1px;
@@ -9260,10 +9281,6 @@
   .border-l {
     border-left-style: var(--tw-border-style);
     border-left-width: 1px;
-  }
-  .border-l-2 {
-    border-left-style: var(--tw-border-style);
-    border-left-width: 2px;
   }
   .badge-dash {
     @layer daisyui.l1.l2 {
@@ -9400,6 +9417,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-primary) 15%, transparent);
     }
+  }
+  .border-success {
+    border-color: var(--color-success);
   }
   .border-success\/30 {
     border-color: var(--color-success);
@@ -9612,12 +9632,6 @@
       background-color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
     }
   }
-  .bg-base-content\/30 {
-    background-color: var(--color-base-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
-    }
-  }
   .bg-base-content\/80 {
     background-color: var(--color-base-content);
     @supports (color: color-mix(in lab, red, red)) {
@@ -9648,20 +9662,8 @@
   .bg-error {
     background-color: var(--color-error);
   }
-  .bg-error\/50 {
-    background-color: var(--color-error);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-error) 50%, transparent);
-    }
-  }
   .bg-info {
     background-color: var(--color-info);
-  }
-  .bg-info\/50 {
-    background-color: var(--color-info);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-info) 50%, transparent);
-    }
   }
   .bg-neutral {
     background-color: var(--color-neutral);
@@ -9711,12 +9713,6 @@
       background-color: color-mix(in oklab, var(--color-success) 20%, transparent);
     }
   }
-  .bg-success\/50 {
-    background-color: var(--color-success);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-success) 50%, transparent);
-    }
-  }
   .bg-teal-400 {
     background-color: var(--color-teal-400);
   }
@@ -9730,12 +9726,6 @@
     background-color: var(--color-warning);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-warning) 10%, transparent);
-    }
-  }
-  .bg-warning\/50 {
-    background-color: var(--color-warning);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-warning) 50%, transparent);
     }
   }
   .bg-white {
@@ -10370,6 +10360,9 @@
   .pr-1 {
     padding-right: calc(var(--spacing) * 1);
   }
+  .pr-2 {
+    padding-right: calc(var(--spacing) * 2);
+  }
   .pr-10 {
     padding-right: calc(var(--spacing) * 10);
   }
@@ -10391,11 +10384,11 @@
   .pb-12 {
     padding-bottom: calc(var(--spacing) * 12);
   }
+  .pl-2 {
+    padding-left: calc(var(--spacing) * 2);
+  }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
-  }
-  .pl-9 {
-    padding-left: calc(var(--spacing) * 9);
   }
   .text-center {
     text-align: center;
@@ -11255,10 +11248,6 @@
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
-  }
-  .blur {
-    --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -12361,6 +12350,16 @@
       content: var(--tw-content);
       --tw-content: none;
       content: none;
+    }
+  }
+  .first\:mt-0 {
+    &:first-child {
+      margin-top: calc(var(--spacing) * 0);
+    }
+  }
+  .last\:mb-0 {
+    &:last-child {
+      margin-bottom: calc(var(--spacing) * 0);
     }
   }
   .last\:border-b-0 {
@@ -14463,7 +14462,8 @@ html[data-theme="Wabco Dark"] .vehicle-image-tinted [data-vehicle-image] {
 .subsystem-item--clickable:hover {
   filter: brightness(1.15);
 }
-[data-system-list-wrapper]:not([data-custom-mode="true"]) .system-select-checkbox {
+[data-system-list-wrapper]:not([data-custom-mode="true"]) .system-select-checkbox,
+[data-system-list-wrapper]:not([data-custom-mode="true"]) .subsystem-select-checkbox {
   display: none;
 }
 [data-system-list-wrapper]:not([data-custom-mode="true"]) [data-master-checkbox-row] {
@@ -14471,6 +14471,9 @@ html[data-theme="Wabco Dark"] .vehicle-image-tinted [data-vehicle-image] {
 }
 [data-system-list-wrapper][data-custom-mode="true"] [data-master-checkbox-row] {
   display: flex !important;
+}
+[data-system-list-wrapper][data-drill-mode="lv2"] [data-master-checkbox-row] {
+  display: none !important;
 }
 .system-select-checkbox {
   transition: opacity 0.15s ease;

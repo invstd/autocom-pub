@@ -47,7 +47,11 @@
       btn.classList.toggle('badge-ghost', !billable);
       btn.setAttribute('aria-pressed', String(billable));
     });
-    if (includedCountEl) includedCountEl.textContent = countIncluded();
+    // On a live session's report page there's no per-event checklist to count (see
+    // generate-report.njk's isLive branch) — live-report.js already set this badge from the real
+    // logged-event count, so leave it alone rather than clobbering it back to 0.
+    var hasChecklist = root.querySelectorAll('[data-event-include]').length > 0;
+    if (includedCountEl && hasChecklist) includedCountEl.textContent = countIncluded();
 
     window.AutocomReportShared.applyState(previewRoot, state);
   }

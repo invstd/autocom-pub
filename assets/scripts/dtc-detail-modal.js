@@ -8,7 +8,18 @@
   const titleEl = dialog.querySelector('[data-dtc-code-title]');
   const tagsEl = dialog.querySelector('[data-dtc-tags]');
   const summaryEl = dialog.querySelector('[data-dtc-summary]');
+  const ecuRow = dialog.querySelector('[data-dtc-ecu-row]');
+  const ecuEl = dialog.querySelector('[data-dtc-ecu]');
+  const categoryRow = dialog.querySelector('[data-dtc-category-row]');
+  const categoryEl = dialog.querySelector('[data-dtc-category]');
+  const statusRow = dialog.querySelector('[data-dtc-status-row]');
+  const statusEl = dialog.querySelector('[data-dtc-status]');
+  const detailsEl = dialog.querySelector('[data-dtc-details]');
+  const statusNoteEl = dialog.querySelector('[data-dtc-status-note]');
+  const statusNoteTextEl = dialog.querySelector('[data-dtc-status-note-text]');
   const freezeFrameBody = dialog.querySelector('[data-dtc-freeze-frame-body]');
+  const additionalInfoWrap = dialog.querySelector('[data-dtc-additional-info-wrap]');
+  const additionalInfoBody = dialog.querySelector('[data-dtc-additional-info-body]');
   const causesList = dialog.querySelector('[data-dtc-causes-list]');
   const testSection = dialog.querySelector('[data-dtc-component-test]');
   const testTitle = dialog.querySelector('[data-dtc-test-title]');
@@ -49,6 +60,27 @@
       '<path d="M6 8 H' + (width - 6) + ' L' + (width - 14) + ' 42 H14 Z" fill="none" stroke="currentColor" stroke-width="2" class="text-base-content/20"/>' +
       pins +
       '</svg>';
+  }
+
+  // Active/Pending = current in some form → error/warning-toned; Stored/Intermittent/Unknown =
+  // historical or unconfirmed → neutral. Matches the severity language used everywhere else in
+  // this app (see diagnostics-dashboard.js's badge classes).
+  const STATUS_BADGE_CLASS = {
+    Active: 'badge-error',
+    Pending: 'badge-warning',
+    Intermittent: 'badge-warning',
+    Stored: 'badge-ghost',
+    Unknown: 'badge-ghost'
+  };
+
+  function renderKeyValueRows(tbody, rows) {
+    tbody.innerHTML = '';
+    (rows || []).forEach(function (r) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td class="text-base-content/60">' + r.label + '</td>' +
+        '<td class="font-medium">' + r.value + '</td>';
+      tbody.appendChild(tr);
+    });
   }
 
   function renderFreezeFrame(fields) {
@@ -112,7 +144,10 @@
   }
 
   window.openDtcDetailModal = function (code, systemId) {
-    const library = window.AutocomDtcLibrary || {};
+    // Vehicle-type-scoped, same as diagnostics-dashboard.js's getDtcLibraryForVehicleType — Cars
+    // and Trucks can both have an "engine" systemId that isn't the same real system.
+    const isTrucksMode = localStorage.getItem('automechanika-vehicle-type') === 'trucks';
+    const library = (window.AutocomDtcLibrary || {})[isTrucksMode ? 'trucks' : 'cars'] || {};
     const entries = library[systemId] || [];
     const entry = entries.find(function (e) { return e.code === code; });
     if (!entry) return;
@@ -127,6 +162,19 @@
       tagsEl.appendChild(span);
     });
 
+    if (entry.ecu) { ecuEl.textContent = entry.ecu; ecuRow.classList.remove('hidden'); } else { ecuRow.classList.add('hidden'); }
+    if (entry.systemCategory) { categoryEl.textContent = entry.systemCategory; categoryRow.classList.remove('hidden'); } else { categoryRow.classList.add('hidden'); }
+    if (entry.status) {
+      statusEl.textContent = entry.status;
+      statusEl.className = 'badge badge-sm ' + (STATUS_BADGE_CLASS[entry.status] || 'badge-ghost');
+      statusRow.classList.remove('hidden');
+    } else { statusRow.classList.add('hidden'); }
+    if (entry.details) { detailsEl.textContent = entry.details; detailsEl.classList.remove('hidden'); } else { detailsEl.classList.add('hidden'); }
+    if (entry.statusNote) {
+      statusNoteTextEl.textContent = entry.statusNote;
+      statusNoteEl.classList.remove('hidden');
+    } else { statusNoteEl.classList.add('hidden'); }
+
     if (entry.summary) {
       summaryEl.textContent = entry.summary;
       summaryEl.classList.remove('hidden');
@@ -135,6 +183,12 @@
     }
 
     renderFreezeFrame(entry.freezeFrame);
+    if (entry.additionalInfo && entry.additionalInfo.length) {
+      renderKeyValueRows(additionalInfoBody, entry.additionalInfo);
+      additionalInfoWrap.classList.remove('hidden');
+    } else {
+      additionalInfoWrap.classList.add('hidden');
+    }
     renderCauses(entry.causes);
 
     // Both sections start collapsed, matching the source app's default state.

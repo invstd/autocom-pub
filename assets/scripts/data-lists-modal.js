@@ -11,6 +11,7 @@
   const countEl = dialog.querySelector('[data-data-lists-count]');
   const showBtn = dialog.querySelector('[data-data-lists-show-btn]');
   const backBtn = dialog.querySelector('[data-data-lists-back-btn]');
+  const saveBtn = dialog.querySelector('[data-data-lists-save-btn]');
   const tilesEl = dialog.querySelector('[data-data-lists-tiles]');
 
   const MAX_SELECTED = 8; // NextGen supports up to 8 simultaneous data streams
@@ -21,6 +22,13 @@
   let selected = [];
   let tickTimer = null;
   let tileStates = [];
+
+  // Vehicle-type-scoped, same as diagnostics-dashboard.js's getDtcLibraryForVehicleType — see
+  // data-lists-library.js's header comment.
+  function getDataListsLibrary() {
+    const isTrucksMode = localStorage.getItem('automechanika-vehicle-type') === 'trucks';
+    return (window.AutocomDataListsLibrary || {})[isTrucksMode ? 'trucks' : 'cars'] || {};
+  }
 
   function nextValue(param, prevValue) {
     if (param.kind === 'counter') {
@@ -148,6 +156,19 @@
     pickView.classList.remove('hidden');
   });
 
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      if (!window.AutocomLiveSession || tileStates.length === 0) return;
+      const vehicleId = new URLSearchParams(window.location.search).get('vehicleId');
+      if (!vehicleId) return;
+      window.AutocomLiveSession.append(vehicleId, { icon: 'chart-line', label: 'Live Data Snapshot', tone: 'neutral', value: tileStates.length + ' parameters' });
+      if (typeof window.refreshCurrentSessionBadgeFromLiveSession === 'function') window.refreshCurrentSessionBadgeFromLiveSession();
+      if (window.AutocomNotifications) {
+        window.AutocomNotifications.push('task', 'Snapshot saved', tileStates.length + ' parameters logged to this session’s event history.');
+      }
+    });
+  }
+
   searchInput.addEventListener('input', function () {
     renderChecklist(searchInput.value);
   });
@@ -155,7 +176,7 @@
   dialog.addEventListener('close', stopLiveUpdates);
 
   window.openDataListsModal = function (systemId) {
-    const library = window.AutocomDataListsLibrary || {};
+    const library = getDataListsLibrary();
     currentParams = library[systemId] || [];
     if (currentParams.length === 0) return;
 
@@ -172,7 +193,7 @@
   // its status-indicator area — same relative+z-10 fix as the DTC badges/subsystem rows need,
   // since DaisyUI's collapse-arrow checkbox otherwise intercepts real clicks at that position.
   function injectTriggers() {
-    const library = window.AutocomDataListsLibrary || {};
+    const library = getDataListsLibrary();
     Object.keys(library).forEach(function (systemId) {
       const row = document.querySelector('.system-list-item[data-system-id="' + systemId + '"] .collapse-title');
       if (!row || row.querySelector('[data-data-lists-trigger]')) return;

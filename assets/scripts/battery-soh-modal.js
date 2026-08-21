@@ -128,11 +128,25 @@
     return 1 - Math.pow(1 - t, 3);
   }
 
+  // Real dashboard action → this vehicle's live session (see live-session.js). Logged once the
+  // result actually renders, not on Continue click, so a cancelled/incomplete check never logs.
+  function logResult(variant, sohTarget, condition) {
+    if (!window.AutocomLiveSession) return;
+    var urlParams = new URLSearchParams(window.location.search);
+    var vehicleId = urlParams.get("vehicleId");
+    if (!vehicleId) return;
+    var tone = sohTarget >= 80 ? "success" : (sohTarget >= 50 ? "warning" : "error");
+    window.AutocomLiveSession.append(vehicleId, { icon: "battery", label: "Battery SoH Check", tone: tone, value: sohTarget + "% - " + condition });
+    if (typeof window.refreshCurrentSessionBadgeFromLiveSession === "function") window.refreshCurrentSessionBadgeFromLiveSession();
+  }
+
   function animateGauge(variant) {
     var gaugeEl = document.getElementById("battery-soh-gauge-" + variant);
     var gaugeValueEl = document.getElementById("battery-soh-gauge-value-" + variant);
     var markerEl = document.getElementById("battery-soh-marker-" + variant);
     var sohTarget = gaugeEl ? parseInt(gaugeEl.getAttribute("data-target"), 10) || 0 : 0;
+    var condition = gaugeEl ? gaugeEl.getAttribute("data-condition") || "" : "";
+    logResult(variant, sohTarget, condition);
 
     if (gaugeFrame) cancelAnimationFrame(gaugeFrame);
     if (gaugeEl) gaugeEl.style.setProperty("--value", 0);
