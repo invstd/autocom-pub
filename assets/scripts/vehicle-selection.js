@@ -21,6 +21,16 @@
   var brandsEl = document.getElementById("vehicle-selection-brands-data");
   window.__vehicleSelectionBrands = brandsEl ? JSON.parse(brandsEl.textContent) : [];
 
+  // Reads a filter-select's current value by its trigger id (e.g. "vehicle-model-trigger").
+  // Shared by the detail score and the Show socket gate below.
+  function getFilterSelectValue(triggerId) {
+    var tr = document.getElementById(triggerId);
+    if (!tr) return "";
+    var wr = tr.closest(".filter-select");
+    var input = wr && wr.querySelector("[data-value-input]");
+    return input ? (input.value || "").trim() : "";
+  }
+
   // ----- Steps -----
   function getCurrentStep() {
     var params = new URLSearchParams(window.location.search);
@@ -377,13 +387,6 @@
       var s = total % 60;
       return min + ":" + (s < 10 ? "0" : "") + s;
     }
-    function getFilterSelectValue(triggerId) {
-      var tr = document.getElementById(triggerId);
-      if (!tr) return "";
-      var wr = tr.closest(".filter-select");
-      var input = wr && wr.querySelector("[data-value-input]");
-      return input ? (input.value || "").trim() : "";
-    }
     function getDetailLevel() {
       var paramsD = new URLSearchParams(window.location.search);
       var hasBrand = !!paramsD.get("brand");
@@ -420,4 +423,32 @@
       if (e.target && e.target.closest && e.target.closest("[data-filter-clear]")) setTimeout(function() { updateDetailScore(false); }, 0);
     });
   }
+
+  // ----- Vehicle-detail-gated info triggers (Show socket location, Show VIN location — both
+  // need brand/model/[year]/engine to know which vehicle they're describing before opening their
+  // dialog; Trucks pages have no Year step, so that check is skipped when #vehicle-year-trigger
+  // isn't on the page) -----
+  var vehicleGatedHint = document.getElementById("vehicle-gated-hint");
+  function isVehicleFullySpecified() {
+    var gatedParams = new URLSearchParams(window.location.search);
+    var hasBrand = !!gatedParams.get("brand");
+    var hasModel = !!getFilterSelectValue("vehicle-model-trigger");
+    var hasYearStep = !!document.getElementById("vehicle-year-trigger");
+    var hasYear = !hasYearStep || !!getFilterSelectValue("vehicle-year-trigger");
+    var hasEngine = !!getFilterSelectValue("vehicle-engine-trigger");
+    return hasBrand && hasModel && hasYear && hasEngine;
+  }
+  [].forEach.call(document.querySelectorAll("[data-vehicle-gated-dialog]"), function(btn) {
+    btn.addEventListener("click", function() {
+      if (isVehicleFullySpecified()) {
+        if (vehicleGatedHint) vehicleGatedHint.classList.add("hidden");
+        var dialog = document.getElementById(btn.getAttribute("data-vehicle-gated-dialog"));
+        if (dialog && dialog.showModal) dialog.showModal();
+      } else if (vehicleGatedHint) {
+        vehicleGatedHint.classList.remove("hidden");
+        vehicleGatedHint.classList.add("attention-pulse");
+        setTimeout(function() { vehicleGatedHint.classList.remove("attention-pulse"); }, 750);
+      }
+    });
+  });
 })();

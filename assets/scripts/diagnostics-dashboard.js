@@ -307,6 +307,7 @@ const filterControls = document.querySelector('[data-filter-controls]');
 const errorsOnlyToggle = document.querySelector('[data-errors-only-toggle]');
 const errorCountBadge = document.querySelector('[data-error-count]');
 const clearDtcsBtn = document.querySelector('[data-clear-dtcs-btn]');
+const systemsSearchInput = document.getElementById('systems-search-input');
 
 // Health gauge elements (main dashboard gauge only; overlay has its own in #scan-complete-gauge)
 const gauge = document.querySelector('[data-health-gauge-wrapper] .health-gauge');
@@ -869,7 +870,7 @@ tabs.addEventListener('click', (e) => {
   // Leaving/returning to the Systems list shouldn't strand it drilled into whatever ECU was open
   // before — reset to LV1 on every tab switch (a no-op if already there).
   showLv1();
-  applyErrorsFilter();
+  applySystemsListFilters();
 });
 
 // Scan button demo (toggle scan/stop)
@@ -908,7 +909,7 @@ if (clearDtcsBtn) {
       }
     });
     updateFilterControls();
-    applyErrorsFilter();
+    applySystemsListFilters();
     if (erasedCount > 0) {
       logLiveEvent('alert-octagon', 'Erase fault codes', 'error', erasedCount + ' DTC erased');
     }
@@ -916,11 +917,16 @@ if (clearDtcsBtn) {
 }
 
 // Errors only toggle: in Systems list view hide non-error items (like presets); in Topology view dim nodes
-function applyErrorsFilter() {
+// Was applyErrorsFilter — renamed once it also took on the systems-search filter below, since
+// both conditions (errors-only toggle, search text) now have to compose on the same rows rather
+// than each independently fighting over the same .hidden class.
+function applySystemsListFilters() {
   const showErrorsOnly = errorsOnlyToggle ? errorsOnlyToggle.checked : false;
+  const searchQuery = systemsSearchInput ? systemsSearchInput.value.trim().toLowerCase() : '';
   const isSystemsListView = page && page.dataset.view !== 'topology';
 
-  // Topology nodes: dim when errors-only (unchanged)
+  // Topology nodes: dim when errors-only (unchanged) — search only applies to the Systems list
+  // rows below, not the topology map.
   document.querySelectorAll('.topology-node[data-node-id]').forEach(n => {
     const state = n.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
@@ -933,10 +939,19 @@ function applyErrorsFilter() {
     }
   });
 
-  // System list items: in Systems list view hide non-error items; in Topology view dim
+  // System list items: search hides non-matching rows outright (either view); errors-only then
+  // hides (Systems list view) or dims (Topology view) among whatever the search left visible.
   document.querySelectorAll('.system-list-item[data-system-id]').forEach(item => {
     const state = item.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
+    const matchesSearch = !searchQuery || (item.dataset.searchable || '').indexOf(searchQuery) !== -1;
+
+    if (!matchesSearch) {
+      item.classList.add('hidden');
+      item.style.opacity = '';
+      item.style.pointerEvents = '';
+      return;
+    }
     if (!showErrorsOnly) {
       item.style.opacity = '';
       item.style.pointerEvents = '';
@@ -963,10 +978,26 @@ function applyErrorsFilter() {
       }
     }
   });
+
+  // Bus-group headers (collapse-list.njk): hide any left with zero visible rows underneath —
+  // same "hide empty group header" pattern garage.js already uses for its own search filter.
+  document.querySelectorAll('.collapse-list-bus-header').forEach(header => {
+    let sibling = header.nextElementSibling;
+    let hasVisibleRow = false;
+    while (sibling && !sibling.classList.contains('collapse-list-bus-header')) {
+      if (!sibling.classList.contains('hidden')) hasVisibleRow = true;
+      sibling = sibling.nextElementSibling;
+    }
+    header.classList.toggle('hidden', !hasVisibleRow);
+  });
 }
 
 if (errorsOnlyToggle) {
-  errorsOnlyToggle.addEventListener('change', applyErrorsFilter);
+  errorsOnlyToggle.addEventListener('change', applySystemsListFilters);
+}
+
+if (systemsSearchInput) {
+  systemsSearchInput.addEventListener('input', applySystemsListFilters);
 }
 
 // Update filter controls visibility based on scan results
@@ -1237,7 +1268,7 @@ function startScanDemo() {
   if (errorsOnlyToggle) {
     errorsOnlyToggle.checked = false;
   }
-  applyErrorsFilter();
+  applySystemsListFilters();
   
   // Reset all nodes and system list items to pending
   allNodes.forEach(n => {

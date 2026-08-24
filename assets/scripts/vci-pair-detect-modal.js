@@ -19,6 +19,18 @@
     return m ? m[1] : "launchpad-1";
   }
 
+  // Auto-detect/Capture VIN are reused on the Trucks Quick Connect page (vehicle-search.njk) —
+  // this mock database and engine list must stay commercial-vehicle-plausible there, or a random
+  // "BMW X5" would show up as a "truck." Real brand/model names sourced from the same
+  // _data/brands_models_trucks/*.json this app already uses elsewhere.
+  function isTrucksMode() {
+    return typeof localStorage !== "undefined" && localStorage.getItem("automechanika-vehicle-type") === "trucks";
+  }
+  var VEHICLE_DATABASE_TRUCKS = [
+    { brand: "MAN", brandSlug: "man_trucks", models: ["TGX (08-13)", "TGX (14-20)", "TGX (20-24)", "TGX (24-)"] },
+    { brand: "Volvo Trucks", brandSlug: "volvo_trucks", models: ["FH"] }
+  ];
+
   // Random vehicle database for auto-detect
   var VEHICLE_DATABASE = [
     { brand: "Volkswagen", brandSlug: "volkswagen", models: ["Golf", "Passat", "Tiguan", "Touareg", "Polo", "T-Roc", "Arteon"] },
@@ -49,11 +61,13 @@
   }
 
   function generateRandomVehicle() {
-    var brandData = VEHICLE_DATABASE[Math.floor(Math.random() * VEHICLE_DATABASE.length)];
+    var trucksMode = isTrucksMode();
+    var db = trucksMode ? VEHICLE_DATABASE_TRUCKS : VEHICLE_DATABASE;
+    var brandData = db[Math.floor(Math.random() * db.length)];
     var model = brandData.models[Math.floor(Math.random() * brandData.models.length)];
     var currentYear = new Date().getFullYear();
     var year = currentYear - Math.floor(Math.random() * 10); // 0-9 years old
-    var engines = ["1.0 TSI", "1.4 TSI", "1.5 TSI", "2.0 TSI", "2.0 TDI", "1.6 TDI", "3.0 V6", "2.5 Hybrid", "EV"];
+    var engines = trucksMode ? ["Diesel"] : ["1.0 TSI", "1.4 TSI", "1.5 TSI", "2.0 TSI", "2.0 TDI", "1.6 TDI", "3.0 V6", "2.5 Hybrid", "EV"];
     var engine = engines[Math.floor(Math.random() * engines.length)];
     return {
       brand: brandData.brand,
@@ -127,7 +141,8 @@
       setProgress(0, 0);
       setStatus("Initializing...");
     } else if (n === 3) {
-      if (vinEl) vinEl.textContent = MOCK_VIN;
+      if (!currentVehicle) currentVehicle = generateRandomVehicle();
+      if (vinEl) vinEl.textContent = currentVehicle.vin;
     }
   }
 

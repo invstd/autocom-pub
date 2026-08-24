@@ -28,6 +28,16 @@
     { brand: "Nissan", brandSlug: "nissan", models: ["Qashqai", "Juke", "X-Trail", "Leaf", "Micra", "Ariya", "Navara"] }
   ];
 
+  // Reused on the Trucks Quick Connect page (vehicle-search.njk) — see the matching comment in
+  // vci-pair-detect-modal.js for why this needs its own commercial-vehicle-plausible database.
+  function isTrucksMode() {
+    return typeof localStorage !== "undefined" && localStorage.getItem("automechanika-vehicle-type") === "trucks";
+  }
+  var VEHICLE_DATABASE_TRUCKS = [
+    { brand: "MAN", brandSlug: "man_trucks", models: ["TGX (08-13)", "TGX (14-20)", "TGX (20-24)", "TGX (24-)"] },
+    { brand: "Volvo Trucks", brandSlug: "volvo_trucks", models: ["FH"] }
+  ];
+
   function generateRandomVIN() {
     var chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
     var vin = "";
@@ -38,11 +48,13 @@
   }
 
   function generateRandomVehicle() {
-    var brandData = VEHICLE_DATABASE[Math.floor(Math.random() * VEHICLE_DATABASE.length)];
+    var trucksMode = isTrucksMode();
+    var db = trucksMode ? VEHICLE_DATABASE_TRUCKS : VEHICLE_DATABASE;
+    var brandData = db[Math.floor(Math.random() * db.length)];
     var model = brandData.models[Math.floor(Math.random() * brandData.models.length)];
     var currentYear = new Date().getFullYear();
     var year = currentYear - Math.floor(Math.random() * 10);
-    var engines = ["1.0 TSI", "1.4 TSI", "1.5 TSI", "2.0 TSI", "2.0 TDI", "1.6 TDI", "2.5 Hybrid", "EV"];
+    var engines = trucksMode ? ["Diesel"] : ["1.0 TSI", "1.4 TSI", "1.5 TSI", "2.0 TSI", "2.0 TDI", "1.6 TDI", "2.5 Hybrid", "EV"];
     var engine = engines[Math.floor(Math.random() * engines.length)];
     return {
       brand: brandData.brand,
@@ -221,15 +233,14 @@
       });
     });
 
-    var manualBtn = document.getElementById("scan-vin-manual");
-    if (manualBtn) {
-      manualBtn.addEventListener("click", function (e) {
+    [].forEach.call(document.querySelectorAll("[data-scan-vin-manual]"), function (btn) {
+      btn.addEventListener("click", function (e) {
         e.preventDefault();
         closeAndReset();
         dialog.close();
         redirect(currentAppPath() + "/vehicle-selection/");
       });
-    }
+    });
 
     [].forEach.call(document.querySelectorAll("[data-scan-vin-dev-state]"), function (btn) {
       btn.addEventListener("click", function () {

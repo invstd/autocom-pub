@@ -1,8 +1,8 @@
 (function () {
   "use strict";
-  // "Quick Connect" (auto-detect/VIN-scan) doesn't exist in Trucks mode — every link meant to
-  // return "home" (sidebar logo, mobile top-bar logo, sidebar's first nav item — anything marked
-  // data-automechanika-home-link) should go to Vehicle Search instead. See
+  // Trucks mode has its own "Quick Connect" landing page (vehicle-search.njk, not index.njk) —
+  // every link meant to return "home" (sidebar logo, mobile top-bar logo, sidebar's first nav
+  // item — anything marked data-automechanika-home-link) should point there instead. See
   // [[trucks-feature-wabco-weasy]]. Runs immediately where the script tag sits in the sidebar
   // markup (after both the sidebar and the earlier-in-document mobile top bar exist), not on
   // DOMContentLoaded, to keep the "wrong" link's flash as brief as possible.

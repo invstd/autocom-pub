@@ -72,22 +72,32 @@
 
   // --- Top pill tabs: Repair Orders / Sessions ---
   var topTabs = page.querySelectorAll("[data-garage-top-tabs] [data-garage-tab]");
+  function activateGarageTab(target) {
+    var matchBtn = null;
+    topTabs.forEach(function (b) {
+      var match = b.getAttribute("data-garage-tab") === target;
+      if (match) matchBtn = b;
+      b.classList.toggle("tab-active", match);
+    });
+    if (!matchBtn) return;
+    page.querySelectorAll("[data-garage-list]").forEach(function (list) {
+      list.classList.toggle("hidden", list.getAttribute("data-garage-list") !== target);
+    });
+    page.querySelectorAll("[data-garage-detail-set]").forEach(function (set) {
+      var active = set.getAttribute("data-garage-detail-set") === target;
+      set.classList.toggle("hidden", !active);
+      set.classList.toggle("flex", active);
+    });
+  }
   topTabs.forEach(function (tabBtn) {
     tabBtn.addEventListener("click", function () {
-      var target = tabBtn.getAttribute("data-garage-tab");
-      topTabs.forEach(function (b) {
-        b.classList.toggle("tab-active", b === tabBtn);
-      });
-      page.querySelectorAll("[data-garage-list]").forEach(function (list) {
-        list.classList.toggle("hidden", list.getAttribute("data-garage-list") !== target);
-      });
-      page.querySelectorAll("[data-garage-detail-set]").forEach(function (set) {
-        var active = set.getAttribute("data-garage-detail-set") === target;
-        set.classList.toggle("hidden", !active);
-        set.classList.toggle("flex", active);
-      });
+      activateGarageTab(tabBtn.getAttribute("data-garage-tab"));
     });
   });
+  // "See all" from a landing page's Recent Vehicles card links here with ?tab=sessions so it
+  // opens on the Recent Vehicles tab instead of always defaulting to Repair Orders.
+  var requestedTab = new URLSearchParams(window.location.search).get("tab");
+  if (requestedTab) activateGarageTab(requestedTab);
 
   // --- Per-vehicle detail tabs: Sessions / Documents ---
   var detailTabs = page.querySelectorAll("[data-garage-detail-tab]");
