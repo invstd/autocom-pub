@@ -99,6 +99,29 @@
   var requestedTab = new URLSearchParams(window.location.search).get("tab");
   if (requestedTab) activateGarageTab(requestedTab);
 
+  // "Finish Session" on the diagnostics dashboard links here with ?vehicleId= (alongside
+  // ?tab=sessions above) so the mechanic lands on their own vehicle's session instead of whichever
+  // one happens to be first in the list — same URLSearchParams pattern as ?tab=, read after the
+  // default first-row selection above so a valid param always wins. Only the Sessions list's rows
+  // are handled since that's the only caller today; extend to repairOrderRows if one shows up.
+  var requestedVehicleId = new URLSearchParams(window.location.search).get("vehicleId");
+  if (requestedVehicleId) {
+    var requestedRow = null;
+    sessionRows.forEach(function (r) {
+      var match = r.getAttribute("data-vehicle-id") === requestedVehicleId;
+      if (match) requestedRow = r;
+      r.classList.toggle("bg-base-200", match);
+    });
+    if (requestedRow) {
+      page.querySelectorAll(".garage-detail-panel").forEach(function (panel) {
+        var active = panel.getAttribute("data-detail-panel") === requestedVehicleId;
+        panel.classList.toggle("hidden", !active);
+        panel.classList.toggle("flex", active);
+      });
+      requestedRow.scrollIntoView({ block: "nearest" });
+    }
+  }
+
   // --- Per-vehicle detail tabs: Sessions / Documents ---
   var detailTabs = page.querySelectorAll("[data-garage-detail-tab]");
   detailTabs.forEach(function (tabBtn) {

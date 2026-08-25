@@ -17,7 +17,16 @@
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
-            localStorage.setItem(PRESET_PARAM_TO_STORAGE_KEY[param], params.get(param));
+            var value = params.get(param);
+            // Automechanika's Settings Test Link now generates brand-only theme values ("WOW",
+            // not "WOW Dark" — light/dark is the sidebar footer's own toggle, not part of the
+            // preset link, see automechanika-theme-toggle.js) — resolve those against whichever
+            // mode was last selected on this device, defaulting to Dark if none has been yet.
+            // Full theme names ("Hi-Tech", "WOW Dark", …) pass through unchanged.
+            if (param === 'theme' && /^(Autocom|WOW|Wabco)$/.test(value)) {
+              value = value + ' ' + (localStorage.getItem('theme-mode') || 'Dark');
+            }
+            localStorage.setItem(PRESET_PARAM_TO_STORAGE_KEY[param], value);
             params.delete(param);
             paramsChanged = true;
           }
@@ -187,6 +196,8 @@
 
 
 
+
+<script type="application/json" id="vci-detectable-vehicles-data">{"cars":[{"id":"volvo-xc60-2014","brand":"Volvo","brandSlug":"volvo","model":"XC60","year":"2014","vin":"YV1LZA8XCB577712","engine":"Diesel"},{"id":"kia-niro-2020","brand":"Kia","brandSlug":"kia","model":"Niro","year":"2020","vin":"YV1LZA8XCBHSAX9L","engine":"Petrol Hybrid"},{"id":"ford-focus-2017","brand":"Ford","brandSlug":"ford","model":"Focus","year":"2017","vin":"YV1LZA8XCB09ADX9","engine":"Petrol"},{"id":"bmw-x5-2015","brand":"BMW","brandSlug":"bmw","model":"X5","year":"2015","vin":"YV1LZA8XCBFT9VJY","engine":"Diesel"},{"id":"bmw-330i-2018","brand":"BMW","brandSlug":"bmw","model":"330i","year":"2018","vin":"YV1LZA8XCBXA9A6L","engine":"Petrol"},{"id":"audi-a6-2020","brand":"Audi","brandSlug":"audi","model":"A6","year":"2020","vin":"YV1LZA8XCBCU8SU9","engine":"Diesel"},{"id":"skoda-octavia-2017","brand":"Skoda","brandSlug":"skoda","model":"Octavia","year":"2017","vin":"YV1LZA8XCBVB87FY","engine":"Diesel"},{"id":"toyota-corolla-2019","brand":"Toyota","brandSlug":"toyota","model":"Corolla","year":"2019","vin":"YV1LZA8XCBAV8N3L","engine":"Hybrid"},{"id":"peugeot-308-2021","brand":"Peugeot","brandSlug":"peugeot","model":"308","year":"2021","vin":"YV1LZA8XCBSD74R9","engine":"Petrol"},{"id":"renault-megane-2020","brand":"Renault","brandSlug":"renault","model":"Megane","year":"2020","vin":"YV1LZA8XCB7X7KCY","engine":"Diesel"},{"id":"seat-leon-2016","brand":"Seat","brandSlug":"seat","model":"Leon","year":"2016","vin":"YV1LZA8XCBPE620L","engine":"Petrol"},{"id":"opel-astra-2021","brand":"Opel","brandSlug":"opel","model":"Astra","year":"2021","vin":"YV1LZA8XCB5Y6HM9","engine":"Hybrid"}],"trucks":[{"id":"volvo-trucks-fh-2023","brand":"Volvo Trucks","brandSlug":"volvo_trucks","model":"FH","year":"2023","vin":"YV2RT40A9PBD8DF56","engine":"D13K540 · 12.8L"},{"id":"man-tgx-2022","brand":"MAN","brandSlug":"man_trucks","model":"TGX","year":"2022","vin":"YV2RT40A9PB0XBHW9","engine":"D26 · 15.2L"},{"id":"volvo-trucks-fh16-2021","brand":"Volvo Trucks","brandSlug":"volvo_trucks","model":"FH16","year":"2021","vin":"YV2RT40A9PBLK9KMC","engine":"D16K750 · 16.1L"},{"id":"man-tgs-2020","brand":"MAN","brandSlug":"man_trucks","model":"TGS","year":"2020","vin":"YV2RT40A9PB877NCF","engine":"D15 · 10.5L"},{"id":"volvo-trucks-fmx-2022","brand":"Volvo Trucks","brandSlug":"volvo_trucks","model":"FMX","year":"2022","vin":"YV2RT40A9PBVW6R3J","engine":"D11K420 · 10.8L"}]}</script>
 <dialog id="vci-pair-detect-dialog" class="modal vci-pair-detect-modal" data-base-path="/autocom-pub/" aria-labelledby="vci-modal-title" aria-describedby="vci-modal-desc">
   <div class="modal-box max-w-md">
     <h2 id="vci-modal-title" class="text-xl font-bold text-base-content mb-4 hidden" aria-hidden="true"> </h2>

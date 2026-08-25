@@ -12,6 +12,15 @@ const vehicleData = {
   engine: urlParams.get('engine') || ''
 };
 
+// Shared by the ECU-detail nav handler and the Finish Session handler below — both need to link
+// to another page under this same /automechanika/ root, regardless of which prototype folder or
+// basePath this build is served from (see main.css's "shared scripts detect the current prototype
+// folder dynamically" convention for why this can't be hardcoded).
+function getBasePath() {
+  const basePathMatch = window.location.pathname.match(/^(.*?\/)automechanika\//);
+  return basePathMatch ? basePathMatch[1] : '/';
+}
+
 // Vehicle image mapping - maps brand/model to available image files
 // Keys use URL brand param (dataSlug, e.g. fiat, alfa_romeo). Model slugs: lowercase, spaces → hyphens.
 const vehicleImageMap = {
@@ -258,6 +267,8 @@ if (mockVoltage < nominalVoltage) {
 // function so there's a single place that decides what "logging an event" means.
 const currentSessionBadge = document.querySelector('[data-current-session-badge]');
 const currentSessionText = document.querySelector('[data-current-session-text]');
+const finishSessionWrap = document.querySelector('[data-finish-session-wrap]');
+const finishSessionBtn = document.querySelector('[data-finish-session-btn]');
 
 function refreshCurrentSessionBadge() {
   if (!currentSessionBadge || !window.AutocomLiveSession || !vehicleData.vehicleId) return;
@@ -268,6 +279,20 @@ function refreshCurrentSessionBadge() {
   } else {
     currentSessionBadge.classList.add('hidden');
   }
+  if (finishSessionWrap) finishSessionWrap.classList.toggle('hidden', !label);
+}
+
+// Finish Session — purely navigational (see diagnostics-dashboard.njk's sticky-footer comment for
+// why it doesn't end/clear the live session). Lands on this vehicle's Garage session, where
+// garage.js's ?vehicleId= handling selects the right row and garage-live-session.js's own row
+// already opens expanded with a "Generate Report" button — no session data needs to travel in the
+// URL beyond which vehicle to select.
+if (finishSessionBtn) {
+  finishSessionBtn.addEventListener('click', function () {
+    const garagePage = isTrucksMode ? 'my-garage-trucks' : 'my-garage';
+    const params = new URLSearchParams({ tab: 'sessions', vehicleId: vehicleData.vehicleId });
+    window.location.href = getBasePath() + 'automechanika/' + garagePage + '/?' + params.toString();
+  });
 }
 
 // icon/label/tone/value match the exact event shape genSessions() produces in
@@ -1137,9 +1162,7 @@ document.addEventListener('click', function (e) {
   } else {
     ecuParams.delete('subsystemId');
   }
-  const basePathMatch = window.location.pathname.match(/^(.*?\/)automechanika\//);
-  const basePath = basePathMatch ? basePathMatch[1] : '/';
-  window.location.href = basePath + 'automechanika/ecu-detail/?' + ecuParams.toString();
+  window.location.href = getBasePath() + 'automechanika/ecu-detail/?' + ecuParams.toString();
 });
 
 // Render DTC code badges. Codes backed by AutocomDtcLibrary[nodeId] (see dtc-library.js) render

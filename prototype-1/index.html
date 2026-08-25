@@ -17,7 +17,16 @@
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
-            localStorage.setItem(PRESET_PARAM_TO_STORAGE_KEY[param], params.get(param));
+            var value = params.get(param);
+            // Automechanika's Settings Test Link now generates brand-only theme values ("WOW",
+            // not "WOW Dark" — light/dark is the sidebar footer's own toggle, not part of the
+            // preset link, see automechanika-theme-toggle.js) — resolve those against whichever
+            // mode was last selected on this device, defaulting to Dark if none has been yet.
+            // Full theme names ("Hi-Tech", "WOW Dark", …) pass through unchanged.
+            if (param === 'theme' && /^(Autocom|WOW|Wabco)$/.test(value)) {
+              value = value + ' ' + (localStorage.getItem('theme-mode') || 'Dark');
+            }
+            localStorage.setItem(PRESET_PARAM_TO_STORAGE_KEY[param], value);
             params.delete(param);
             paramsChanged = true;
           }

@@ -3,9 +3,12 @@
  * Triggers: #vci-pair-detect-trigger (index), #vehicle-connect-btn (vehicle-selection).
  * 
  * Two paths:
- * 1. Auto-detect (from index): generates random vehicle data and VIN
- * 2. Manual selection (from vehicle-selection): uses selected vehicle details
- * 
+ * 1. Auto-detect (from index): picks a random real vehicle from the curated Garage list (see
+ *    vci-detectable-vehicles-data) — so it's a "real" vehicleId with real session history, not a
+ *    fabricated unknown one.
+ * 2. Manual selection (from vehicle-selection): uses selected vehicle details, VIN fabricated
+ *    (no curated match attempted — no vehicleId, no live-session tracking).
+ *
  * Both paths redirect to diagnostics-dashboard with vehicle data in URL params.
  */
 (function () {
@@ -19,37 +22,20 @@
     return m ? m[1] : "launchpad-1";
   }
 
-  // Auto-detect/Capture VIN are reused on the Trucks Quick Connect page (vehicle-search.njk) —
-  // this mock database and engine list must stay commercial-vehicle-plausible there, or a random
-  // "BMW X5" would show up as a "truck." Real brand/model names sourced from the same
-  // _data/brands_models_trucks/*.json this app already uses elsewhere.
+  // Auto-detect/Capture VIN pick a random REAL curated Garage vehicle rather than fabricating an
+  // unknown one — that vehicle already has real session history and (often) a real Repair Order,
+  // so "Finish Session" lands somewhere convincing instead of a single-event stub. Data comes from
+  // vci-detectable-vehicles-data (emitted once by vci-pair-detect-modal.njk, see
+  // vciDetectableVehicles in .eleventy.js); this file and scan-vin-modal.js both read the same tag.
   function isTrucksMode() {
     return typeof localStorage !== "undefined" && localStorage.getItem("automechanika-vehicle-type") === "trucks";
   }
-  var VEHICLE_DATABASE_TRUCKS = [
-    { brand: "MAN", brandSlug: "man_trucks", models: ["TGX (08-13)", "TGX (14-20)", "TGX (20-24)", "TGX (24-)"] },
-    { brand: "Volvo Trucks", brandSlug: "volvo_trucks", models: ["FH"] }
-  ];
 
-  // Random vehicle database for auto-detect
-  var VEHICLE_DATABASE = [
-    { brand: "Volkswagen", brandSlug: "volkswagen", models: ["Golf", "Passat", "Tiguan", "Touareg", "Polo", "T-Roc", "Arteon"] },
-    { brand: "Audi", brandSlug: "audi", models: ["A3", "A4", "A6", "Q3", "Q5", "Q7", "Q8", "e-tron"] },
-    { brand: "BMW", brandSlug: "bmw", models: ["3 Series", "5 Series", "X3", "X5", "X7", "1 Series", "4 Series"] },
-    { brand: "Mercedes-Benz", brandSlug: "mercedes-benz", models: ["C-Class", "E-Class", "GLC", "GLE", "A-Class", "GLA", "GLB"] },
-    { brand: "Toyota", brandSlug: "toyota", models: ["Corolla", "Camry", "RAV4", "Land Cruiser", "Yaris", "C-HR", "Highlander"] },
-    { brand: "Ford", brandSlug: "ford", models: ["Focus", "Fiesta", "Kuga", "Puma", "Mustang", "Explorer", "Ranger"] },
-    { brand: "Opel", brandSlug: "opel", models: ["Astra", "Corsa", "Insignia", "Mokka", "Crossland", "Grandland"] },
-    { brand: "Skoda", brandSlug: "skoda", models: ["Octavia", "Superb", "Kodiaq", "Karoq", "Fabia", "Scala", "Kamiq"] },
-    { brand: "Renault", brandSlug: "renault", models: ["Clio", "Megane", "Captur", "Kadjar", "Scenic", "Arkana", "Austral"] },
-    { brand: "Peugeot", brandSlug: "peugeot", models: ["208", "308", "3008", "5008", "508", "2008", "Partner"] },
-    { brand: "Hyundai", brandSlug: "hyundai", models: ["i30", "Tucson", "Kona", "Santa Fe", "i20", "Ioniq", "Bayon"] },
-    { brand: "Kia", brandSlug: "kia", models: ["Sportage", "Ceed", "Niro", "Sorento", "Stonic", "Rio", "EV6"] },
-    { brand: "Volvo", brandSlug: "volvo", models: ["XC40", "XC60", "XC90", "V60", "V90", "S60", "S90"] },
-    { brand: "Mazda", brandSlug: "mazda", models: ["CX-5", "CX-30", "Mazda3", "Mazda6", "MX-5", "CX-60", "CX-3"] },
-    { brand: "Honda", brandSlug: "honda", models: ["Civic", "CR-V", "HR-V", "Jazz", "Accord", "e:Ny1", "ZR-V"] },
-    { brand: "Nissan", brandSlug: "nissan", models: ["Qashqai", "Juke", "X-Trail", "Leaf", "Micra", "Ariya", "Navara"] }
-  ];
+  function readDetectableVehicles() {
+    var el = document.getElementById("vci-detectable-vehicles-data");
+    if (!el) return { cars: [], trucks: [] };
+    try { return JSON.parse(el.textContent) || { cars: [], trucks: [] }; } catch (e) { return { cars: [], trucks: [] }; }
+  }
 
   function generateRandomVIN() {
     var chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
@@ -61,25 +47,27 @@
   }
 
   function generateRandomVehicle() {
-    var trucksMode = isTrucksMode();
-    var db = trucksMode ? VEHICLE_DATABASE_TRUCKS : VEHICLE_DATABASE;
-    var brandData = db[Math.floor(Math.random() * db.length)];
-    var model = brandData.models[Math.floor(Math.random() * brandData.models.length)];
-    var currentYear = new Date().getFullYear();
-    var year = currentYear - Math.floor(Math.random() * 10); // 0-9 years old
-    var engines = trucksMode ? ["Diesel"] : ["1.0 TSI", "1.4 TSI", "1.5 TSI", "2.0 TSI", "2.0 TDI", "1.6 TDI", "3.0 V6", "2.5 Hybrid", "EV"];
-    var engine = engines[Math.floor(Math.random() * engines.length)];
-    return {
-      brand: brandData.brand,
-      brandSlug: brandData.brandSlug,
-      model: model,
-      year: year,
-      engine: engine,
-      vin: generateRandomVIN()
-    };
+    var list = readDetectableVehicles()[isTrucksMode() ? "trucks" : "cars"];
+    if (!list || !list.length) return null;
+    return list[Math.floor(Math.random() * list.length)];
   }
 
   var currentVehicle = null; // Stores the vehicle data for redirect
+
+  // Builds the redirect query string, including vehicleId when the vehicle is a real curated one
+  // (Path 1 always is; Path 2/manual selection isn't — see runFlow() below — so live-session
+  // tracking/Finish Session only apply to Auto-detect and Capture VIN, not manual selection).
+  function buildVehicleParams(vehicle) {
+    var params = new URLSearchParams();
+    params.set("vin", vehicle.vin);
+    params.set("brand", vehicle.brand);
+    params.set("brandSlug", vehicle.brandSlug);
+    params.set("model", vehicle.model);
+    params.set("year", vehicle.year);
+    if (vehicle.engine) params.set("engine", vehicle.engine);
+    if (vehicle.id) params.set("vehicleId", vehicle.id);
+    return params;
+  }
 
   var dialog;
   var progressFill;
@@ -255,13 +243,7 @@
           if (vinEl) vinEl.textContent = currentVehicle.vin;
           timeouts.push(setTimeout(function () {
             setOnboardingStep(1);
-            var vehicleParams = new URLSearchParams();
-            vehicleParams.set("vin", currentVehicle.vin);
-            vehicleParams.set("brand", currentVehicle.brand);
-            vehicleParams.set("brandSlug", currentVehicle.brandSlug);
-            vehicleParams.set("model", currentVehicle.model);
-            vehicleParams.set("year", currentVehicle.year);
-            if (currentVehicle.engine) vehicleParams.set("engine", currentVehicle.engine);
+            var vehicleParams = buildVehicleParams(currentVehicle);
             closeAndReset();
             redirect(currentAppPath() + "/diagnostics-dashboard/?" + vehicleParams.toString());
           }, 500));
@@ -287,13 +269,7 @@
 
         // State 3: hold 1.5s then close and go to diagnostics-dashboard
         timeouts.push(setTimeout(function () {
-          var vehicleParams = new URLSearchParams();
-          vehicleParams.set("vin", currentVehicle.vin);
-          vehicleParams.set("brand", currentVehicle.brand);
-          vehicleParams.set("brandSlug", currentVehicle.brandSlug);
-          vehicleParams.set("model", currentVehicle.model);
-          vehicleParams.set("year", currentVehicle.year);
-          if (currentVehicle.engine) vehicleParams.set("engine", currentVehicle.engine);
+          var vehicleParams = buildVehicleParams(currentVehicle);
           closeAndReset();
           redirect(currentAppPath() + "/diagnostics-dashboard/?" + vehicleParams.toString());
         }, 1500));

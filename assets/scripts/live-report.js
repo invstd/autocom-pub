@@ -4,12 +4,15 @@
 // [data-live-session] on their root element.
 //
 // Runs before report-shared.js/report-composer.js (script tag order in generate-report.njk /
-// session-report.njk) so the rows below exist by the time those read the DOM — report-composer.js
-// still drives the editable meta fields (fileName/mechanic/date/customer/notes) unchanged; it just
-// finds zero [data-event-include]/[data-event-billable] elements on a live page (that checklist is
-// replaced with a note, see generate-report.njk) and applyState() finds no matching `state.events`
-// entry for the rows injected here, so it leaves them alone — no per-event include/billable
-// toggling for live events, only for the mocked history. See PROGRESS.md for that scope call.
+// session-report.njk) so both the rows below AND the real event count exist by the time those
+// read the DOM — a live session now gets the exact same per-event include/billable checklist a
+// mocked session does (data-event-include/data-event-billable, built here into
+// [data-event-checklist] to match generate-report.njk's server-rendered markup for mocked
+// sessions), which report-composer.js's existing wiring picks up unmodified since it just queries
+// for those attributes at load time. This also means #report-defaults-data's eventCount (baked in
+// at build time as 0, since live events aren't known then) has to be corrected here too, before
+// report-shared.js's loadState() reads it — otherwise it builds a zero-length state.events and
+// every checkbox/billable button below would have nothing to toggle.
 (function () {
   const root = document.querySelector('[data-live-session]');
   if (!root) return;
@@ -64,6 +67,47 @@
     return row;
   }
 
+  // Left-panel checklist row — same markup generate-report.njk server-renders for a mocked
+  // session's events, just built client-side. Deliberately a plain neutral icon (no tone class),
+  // matching that server-rendered version exactly.
+  function buildChecklistRow(event, index) {
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-2 py-1.5';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'checkbox checkbox-sm shrink-0';
+    checkbox.id = 'report-event-include-' + index;
+    checkbox.checked = true;
+    checkbox.setAttribute('data-event-include', String(index));
+    row.appendChild(checkbox);
+
+    const label = document.createElement('label');
+    label.setAttribute('for', checkbox.id);
+    label.className = 'flex-1 min-w-0 flex items-center gap-2 cursor-pointer';
+    const iconEl = cloneIcon(event.icon);
+    if (iconEl) { iconEl.classList.add('text-base-content/60'); label.appendChild(iconEl); }
+    const text = document.createElement('span');
+    text.className = 'text-sm text-base-content truncate flex-1';
+    text.textContent = event.label;
+    label.appendChild(text);
+    const time = document.createElement('span');
+    time.className = 'text-xs text-base-content/50 shrink-0';
+    time.textContent = event.time;
+    label.appendChild(time);
+    row.appendChild(label);
+
+    const billableBtn = document.createElement('button');
+    billableBtn.type = 'button';
+    billableBtn.className = 'badge badge-success badge-sm shrink-0';
+    billableBtn.setAttribute('data-event-billable', String(index));
+    billableBtn.setAttribute('aria-pressed', 'true');
+    billableBtn.textContent = 'Billable';
+    row.appendChild(billableBtn);
+
+    return row;
+  }
+
   const liveSession = window.AutocomLiveSession ? window.AutocomLiveSession.get(vehicleId) : null;
   const events = (liveSession && liveSession.events) || [];
 
@@ -79,6 +123,32 @@
     events.forEach(function (event, i) { container.appendChild(buildEventRow(event, i)); });
   });
 
+  // Only present on generate-report.njk (the Composer's left-panel form) — session-report.njk
+  // (the printable page) has no checklist to fill in, just the Live Preview rows above.
+  document.querySelectorAll('[data-event-checklist]').forEach(function (container) {
+    container.innerHTML = '';
+    if (events.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'text-sm text-base-content/60';
+      empty.textContent = 'No events logged yet — perform an action on the Diagnostics Dashboard to add one here.';
+      container.appendChild(empty);
+      return;
+    }
+    events.forEach(function (event, i) { container.appendChild(buildChecklistRow(event, i)); });
+  });
+
+  // #report-defaults-data's eventCount is baked in at build time as 0 for a live session (real
+  // events aren't known then) — correct it here, before report-shared.js's loadState() (next
+  // script tag) reads it, so state.events comes back the right length for the checklist above.
+  const defaultsEl = document.getElementById('report-defaults-data');
+  if (defaultsEl) {
+    try {
+      const defaults = JSON.parse(defaultsEl.textContent);
+      defaults.eventCount = events.length;
+      defaultsEl.textContent = JSON.stringify(defaults);
+    } catch (e) {}
+  }
+
   let summary = '';
   if (events.length > 0 && liveSession) {
     const started = new Date(liveSession.startedAt);
@@ -86,8 +156,4 @@
     summary = 'Today · ' + timeLabel + ' · ' + events.length + (events.length === 1 ? ' event' : ' events');
   }
   document.querySelectorAll('[data-field="sessionSummary"]').forEach(function (el) { el.textContent = summary || '—'; });
-  // Both the inline note's count and the collapse header's badge (normally kept in sync by
-  // report-composer.js's countIncluded(), which has nothing to count on a live page since there's
-  // no per-event checklist here — see generate-report.njk) need updating from the real total.
-  document.querySelectorAll('[data-live-event-count], [data-events-included-count]').forEach(function (el) { el.textContent = String(events.length); });
 })();
