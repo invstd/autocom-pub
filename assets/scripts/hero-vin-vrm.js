@@ -195,7 +195,7 @@
     input.addEventListener("keyup", syncIconState);
     input.addEventListener("focus", syncIconState);
 
-    var clearBtn = form.querySelector("[data-hero-search-clear]");
+    var clearBtn = form.querySelector("[data-clear-input]");
     if (clearBtn) {
       clearBtn.addEventListener("click", function () {
         showFlag(wrapper, null);

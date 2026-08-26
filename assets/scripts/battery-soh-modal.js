@@ -5,199 +5,149 @@
 
   var state1 = document.getElementById("battery-soh-state-1");
   var state2 = document.getElementById("battery-soh-state-2");
-  var state3 = document.getElementById("battery-soh-state-3");
   var continueBtn = document.getElementById("battery-soh-continue");
-  var cancelBtn = document.querySelector("[data-battery-soh-cancel]");
-  var checkRows = Array.prototype.slice.call(document.querySelectorAll("[data-battery-soh-check]"));
-  var reportEV = document.getElementById("battery-soh-report-ev");
-  var reportICE = document.getElementById("battery-soh-report-ice");
-  var measuringStatusEl = document.getElementById("battery-soh-measuring-status");
-  var measuringFillEl = document.getElementById("battery-soh-measuring-fill");
+  var cancelBtns = Array.prototype.slice.call(document.querySelectorAll("[data-battery-soh-cancel]"));
+  var progressStatusEl = document.getElementById("battery-soh-progress-status");
 
-  // What the BMS actually reads differs by vehicle type: 12V systems get a cranking/
-  // resistance check, EV/hybrid packs get per-cell voltage + thermal checks. Last step
-  // in both is a DTC check (a real BMS logs codes for dying cells, bad sensors, or CAN
-  // bus comms faults).
-  var MEASURING_STEPS = {
-    ice: [
-      "Reading battery voltage...",
-      "Testing cold-cranking performance...",
-      "Measuring internal resistance...",
-      "Checking for stored DTCs..."
-    ],
-    ev: [
-      "Reading individual cell voltages...",
-      "Checking cell balance...",
-      "Verifying cooling system operation...",
-      "Checking for stored DTCs..."
-    ]
-  };
-
-  var checkTimers = [];
-  var measuringTimers = [];
-  var gaugeFrame = null;
-
-  function showState(n) {
-    state1.classList.toggle("hidden", n !== 1);
-    state2.classList.toggle("hidden", n !== 2);
-    state3.classList.toggle("hidden", n !== 3);
+  // Same "detect current prototype folder" convention as vci-pair-detect-modal.js etc. — this
+  // component only lives under automechanika/, so a simpler match than those files' generic
+  // launchpad-N + automechanika alternation is enough.
+  function getBasePath() {
+    var m = window.location.pathname.match(/^(.*?\/)automechanika\//);
+    return m ? m[1] : "/";
   }
 
   // The engine type isn't known at build time — it's set on the URL by vehicle-selection
   // (from the brand/model JSON's engine_types, e.g. "Petrol", "Electric", "Plug-in Hybrid")
   // once a real vehicle is picked. No param (e.g. navigating here directly) falls back to
-  // the combustion variant.
+  // the combustion variant. Same test as bms-dtc-library.js's callers elsewhere.
   function activeVariant() {
     var engine = new URLSearchParams(window.location.search).get("engine") || "";
     return /electric|hybrid/i.test(engine) ? "ev" : "ice";
   }
 
-  function showReportVariant(variant) {
-    if (reportEV) reportEV.classList.toggle("hidden", variant !== "ev");
-    if (reportICE) reportICE.classList.toggle("hidden", variant !== "ice");
+  // Live progress steps, matching the real Autocom ICON app's own wording (screen recording
+  // Vedran supplied 2026-08-26) — "Connecting to VCI" (no count) -> "Scanning ...-systems (n/N)"
+  // -> "Reading SoH parameters... (n/N)". Combustion has no real reference to match, so it reuses
+  // the same three-phase shape with smaller, plausible counts rather than inventing a fourth
+  // phase.
+  var STEP_TABLES = {
+    ev: [
+      { label: "Connecting to VCI", count: 0 },
+      { label: "Scanning EV-systems", count: 8 },
+      { label: "Reading SoH parameters...", count: 7 }
+    ],
+    ice: [
+      { label: "Connecting to VCI", count: 0 },
+      { label: "Scanning battery systems", count: 4 },
+      { label: "Reading SoH parameters...", count: 3 }
+    ]
+  };
+  var TICK_MS = 240;
+  var CONNECT_MS = 1100;
+
+  var progressTimers = [];
+
+  function clearProgressTimers() {
+    progressTimers.forEach(function (t) { clearTimeout(t); });
+    progressTimers = [];
   }
 
-  // Reset the checklist to "checking..." (spinners, no badges, Continue disabled) so it
-  // replays convincingly every time the modal is (re)opened rather than showing stale results.
-  function resetChecklist() {
-    checkTimers.forEach(function (t) { clearTimeout(t); });
-    checkTimers = [];
-    if (continueBtn) continueBtn.disabled = true;
-    checkRows.forEach(function (row) {
-      var pending = row.querySelector("[data-check-pending]");
-      var result = row.querySelector("[data-check-result]");
-      if (pending) pending.classList.remove("hidden");
-      if (result) {
-        result.classList.add("hidden");
-        result.classList.remove("battery-soh-check-in");
+  function showState(n) {
+    state1.classList.toggle("hidden", n !== 1);
+    state2.classList.toggle("hidden", n !== 2);
+  }
+
+  // Steps through Connecting -> Scanning (n/N) -> Reading (n/N) for the given variant, then
+  // calls onDone once the last count lands.
+  function runProgress(variant, onDone) {
+    clearProgressTimers();
+    var steps = STEP_TABLES[variant] || STEP_TABLES.ice;
+    var elapsed = 0;
+
+    steps.forEach(function (step) {
+      if (step.count === 0) {
+        progressTimers.push(setTimeout(function () {
+          if (progressStatusEl) progressStatusEl.textContent = step.label;
+        }, elapsed));
+        elapsed += CONNECT_MS;
+        return;
+      }
+      for (var i = 1; i <= step.count; i++) {
+        (function (n) {
+          progressTimers.push(setTimeout(function () {
+            if (progressStatusEl) progressStatusEl.textContent = step.label + " (" + n + "/" + step.count + ")";
+          }, elapsed));
+        })(i);
+        elapsed += TICK_MS;
       }
     });
+
+    progressTimers.push(setTimeout(onDone, elapsed + 400));
   }
 
-  function runChecklist() {
-    checkRows.forEach(function (row, i) {
-      var t = setTimeout(function () {
-        var pending = row.querySelector("[data-check-pending]");
-        var result = row.querySelector("[data-check-result]");
-        if (pending) pending.classList.add("hidden");
-        if (result) {
-          result.classList.remove("hidden");
-          result.classList.add("battery-soh-check-in");
-        }
-      }, 500 + i * 450);
-      checkTimers.push(t);
-    });
-    checkTimers.push(setTimeout(function () {
-      if (continueBtn) continueBtn.disabled = false;
-    }, 500 + checkRows.length * 450));
-  }
-
-  // Steps through the "reading the battery" status messages + progress bar for the given
-  // vehicle-type variant, then calls onDone once the last step lands.
-  function runMeasuring(variant, onDone) {
-    measuringTimers.forEach(function (t) { clearTimeout(t); });
-    measuringTimers = [];
-    var steps = MEASURING_STEPS[variant] || MEASURING_STEPS.ice;
-    var stepProgress = [25, 55, 80, 100];
-    var stepDuration = 1300; // 4 steps + trailing buffer ≈ 6s total — long enough to read like a live check, short enough for a demo
-    if (measuringFillEl) measuringFillEl.style.width = "0%";
-    if (measuringStatusEl) measuringStatusEl.textContent = steps[0];
-    steps.forEach(function (label, i) {
-      var t = setTimeout(function () {
-        if (measuringStatusEl) measuringStatusEl.textContent = label;
-        if (measuringFillEl) measuringFillEl.style.width = stepProgress[i] + "%";
-      }, i * stepDuration);
-      measuringTimers.push(t);
-    });
-    measuringTimers.push(setTimeout(onDone, steps.length * stepDuration + 800));
-  }
-
-  // Keep the modal's VIN in sync with whatever's actually shown in the page header
-  // (diagnostics-dashboard.js overwrites that from the same URL params when a vehicle
-  // was really selected), instead of re-deriving it here.
-  function syncVin() {
-    var headerVin = document.querySelector("[data-vehicle-vin]");
-    var vinText = headerVin && headerVin.textContent.trim();
-    if (!vinText) return;
-    Array.prototype.forEach.call(document.querySelectorAll("[data-battery-soh-vin]"), function (el) {
-      el.textContent = vinText;
-    });
-  }
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  // Real dashboard action → this vehicle's live session (see live-session.js). Logged once the
-  // result actually renders, not on Continue click, so a cancelled/incomplete check never logs.
-  function logResult(variant, sohTarget, condition) {
+  // Logged once progress genuinely completes (not on OK click), same as the rest of this app's
+  // "log real outcomes, not intent" convention — mirrors runVehicleTask/logResult elsewhere.
+  function logResult(variant) {
     if (!window.AutocomLiveSession) return;
     var urlParams = new URLSearchParams(window.location.search);
     var vehicleId = urlParams.get("vehicleId");
     if (!vehicleId) return;
-    var tone = sohTarget >= 80 ? "success" : (sohTarget >= 50 ? "warning" : "error");
-    window.AutocomLiveSession.append(vehicleId, { icon: "battery", label: "Battery SoH Check", tone: tone, value: sohTarget + "% - " + condition });
+    var brand = urlParams.get("brand") || "";
+    var model = urlParams.get("model") || "";
+    var data = window.BmsDtcLibrary
+      ? (variant === "ev" ? window.BmsDtcLibrary.lookup(brand, model) : null)
+      : null;
+    var soh = data ? data.batteryHealthPercent : (variant === "ev" ? 92 : 88);
+    var tone = soh >= 80 ? "success" : (soh >= 50 ? "warning" : "error");
+    window.AutocomLiveSession.append(vehicleId, { icon: "battery", label: "Battery SoH Check", tone: tone, value: soh + "%" });
     if (typeof window.refreshCurrentSessionBadgeFromLiveSession === "function") window.refreshCurrentSessionBadgeFromLiveSession();
-  }
-
-  function animateGauge(variant) {
-    var gaugeEl = document.getElementById("battery-soh-gauge-" + variant);
-    var gaugeValueEl = document.getElementById("battery-soh-gauge-value-" + variant);
-    var markerEl = document.getElementById("battery-soh-marker-" + variant);
-    var sohTarget = gaugeEl ? parseInt(gaugeEl.getAttribute("data-target"), 10) || 0 : 0;
-    var condition = gaugeEl ? gaugeEl.getAttribute("data-condition") || "" : "";
-    logResult(variant, sohTarget, condition);
-
-    if (gaugeFrame) cancelAnimationFrame(gaugeFrame);
-    if (gaugeEl) gaugeEl.style.setProperty("--value", 0);
-    if (gaugeValueEl) gaugeValueEl.textContent = "0%";
-    if (markerEl) {
-      markerEl.style.left = "0%";
-      void markerEl.offsetWidth; // force reflow so the 0% is committed before transitioning
-      markerEl.style.left = sohTarget + "%";
-    }
-    var duration = 900;
-    var start = null;
-    function tick(ts) {
-      if (!start) start = ts;
-      var progress = Math.min(1, (ts - start) / duration);
-      var value = Math.round(easeOutCubic(progress) * sohTarget);
-      if (gaugeEl) gaugeEl.style.setProperty("--value", value);
-      if (gaugeValueEl) gaugeValueEl.textContent = value + "%";
-      if (progress < 1) gaugeFrame = requestAnimationFrame(tick);
-    }
-    gaugeFrame = requestAnimationFrame(tick);
   }
 
   window.openBatterySohModal = function () {
     showState(1);
-    resetChecklist();
-    syncVin();
     dialog.showModal();
-    runChecklist();
   };
 
   if (continueBtn) {
     continueBtn.addEventListener("click", function () {
       var variant = activeVariant();
       showState(2);
-      runMeasuring(variant, function () {
-        showState(3);
-        showReportVariant(variant);
-        animateGauge(variant);
+      if (progressStatusEl) progressStatusEl.textContent = "Connecting to VCI";
+      runProgress(variant, function () {
+        logResult(variant);
+        var params = new URLSearchParams(window.location.search);
+        var reportParams = new URLSearchParams();
+        ["vin", "brand", "brandSlug", "model", "year", "engine"].forEach(function (key) {
+          var value = params.get(key);
+          if (value) reportParams.set(key, value);
+        });
+        // Close before navigating so the dialog isn't still open mid-progress if the browser
+        // restores this page from bfcache on Back — window.location.href never fires the
+        // dialog's own "close" event on its own, so without this the dashboard would come back
+        // frozen on "Reading SoH parameters... (n/N)".
+        dialog.close();
+        window.location.href = getBasePath() + "automechanika/battery-soh-report/?" + reportParams.toString();
       });
     });
   }
 
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", function () {
+  cancelBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
       dialog.close();
     });
-  }
+  });
 
   dialog.addEventListener("close", function () {
-    measuringTimers.forEach(function (t) { clearTimeout(t); });
-    measuringTimers = [];
+    clearProgressTimers();
     showState(1);
+  });
+
+  // Belt-and-suspenders: if the browser still restores this page from bfcache with the dialog
+  // open despite the close() above (behaviour varies by browser), force it closed on restore.
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted && dialog.open) {
+      dialog.close();
+    }
   });
 })();

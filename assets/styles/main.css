@@ -6119,8 +6119,8 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .top-1\/2 {
-    top: calc(1/2 * 100%);
+  .top-1\.5 {
+    top: calc(var(--spacing) * 1.5);
   }
   .top-2 {
     top: calc(var(--spacing) * 2);
@@ -6130,6 +6130,9 @@
   }
   .right-0 {
     right: calc(var(--spacing) * 0);
+  }
+  .right-1\.5 {
+    right: calc(var(--spacing) * 1.5);
   }
   .right-2 {
     right: calc(var(--spacing) * 2);
@@ -8431,9 +8434,6 @@
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
-  .h-9 {
-    height: calc(var(--spacing) * 9);
-  }
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
@@ -8618,9 +8618,6 @@
       }
     }
   }
-  .w-0\.5 {
-    width: calc(var(--spacing) * 0.5);
-  }
   .w-1\.5 {
     width: calc(var(--spacing) * 1.5);
   }
@@ -8793,20 +8790,12 @@
   .grow {
     flex-grow: 1;
   }
-  .-translate-x-1\/2 {
-    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
   .translate-x-0 {
     --tw-translate-x: calc(var(--spacing) * 0);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .translate-x-full {
     --tw-translate-x: 100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
-  .-translate-y-1\/2 {
-    --tw-translate-y: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .swap-active {
@@ -9549,6 +9538,12 @@
   .border-base-300 {
     border-color: var(--color-base-300);
   }
+  .border-base-300\/30 {
+    border-color: var(--color-base-300);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-base-300) 30%, transparent);
+    }
+  }
   .border-base-300\/50 {
     border-color: var(--color-base-300);
     @supports (color: color-mix(in lab, red, red)) {
@@ -9784,12 +9779,6 @@
       background-color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
     }
   }
-  .bg-base-content\/80 {
-    background-color: var(--color-base-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
-    }
-  }
   .bg-black {
     background-color: var(--color-black);
   }
@@ -9810,9 +9799,6 @@
   }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
-  }
-  .bg-error {
-    background-color: var(--color-error);
   }
   .bg-info {
     background-color: var(--color-info);
@@ -11420,11 +11406,6 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
-  .transition-\[left\] {
-    transition-property: left;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
-  }
   .transition-\[width\] {
     transition-property: width;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -11457,10 +11438,6 @@
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
-  }
-  .duration-700 {
-    --tw-duration: 700ms;
-    transition-duration: 700ms;
   }
   .duration-1000 {
     --tw-duration: 1000ms;
@@ -13216,6 +13193,11 @@
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
+  .lg\:grid-cols-\[1fr_320px\] {
+    @media (width >= 64rem) {
+      grid-template-columns: 1fr 320px;
+    }
+  }
   .lg\:grid-cols-\[380px_1fr\] {
     @media (width >= 64rem) {
       grid-template-columns: 380px 1fr;
@@ -13304,6 +13286,16 @@
   .\@\[420px\]\:grid-cols-2 {
     @container (width >= 420px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .print\:block {
+    @media print {
+      display: block;
+    }
+  }
+  .print\:flex {
+    @media print {
+      display: flex;
     }
   }
   .print\:hidden {
@@ -13453,6 +13445,15 @@
 }
 .hero-search-input input[type="search"]::-ms-clear {
   display: none;
+}
+html[data-role="User"] [data-admin-only] {
+  display: none !important;
+}
+@media print {
+  .automechanika-shell .automechanika-drawer-side,
+  .automechanika-shell > .drawer-content > .navbar {
+    display: none !important;
+  }
 }
 .btn:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-ghost):not(.btn-link):not(.btn-neutral):not(.btn-info):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-outline):not(.btn-dash):not(.btn-soft) {
   --btn-color: var(--color-base-200);

@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type', role: 'automechanika-role' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -45,6 +45,12 @@
         }
         var saved = localStorage.getItem('theme');
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
+        // Role (Admin/User) — for sharing a link with trusted external users while hiding
+        // internal-only Settings sections (data-admin-only, see main.css). Client-side only, same
+        // "not real security" caveat as the password gate (prototype-gate.js) — fine for hiding
+        // UI from a trusted-audience demo link, not an access-control boundary. Defaults to Admin
+        // (today's full-access behavior) so any link without ?role= is unaffected.
+        document.documentElement.setAttribute('data-role', localStorage.getItem('automechanika-role') || 'Admin');
       })();
     </script>
     <script>
@@ -443,6 +449,7 @@
 <script src="/autocom-pub/assets/scripts/vendor/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
+<script src="/autocom-pub/assets/scripts/clearable-input.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">

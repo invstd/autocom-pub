@@ -12,6 +12,10 @@
  *
  * push() is a no-op when localStorage['launchpad-notifications-suppressed'] === '1' (Settings'
  * "Notifications" card) — a demo-mode kill switch so sales demos aren't interrupted by toasts.
+ * Suppressing also clears any notifications already in the store on every load (below) — a demo
+ * link generated before suppression was picked up, or a browser profile with leftover
+ * notifications from earlier browsing, would otherwise still show a stale badge count even
+ * though nothing new can be pushed.
  */
 (function () {
   var STORE_KEY = 'air-notifications';
@@ -43,6 +47,12 @@
     } catch (e) {
       return [];
     }
+  }
+
+  // Suppressed demos should never show a leftover badge count either — clear the store once per
+  // load rather than only relying on push() no-op'ing future ones.
+  if (localStorage.getItem('launchpad-notifications-suppressed') === '1' && readAll().length) {
+    localStorage.setItem(STORE_KEY, '[]');
   }
 
   function writeAll(list) {

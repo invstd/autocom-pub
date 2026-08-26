@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type', role: 'automechanika-role' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -45,6 +45,12 @@
         }
         var saved = localStorage.getItem('theme');
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
+        // Role (Admin/User) — for sharing a link with trusted external users while hiding
+        // internal-only Settings sections (data-admin-only, see main.css). Client-side only, same
+        // "not real security" caveat as the password gate (prototype-gate.js) — fine for hiding
+        // UI from a trusted-audience demo link, not an access-control boundary. Defaults to Admin
+        // (today's full-access behavior) so any link without ?role= is unaffected.
+        document.documentElement.setAttribute('data-role', localStorage.getItem('automechanika-role') || 'Admin');
       })();
     </script>
     <script>
@@ -773,7 +779,7 @@
   
     
     <div class="px-4 flex flex-col gap-0" data-brand-selection-area data-base-path="/autocom-pub/">
-      <div class="vehicle-brand-search-row input input-lg input-bordered flex items-center gap-2 w-full min-h-12" id="vehicle-brand-search-desktop-wrap">
+      <div class="vehicle-brand-search-row input input-lg input-bordered flex items-center gap-2 w-full min-h-12" id="vehicle-brand-search-desktop-wrap" data-clearable-input>
         
 <span class="icon icon-search w-5 h-5 text-base-content/60 shrink-0 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -783,6 +789,16 @@
 </span>
 
         <input type="text" id="vehicle-brand-search-desktop" placeholder="Vehicle brand" class="grow min-w-0 bg-transparent border-none outline-none" autocomplete="off" aria-label="Filter brands" />
+        <button type="button" data-clear-input class="hidden shrink-0 text-base-content/50 hover:text-base-content" aria-label="Clear search">
+          
+<span class="icon icon-close w-4 h-4 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+</span>
+
+        </button>
       </div>
       <div class="vehicle-brand-selection-row hidden min-h-12 rounded-lg border border-base-300 flex items-center gap-2 w-fit px-3 py-2 bg-base-100" id="vehicle-brand-selection-desktop" data-brand-selection-row>
         <span class="badge badge-lg badge-ghost gap-1.5 pr-1 py-2.5 flex items-center shrink-0" data-brand-chip>
@@ -3017,6 +3033,7 @@
 <script src="/autocom-pub/assets/scripts/vendor/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
+<script src="/autocom-pub/assets/scripts/clearable-input.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">

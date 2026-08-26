@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type', role: 'automechanika-role' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -45,6 +45,12 @@
         }
         var saved = localStorage.getItem('theme');
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
+        // Role (Admin/User) — for sharing a link with trusted external users while hiding
+        // internal-only Settings sections (data-admin-only, see main.css). Client-side only, same
+        // "not real security" caveat as the password gate (prototype-gate.js) — fine for hiding
+        // UI from a trusted-audience demo link, not an access-control boundary. Defaults to Admin
+        // (today's full-access behavior) so any link without ?role= is unaffected.
+        document.documentElement.setAttribute('data-role', localStorage.getItem('automechanika-role') || 'Admin');
       })();
     </script>
     <script>
@@ -554,7 +560,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-droplet w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -569,7 +576,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-brakes w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -589,7 +597,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-battery w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -607,7 +616,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-gauge-instruments w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -622,7 +632,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-brakes w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -642,7 +653,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-tpms w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -659,7 +671,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-restrains-safety w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -675,7 +688,8 @@
                 
                   
 
-<button type="button" class="vehicle-task-tile flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full rounded-box bg-base-200 hover:bg-base-300 active:scale-[0.98] border border-base-300/50 text-base-content font-medium text-sm cursor-pointer transition-colors" >
+<button type="button" class="vehicle-task-tile relative flex flex-col items-center pt-4 px-4 pb-4 gap-2 min-h-[5.5rem] min-w-0 w-full h-full rounded-box border font-medium text-sm transition-colors bg-base-200 hover:bg-base-300 active:scale-[0.98] border-base-300/50 text-base-content cursor-pointer"  >
+  
   <span class="shrink-0 text-primary">
 <span class="icon icon-more w-7 h-7 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2212,6 +2226,7 @@
 <script src="/autocom-pub/assets/scripts/vendor/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
+<script src="/autocom-pub/assets/scripts/clearable-input.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">

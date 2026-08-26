@@ -232,8 +232,13 @@ if (vehicleData.vin || vehicleData.model || vehicleData.brandSlug) {
 // showing a car-style ~11-12V reading on a truck dashboard would be wrong. Nominal voltage and
 // thresholds scale with isTrucksMode; the mock reading keeps the same proportional "slightly low"
 // deficit (~5% under nominal) either way, so both land in the same warning severity for the demo.
+//
+// Suppressed demos (Settings' "Notifications" toggle) get a healthy reading at nominal voltage
+// instead — a demonstrator running a live audience through this shouldn't have to explain an
+// amber battery badge that's only there to justify a notification they've already turned off.
 const nominalVoltage = isTrucksMode ? 24 : 12;
-const mockVoltage = isTrucksMode ? 22.8 : 11.4;
+const notificationsSuppressed = localStorage.getItem('launchpad-notifications-suppressed') === '1';
+const mockVoltage = notificationsSuppressed ? nominalVoltage : (isTrucksMode ? 22.8 : 11.4);
 const voltageBadge = document.getElementById('vehicle-voltage-stat-badge');
 if (voltageBadge) {
   voltageBadge.textContent = mockVoltage.toFixed(1) + 'V';
@@ -308,17 +313,12 @@ refreshCurrentSessionBadge();
 // logging their own event, instead of waiting for the next dashboard action to do it.
 window.refreshCurrentSessionBadgeFromLiveSession = refreshCurrentSessionBadge;
 
-// Generic handler for Vehicle Task tiles that don't have their own real flow (everything except
-// BMS, which opens the Battery SoH modal). These tiles have no per-task simulated behavior to
-// speak of, so "performing" one just confirms + logs it — same "believable outcome, not a full
-// wizard" scope call as the rest of this restructuring (see PROGRESS.md).
-const VEHICLE_TASK_VALUES = {
-  'oil-service-reset': 'Reset', 'tpms': 'Recalibrated', 'srs-airbag-reset': 'Cleared',
-  'dpf-regeneration': 'Completed', 'key-programming': '1 key added',
-  'service-reset': 'Reset', 'adblue-reset': 'Reset', 'brake-pad-reset': 'Reset', 'retarder-reset': 'Reset'
-};
+// Generic handler for Diagnostic Function tiles that don't have their own real flow (everything
+// except BMS, which opens the Battery SoH modal). These tiles have no per-function simulated
+// behavior to speak of, so "performing" one just confirms + logs it — same "believable outcome,
+// not a full wizard" scope call as the rest of this restructuring (see PROGRESS.md).
 window.runVehicleTask = function (id, label, iconName) {
-  logLiveEvent(iconName, label, 'success', VEHICLE_TASK_VALUES[id] || 'Completed');
+  logLiveEvent(iconName, label, 'success', 'Completed');
   if (window.AutocomNotifications) {
     window.AutocomNotifications.push('task', label + ' completed', 'Logged to this session’s event history.');
   }
@@ -1361,8 +1361,11 @@ function startScanDemo() {
       return;
     }
 
-    // Mid-scan connection wobble: fires once, roughly 40% through, then self-recovers.
-    if (!connectionWobbleTriggered && totalNodes > 2 && index === Math.floor(totalNodes * 0.4)) {
+    // Mid-scan connection wobble: fires once, roughly 40% through, then self-recovers. Skipped
+    // entirely when notifications are suppressed — demonstrators found the VCI badge flipping to
+    // "UNSTABLE" mid-demo confusing, and suppressing just the notification wasn't enough since
+    // the badge itself still flipped.
+    if (!connectionWobbleTriggered && !notificationsSuppressed && totalNodes > 2 && index === Math.floor(totalNodes * 0.4)) {
       connectionWobbleTriggered = true;
       triggerConnectionWobble();
     }

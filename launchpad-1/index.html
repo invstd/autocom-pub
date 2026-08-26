@@ -13,7 +13,7 @@
         // bookmarked/reloaded link doesn't keep re-forcing presets after the tester's own
         // in-session changes.
         var params = new URLSearchParams(location.search);
-        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type' };
+        var PRESET_PARAM_TO_STORAGE_KEY = { theme: 'theme', language: 'language', mode: 'launchpad-onboarding-mode', notif: 'launchpad-notifications-suppressed', vehicleType: 'automechanika-vehicle-type', role: 'automechanika-role' };
         var paramsChanged = false;
         Object.keys(PRESET_PARAM_TO_STORAGE_KEY).forEach(function (param) {
           if (params.has(param)) {
@@ -45,6 +45,12 @@
         }
         var saved = localStorage.getItem('theme');
         document.documentElement.setAttribute('data-theme', saved || 'Hi-Tech');
+        // Role (Admin/User) — for sharing a link with trusted external users while hiding
+        // internal-only Settings sections (data-admin-only, see main.css). Client-side only, same
+        // "not real security" caveat as the password gate (prototype-gate.js) — fine for hiding
+        // UI from a trusted-audience demo link, not an access-control boundary. Defaults to Admin
+        // (today's full-access behavior) so any link without ?role= is unaffected.
+        document.documentElement.setAttribute('data-role', localStorage.getItem('automechanika-role') || 'Admin');
       })();
     </script>
     <script>
@@ -477,7 +483,7 @@
       <form id="hero-vin-vrm-form" class="flex flex-col gap-2" novalidate>
         
 <div class="hero-search-input w-full">
-  <label class="input input-bordered input-lg flex items-center gap-3 w-full min-h-14 md:min-h-16 text-base md:text-lg rounded-box">
+  <label class="input input-bordered input-lg flex items-center gap-3 w-full min-h-14 md:min-h-16 text-base md:text-lg rounded-box" data-clearable-input>
     <span class="hero-search-icon-or-flag flex shrink-0 items-center justify-center min-w-[2rem] text-base-content/60 leading-none" aria-hidden="true">
       <span id="hero-search-icon" class="hero-search-icon">
 <span class="icon icon-search w-5 h-5 md:w-6 md:h-6 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
@@ -509,7 +515,7 @@
       class="grow border-0 bg-transparent outline-none min-w-0 placeholder:text-base-content/50 uppercase"
       autocomplete="off"
     />
-    <button type="button" data-hero-search-clear class="hero-search-input__clear flex shrink-0 items-center justify-center text-base-content/60 leading-none p-0 border-0 bg-transparent cursor-pointer hidden hover:text-base-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded" aria-label="Clear search">
+    <button type="button" data-clear-input class="hero-search-input__clear flex shrink-0 items-center justify-center text-base-content/60 leading-none p-0 border-0 bg-transparent cursor-pointer hidden hover:text-base-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded" aria-label="Clear search">
       
 <span class="icon icon-close w-5 h-5 md:w-6 md:h-6 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -521,26 +527,6 @@
     </button>
   </label>
 </div>
-<script>
-(function() {
-  if (window.__heroSearchInputInited) return;
-  window.__heroSearchInputInited = true;
-  function init() {
-    document.querySelectorAll('.hero-search-input').forEach(function(wrapper) {
-      var input = wrapper.querySelector('input[type="search"]');
-      var clearBtn = wrapper.querySelector('[data-hero-search-clear]');
-      if (!input || !clearBtn) return;
-      function updateClear() { clearBtn.classList.toggle('hidden', !input.value.length); }
-      input.addEventListener('input', updateClear);
-      input.addEventListener('change', updateClear);
-      clearBtn.addEventListener('click', function(e) { e.preventDefault(); input.value = ''; input.focus(); updateClear(); });
-      updateClear();
-    });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
-</script>
 
         <p id="hero-vin-vrm-error" class="hero-vin-vrm-error text-sm text-error hidden min-h-[1.25rem]" role="alert" aria-live="polite"></p>
       </form>
@@ -912,6 +898,7 @@
 <script src="/autocom-pub/assets/scripts/vendor/confetti.browser.min.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-drawer.js"></script>
 <script src="/autocom-pub/assets/scripts/onboarding-waypoint-tour.js"></script>
+<script src="/autocom-pub/assets/scripts/clearable-input.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">
