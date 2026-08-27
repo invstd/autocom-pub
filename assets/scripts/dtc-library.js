@@ -79,10 +79,12 @@ window.AutocomDtcLibrary = {
     ]
   },
   // Content transcribed from a real Figma prototype reference (DTC P010000 drill-down, Volvo XC60
-  // D5244T11 2.4L Diesel) — see diagnostic-systems-restructuring notes in PROGRESS.md. Reference
-  // material also showed a "Reference Values" comparison table and a community "Notes" section;
-  // both deliberately not built here (net-new content types needing their own scope decision), see
-  // PROGRESS.md's deferred list.
+  // D5244T11 2.4L Diesel) — see diagnostic-systems-restructuring notes in PROGRESS.md. That
+  // reference also showed a "Reference Values" comparison table and a community "Notes" section,
+  // both now built below (referenceValues, notes) once Vedran shared the fuller reference screens —
+  // see dtc-detail-modal.js's rendering. Only the "Standard" condition in referenceValues has real
+  // backing from that reference; "Idle"/"Engine Warm" are left as genuinely no-data placeholders
+  // rather than invented numbers for conditions the reference never showed.
   //
   // Keyed by ecuId directly now (was systemId+subsystemId) — diagnosticSystemsCars.js's second
   // restructuring made each real ECU (e.g. "ecm") the single top-level scannable unit again,
@@ -117,9 +119,50 @@ window.AutocomDtcLibrary = {
           { label: 'Confirmed by ECU', value: 'Yes' }
         ],
         causes: [
-          { name: 'Dirty/clogged MAF sensor', faultFrequency: 55 },
-          { name: 'Air intake leak', faultFrequency: 30 },
-          { name: 'Sensor wiring fault', faultFrequency: 15 }
+          { name: 'Dirty/clogged MAF sensor', faultFrequency: 55, icon: 'droplet' },
+          { name: 'Air intake leak', faultFrequency: 30, icon: 'wind' },
+          {
+            name: 'Sensor wiring fault', faultFrequency: 15, icon: 'hard-drive',
+            // Finer root-cause split behind this one cause — shown via the "Possible Causes"
+            // section's info toggle (see dtc-detail-modal.js's renderCauses).
+            breakdown: [
+              { name: 'Control unit faulty', percent: 63 },
+              { name: 'Wiring harness', percent: 12 },
+              { name: 'Control module faulty', percent: 7 },
+              { name: 'Control unit faulty', percent: 5 },
+              { name: 'Wiring harness', percent: 4 },
+              { name: 'Control module faulty', percent: 4 },
+              { name: 'Control unit faulty', percent: 2 }
+            ]
+          }
+        ],
+        // Condition-scoped expected-vs-actual comparison. Only "Standard" has real values from the
+        // reference screen (hasData: true); "Idle"/"Engine Warm" are structurally present (the real
+        // app groups by condition) but honestly empty rather than invented.
+        referenceValues: [
+          { condition: 'Idle', hasData: false },
+          {
+            condition: 'Standard', hasData: true, hasIssue: true,
+            params: [
+              { label: 'MAF Sensor Output', sublabel: 'Signal Status', status: 'Low', value: '0 g/s', normalRange: '80–200 g/s normal' },
+              { label: 'Fuel-Air Lambda (λ)', sublabel: 'Rich Mixture', status: 'Low', value: 'λ 0.89', normalRange: 'λ 1.0 normal' },
+              { label: 'Intake Air Temperature', sublabel: 'Temp Status', status: 'Low', value: '28°C', normalRange: '15–40°C normal' }
+            ]
+          },
+          { condition: 'Engine Warm', hasData: false }
+        ],
+        // Community notes — one seed entry from the reference screen. "Show more"/"Add Note" render
+        // as real affordances (matching the reference) but aren't wired to any backing store; this
+        // is a static prototype, not a real community feature.
+        notes: [
+          {
+            author: 'VolvoExpert_92',
+            verified: true,
+            timestamp: '1 week ago',
+            text: 'Common P010000 issue on the D5244T11! MAF sensor cleaning with spray fixed it on my 2018 XC60 D5 at 95k km. Let it dry fully before reinstalling. Also check for any air leaks around the intake hose — they often cause this.',
+            upvotes: 10,
+            downvotes: 0
+          }
         ]
       }
     ]

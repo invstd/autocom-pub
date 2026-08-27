@@ -11,15 +11,22 @@
 // group they actually belong to (EGR under Emissions, AC-relay's cooling-fan relay under Cooling)
 // rather than invented for this pass.
 //
-// Trucks has no equivalent research yet — empty, same as before this restructuring.
+// Trucks has no equivalent research yet — empty except for vas-lgs's Calibration entry below.
 //
 // Entry shape:
-//   id, label, type ("adjustment"|"activation"|"test"), icon
+//   id, label, type ("adjustment"|"activation"|"test"|"calibration"), icon
 //   description                    - shown under the title on the detail screen
 //   notes?                          - Adjustment only: bulleted caveats
 //   prerequisites?                  - bulleted, all types
 //   procedure?                      - Adjustment/Test: numbered steps
 //   failureNote?                    - what to do if the operation fails (Adjustment/Test)
+//   onclick?                        - global function NAME (not literal code — different from
+//                                     diagnosticFunctions.js's inline-onclick convention) called
+//                                     with this entry instead of the generic openFunctionDialog.
+//                                     Only "calibration" entries use this today (they need the
+//                                     ADAS-rig-dependent flow in adas-calibration-modal.js, not the
+//                                     generic Start/Stop dialog) — see ecu-detail.js's
+//                                     buildFunctionRow.
 window.AutocomFunctionsLibrary = {
   cars: {
     ecm: {
@@ -136,6 +143,102 @@ window.AutocomFunctionsLibrary = {
           title: 'VVT Solenoid',
           description: 'Directly energises the camshaft phasing solenoid to verify actuation. Active until you press Stop.',
           prerequisites: ['Engine running at idle.']
+        }
+      ]
+    },
+    // Forward Sensing Module has no real DTC research (see diagnosticSystemsCars.js), but
+    // Calibration doesn't depend on that — it's the real, common FSM service action after
+    // windshield replacement, bumper repair, or wheel alignment (rig setup happens inline in
+    // adas-calibration-modal.js, not a separate prerequisite page). The rest of these entries are
+    // plausible (no real reference recording, same call as fsm's livePids in
+    // diagnosticSystemsCars.js/data-lists-library.js) — ordinary adjustment/activation/test
+    // functions using the same generic dialog every other curated ECU's functions already use, not
+    // new custom modal behavior.
+    fsm: {
+      'acc-radar': [
+        {
+          id: 'acc-radar-alignment-check',
+          label: 'ACC radar alignment check',
+          type: 'test',
+          icon: 'scan',
+          title: 'ACC Radar Alignment Check',
+          description: 'Reads the radar’s reported horizontal/vertical alignment offset against its factory reference, without requiring the physical calibration rig — a quick software-only sanity check, not a substitute for a full rig calibration after physical work.',
+          prerequisites: ['Ignition on, engine off.', 'Vehicle on level ground, nothing directly in front of the radar.'],
+          procedure: ['Choose the function and wait for the reported offset to settle.'],
+          failureNote: 'An offset outside tolerance means the radar itself may have shifted — run a full ADAS Calibration.'
+        }
+      ],
+      'front-camera': [
+        {
+          id: 'adas-calibration',
+          label: 'ADAS Calibration',
+          type: 'calibration',
+          icon: 'crosshair',
+          title: 'Forward Camera Calibration',
+          description: 'Realigns the forward-facing camera’s reference angle against the calibration rig — required after windshield replacement, bumper repair, or any work that could shift the camera or vehicle ride height.',
+          onclick: 'openAdasCalibrationModal'
+        },
+        {
+          id: 'front-camera-lens-test',
+          label: 'Camera lens obstruction test',
+          type: 'test',
+          icon: 'scan',
+          title: 'Camera Lens Obstruction Test',
+          description: 'Checks the reported lens contamination level against the threshold the camera itself uses to suppress ADAS features.',
+          prerequisites: ['Ignition on, engine off.'],
+          procedure: ['Choose the function and read the reported contamination level.'],
+          failureNote: 'A high reading with a visually clean lens/windshield indicates a camera fault rather than dirt — replace, don’t just clean.'
+        }
+      ],
+      'night-vision': [
+        {
+          id: 'night-vision-display-test',
+          label: 'Night vision display test',
+          type: 'activation',
+          icon: 'refresh-cw',
+          title: 'Night Vision Display Test',
+          description: 'Forces the night-vision overlay onto the instrument display so its rendering and IR feed can be checked without driving in the dark. Active until you press Stop.',
+          prerequisites: ['Ignition on, engine off.']
+        }
+      ],
+      tsr: [
+        {
+          id: 'tsr-self-test',
+          label: 'Traffic sign recognition self-test',
+          type: 'test',
+          icon: 'scan',
+          title: 'Traffic Sign Recognition Self-Test',
+          description: 'Runs the camera’s built-in sign-recognition self-check against a stored reference image set and reports the resulting confidence score.',
+          prerequisites: ['Ignition on, engine off.'],
+          procedure: ['Choose the function and wait for the self-test to complete.'],
+          failureNote: 'A low confidence score with a clean, unobstructed camera indicates a software fault — check for a pending camera software update.'
+        }
+      ],
+      ldw: [
+        {
+          id: 'ldw-sensitivity-adjustment',
+          label: 'Lane departure sensitivity adjustment',
+          type: 'adjustment',
+          icon: 'tool',
+          title: 'Lane Departure Warning Sensitivity',
+          description: 'Adjusts how far off-center the vehicle must drift before Lane Departure Warning triggers.',
+          notes: ['A customer-requested comfort setting, not a fault repair — confirm the customer actually wants it changed before adjusting.'],
+          prerequisites: ['Ignition on, engine off.'],
+          procedure: ['Choose the function and select Low, Medium, or High sensitivity.'],
+          failureNote: 'If the setting doesn’t take, check for a pending FSM software update.'
+        }
+      ],
+      'emergency-assist': [
+        {
+          id: 'aeb-self-test',
+          label: 'Autonomous emergency braking self-test',
+          type: 'test',
+          icon: 'scan',
+          title: 'Autonomous Emergency Braking Self-Test',
+          description: 'Runs the AEB system’s built-in diagnostic sweep (radar + camera + brake actuator handshake) without commanding an actual brake application.',
+          prerequisites: ['Ignition on, engine off.', 'Vehicle stationary, parking brake applied.'],
+          procedure: ['Choose the function and wait for the sweep to complete.'],
+          failureNote: 'A failed handshake with the brake system indicates a communication fault on the chassis bus, not necessarily FSM itself.'
         }
       ]
     }
@@ -287,6 +390,48 @@ window.AutocomFunctionsLibrary = {
           title: 'Exhaust Brake Valve (EVBec) Solenoid Test',
           description: 'Directly energises the exhaust valve brake solenoid to verify it closes the exhaust flap on command. Active until you press Stop.',
           prerequisites: ['Engine running at idle.', 'Vehicle stationary, parking brake applied.']
+        }
+      ]
+    },
+    // Lane Guard System has no real DTC research (see diagnosticSystemsTrucks.js), but
+    // Calibration doesn't depend on that — same reasoning as Cars' fsm above. The rest are
+    // plausible entries (no real reference recording, same call as vas-lgs's livePids), ordinary
+    // test/adjustment functions using the same generic dialog every other curated ECU already
+    // uses.
+    'vas-lgs': {
+      'lane-camera': [
+        {
+          id: 'adas-calibration',
+          label: 'ADAS Calibration',
+          type: 'calibration',
+          icon: 'crosshair',
+          title: 'Lane Guard Camera Calibration',
+          description: 'Realigns the lane guard camera’s reference angle against the calibration rig — required after windshield replacement, cab tilt work, or any work that could shift the camera or ride height.',
+          onclick: 'openAdasCalibrationModal'
+        },
+        {
+          id: 'lane-camera-lens-test',
+          label: 'Camera lens obstruction test',
+          type: 'test',
+          icon: 'scan',
+          title: 'Camera Lens Obstruction Test',
+          description: 'Checks the reported lens contamination level against the threshold the camera itself uses to suppress lane guard warnings.',
+          prerequisites: ['Ignition on, engine off.'],
+          procedure: ['Choose the function and read the reported contamination level.'],
+          failureNote: 'A high reading with a visually clean lens/windshield indicates a camera fault rather than dirt — replace, don’t just clean.'
+        }
+      ],
+      'sign-recognition': [
+        {
+          id: 'sign-recognition-self-test',
+          label: 'Traffic sign recognition self-test',
+          type: 'test',
+          icon: 'scan',
+          title: 'Traffic Sign Recognition Self-Test',
+          description: 'Runs the camera’s built-in sign-recognition self-check against a stored reference image set and reports the resulting confidence score.',
+          prerequisites: ['Ignition on, engine off.'],
+          procedure: ['Choose the function and wait for the self-test to complete.'],
+          failureNote: 'A low confidence score with a clean, unobstructed camera indicates a software fault — check for a pending camera software update.'
         }
       ]
     }

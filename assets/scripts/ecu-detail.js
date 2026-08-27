@@ -5,36 +5,37 @@
 
   const params = new URLSearchParams(window.location.search);
   const systemId = params.get('systemId') || '';
-  const subsystemId = params.get('subsystemId') || '';
   const vehicleId = params.get('vehicleId') || '';
+  const vin = params.get('vin') || '';
   const isTrucksMode = localStorage.getItem('automechanika-vehicle-type') === 'trucks';
 
-  // Back link: same vehicle-context params, back to the right dashboard (Cars vs Trucks) — but a
-  // true "back," not a reset to the top of the Systems list. `systemId` is kept (not deleted) so
-  // the dashboard reopens LV2 for the ECU we just came from (see diagnostics-dashboard.js's
-  // drillToParam handling) — this page is genuinely LV3, reached by drilling into one specific
-  // ECU's functional groups, so "back" should land one level up (LV2), not two (LV1).
-  // `subsystemId` is dropped either way — it's this page's own param, meaningless to the
-  // dashboard's LV1/LV2 view.
+  // Same sessionStorage key diagnostics-dashboard.js's scan-state persistence uses (see that
+  // file's header comment) — read here so a demoReady system's real DTC content only shows once
+  // an actual scan found it, instead of unconditionally, which made visiting the ECU page before
+  // ever scanning show a fault that hadn't happened yet. Non-curated systems are untouched by this
+  // (dtc-library.js has no entries for them either way — their scan-assigned DTCs are a random,
+  // deliberately non-deterministic touch, not something to make predictable).
+  function currentSystemScanState() {
+    const idPart = vehicleId || vin;
+    if (!idPart) return null;
+    const key = 'automechanika-scan-state-' + (isTrucksMode ? 'trucks' : 'cars') + '-' + idPart;
+    let stored = null;
+    try { stored = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
+    return (stored && stored[systemId]) || null;
+  }
+
+  // Back link: same vehicle-context params, back to the right dashboard (Cars vs Trucks). Keeps
+  // `systemId` in the URL so the dashboard's group accordion re-expands the group we came from
+  // (see diagnostics-dashboard.js's drillToSystemId handling) instead of landing fully collapsed.
   const backLink = document.querySelector('[data-ecu-back-link]');
   if (backLink) {
-    const backParams = new URLSearchParams(params);
-    backParams.delete('subsystemId');
-    backLink.href = basePath + 'automechanika/diagnostics-dashboard' + (isTrucksMode ? '-trucks' : '') + '/?' + backParams.toString();
+    backLink.href = basePath + 'automechanika/diagnostics-dashboard' + (isTrucksMode ? '-trucks' : '') + '/?' + params.toString();
   }
 
   const allSystems = JSON.parse(document.getElementById('ecu-diagnostic-systems-' + (isTrucksMode ? 'trucks' : 'cars')).textContent);
+  const allGroups = JSON.parse(document.getElementById('ecu-diagnostic-system-groups').textContent);
   const system = allSystems.find(function (s) { return s.systemId === systemId; });
-
-  // Two data shapes, see diagnosticSystemsCars.js/-Trucks.js headers: Cars' real-ECU restructuring
-  // made `system` itself the ECU (functionalGroups = its LV2 content, no further id needed).
-  // Trucks kept the earlier shape, where `system` is a category and `subsystemId` picks which of
-  // its `subsystems` is being treated as the ECU.
-  const isRealEcu = !!(system && system.functionalGroups);
-  const subsystem = (!isRealEcu && system) ? (system.subsystems || []).find(function (su) { return su.id === subsystemId; }) : null;
-  // The "ECU" this page is actually about, whichever shape produced it — used for title/hardware
-  // fields so the rest of this file doesn't need an isRealEcu branch at every read site.
-  const ecu = isRealEcu ? system : subsystem;
+  const ecu = system;
 
   const titleEl = document.querySelector('[data-ecu-title]');
   const subtitleEl = document.querySelector('[data-ecu-vehicle-subtitle]');
@@ -50,9 +51,9 @@
     const el = document.querySelector(selector);
     if (el) el.textContent = value || '—';
   }
-  // "System Category" reads as the network-domain grouping for a real ECU (there's no separate
-  // wrapping category anymore) and as the old category label for Trucks' legacy shape.
-  setText('[data-ecu-category]', isRealEcu ? (system.bus || system.group) : (system && system.label));
+  const groupMeta = ecu && allGroups.find(function (g) { return g.id === ecu.group; });
+  setText('[data-ecu-type]', ecu && ecu.type);
+  setText('[data-ecu-group]', groupMeta && groupMeta.label);
   setText('[data-ecu-address]', ecu && ecu.moduleAddress);
   setText('[data-ecu-hardware]', ecu && ecu.hardwareNumber);
   setText('[data-ecu-software]', ecu && ecu.softwareVersion);
@@ -77,16 +78,15 @@
   }
 
   const FUNCTIONAL_GROUP_LABEL = {};
-  if (isRealEcu) {
-    (system.functionalGroups || []).forEach(function (g) { FUNCTIONAL_GROUP_LABEL[g.id] = g.label; });
-  }
+  (system && system.functionalGroups || []).forEach(function (g) { FUNCTIONAL_GROUP_LABEL[g.id] = g.label; });
 
   // ===== DTC tab =====
-  // `!e.ecuSubsystemId` is what makes this work for both shapes without an isRealEcu branch: Cars'
-  // entries no longer set that field at all (every code belongs to the whole ECU), Trucks' still
-  // does (each code belongs to one specific legacy subsystem).
   const dtcLibrary = ((window.AutocomDtcLibrary || {})[isTrucksMode ? 'trucks' : 'cars'] || {})[systemId] || [];
-  const dtcEntries = dtcLibrary.filter(function (e) { return !e.ecuSubsystemId || e.ecuSubsystemId === subsystemId; });
+  // Only shown once an actual scan found it here (state 'error' or 'warning') — see
+  // currentSystemScanState() above. No scan yet, a clean scan, or a cleared result all read as "no
+  // DTCs" rather than always surfacing the demo fault regardless of whether it was ever detected.
+  const scanState = currentSystemScanState();
+  const dtcEntries = (scanState && (scanState.state === 'error' || scanState.state === 'warning')) ? dtcLibrary : [];
   const dtcList = document.querySelector('[data-ecu-dtc-list]');
   const dtcEmpty = document.querySelector('[data-ecu-dtc-empty]');
   const dtcCountBadge = document.querySelector('[data-ecu-dtc-count]');
@@ -122,7 +122,7 @@
   const hasLiveData = !!(dataListsLibrary[systemId] && dataListsLibrary[systemId].length);
   const liveDataAvailable = document.querySelector('[data-ecu-live-data-available]');
   const liveDataEmpty = document.querySelector('[data-ecu-live-data-empty]');
-  const pidGroups = isRealEcu ? (system.functionalGroups || []).filter(function (g) { return g.livePids && g.livePids.length; }) : [];
+  const pidGroups = (system && system.functionalGroups || []).filter(function (g) { return g.livePids && g.livePids.length; });
   if (liveDataAvailable) liveDataAvailable.classList.toggle('hidden', !hasLiveData);
   if (liveDataEmpty) liveDataEmpty.classList.toggle('hidden', hasLiveData || pidGroups.length > 0);
   const openLiveDataBtn = document.querySelector('[data-ecu-open-live-data]');
@@ -158,7 +158,7 @@
   const functionsLibraryRoot = (window.AutocomFunctionsLibrary || {})[isTrucksMode ? 'trucks' : 'cars'] || {};
   const functionsList = document.querySelector('[data-ecu-functions-list]');
   const functionsEmpty = document.querySelector('[data-ecu-functions-empty]');
-  const TYPE_LABEL = { adjustment: 'Adjustment', activation: 'Activation', test: 'Test' };
+  const TYPE_LABEL = { adjustment: 'Adjustment', activation: 'Activation', test: 'Test', calibration: 'Calibration' };
 
   function buildFunctionRow(fn) {
     const row = document.createElement('button');
@@ -168,33 +168,34 @@
     if (iconSpan) row.appendChild(iconSpan.cloneNode(true));
     row.innerHTML += '<span class="flex-1 text-sm text-base-content">' + fn.label + '</span>' +
       '<span class="badge badge-ghost badge-sm shrink-0">' + (TYPE_LABEL[fn.type] || fn.type) + '</span>';
-    row.addEventListener('click', function () { openFunctionDialog(fn); });
+    // `onclick` (a global function NAME, e.g. "openAdasCalibrationModal" — see
+    // functions-library.js's header comment) routes to a dedicated modal instead of the generic
+    // Start/Stop dialog, for functions that need richer state (a rig dependency check, a
+    // multi-state result) than that dialog supports. Falls back to the generic dialog when absent.
+    row.addEventListener('click', function () {
+      if (fn.onclick && typeof window[fn.onclick] === 'function') window[fn.onclick](fn);
+      else openFunctionDialog(fn);
+    });
     return row;
   }
 
   let totalFunctions = 0;
   if (functionsList) {
-    if (isRealEcu) {
-      // Grouped by functional group, matching how the ECU's own DTC/Live Data content is
-      // organized — a group with no curated functions is skipped rather than shown empty.
-      const byGroup = functionsLibraryRoot[systemId] || {};
-      (system.functionalGroups || []).forEach(function (group) {
-        const fns = byGroup[group.id] || [];
-        if (fns.length === 0) return;
-        totalFunctions += fns.length;
-        const heading = document.createElement('p');
-        heading.className = 'text-xs font-semibold uppercase tracking-wide text-base-content/50 mt-3 first:mt-0 mb-1 px-1';
-        heading.textContent = group.label;
-        functionsList.appendChild(heading);
-        fns.forEach(function (fn) { functionsList.appendChild(buildFunctionRow(fn)); });
-      });
-    } else {
-      // Legacy (Trucks) flat lookup — kept for parity, currently always empty (no Trucks Functions
-      // research yet, see functions-library.js).
-      const fns = functionsLibraryRoot[systemId + '.' + subsystemId] || [];
-      totalFunctions = fns.length;
+    // Grouped by functional group, matching how the ECU's own DTC/Live Data content is organized —
+    // a group with no curated functions is skipped rather than shown empty. A system with no
+    // functionalGroups at all (most non-curated systems) naturally ends up with zero functions.
+    const byGroup = functionsLibraryRoot[systemId] || {};
+    (system && system.functionalGroups || []).forEach(function (group) {
+      const fns = byGroup[group.id] || [];
+      if (fns.length === 0) return;
+      totalFunctions += fns.length;
+      const heading = document.createElement('p');
+      heading.className = 'flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-base-content/50 mt-3 first:mt-0 mb-1 px-1';
+      heading.innerHTML = '<span>' + group.label + '</span>' +
+        (group.demoReady ? '<span class="badge badge-xs badge-secondary normal-case">Demo</span>' : '');
+      functionsList.appendChild(heading);
       fns.forEach(function (fn) { functionsList.appendChild(buildFunctionRow(fn)); });
-    }
+    });
   }
   if (totalFunctions === 0 && functionsEmpty) functionsEmpty.classList.remove('hidden');
 

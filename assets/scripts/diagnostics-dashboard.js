@@ -313,6 +313,81 @@ refreshCurrentSessionBadge();
 // logging their own event, instead of waiting for the next dashboard action to do it.
 window.refreshCurrentSessionBadgeFromLiveSession = refreshCurrentSessionBadge;
 
+// ===== Scan state persistence =====
+// Every result a scan produces (ok/warning/error per system, DTC codes) lived only in this page's
+// in-memory DOM state — clicking into a system's own detail page (a real navigation, not an
+// in-page panel) and coming back via its own back arrow reset everything to "pending", as if the
+// scan never ran. sessionStorage (not localStorage — this is "my current visit," not something
+// that should still be sitting there stale next week) now keeps the last scan's result per vehicle,
+// restored once on load (restoreScanState() is called at the very end of this file — it reads
+// filterControls/errorCountBadge/etc., module-level `const`s declared further down, so it can't run
+// any earlier without a temporal-dead-zone error) — before a user could plausibly act on the page.
+function scanStateStorageKey() {
+  const idPart = vehicleData.vehicleId || vehicleData.vin;
+  if (!idPart) return null;
+  return 'automechanika-scan-state-' + (isTrucksMode ? 'trucks' : 'cars') + '-' + idPart;
+}
+
+// Single choke point (called from syncSystemListItem, same as updateGroupProgress) so every path
+// that changes a system's state — scan in progress, scan complete, Clear DTCs — persists it the
+// same way with no extra call sites to remember. 'scanning' is deliberately not persisted: it's
+// never a final result, and persisting it could restore a permanently-stuck spinner if a tab closed
+// mid-scan.
+function persistNodeScanState(nodeId, state, dtcCodes) {
+  const key = scanStateStorageKey();
+  if (!key || state === 'scanning') return;
+  let stored = {};
+  try { stored = JSON.parse(sessionStorage.getItem(key) || '{}') || {}; } catch (e) {}
+  stored[nodeId] = { state: state, dtcCodes: dtcCodes || [] };
+  try { sessionStorage.setItem(key, JSON.stringify(stored)); } catch (e) {}
+}
+
+// Runs once on load. Replays every persisted system state through the exact same
+// syncSystemListItem() a live scan uses, so status icons, DTC badges, and group-accordion progress
+// (updateGroupProgress) all come back identically — then recomputes the filter controls and health
+// gauge from those restored states, same math startScanDemo() itself uses at scan-complete.
+function restoreScanState() {
+  const key = scanStateStorageKey();
+  if (!key) return;
+  let stored = null;
+  try { stored = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
+  if (!stored) return;
+
+  let restoredAny = false;
+  Object.keys(stored).forEach((nodeId) => {
+    const entry = stored[nodeId];
+    if (!entry || !entry.state || entry.state === 'pending') return;
+    const item = document.querySelector(`.system-list-item[data-system-id="${nodeId}"]`);
+    if (!item) return;
+    syncSystemListItem(nodeId, entry.state, entry.dtcCodes || []);
+    restoredAny = true;
+  });
+  if (!restoredAny) return;
+
+  // OBD is always 'ok' once any scan has run — not persisted per-node (it's not a real system,
+  // deterministic either way), just restored alongside everything else.
+  const obd = document.querySelector('[data-node-id="obd"]');
+  if (obd) obd.dataset.state = 'ok';
+
+  updateFilterControls();
+  applySystemsListFilters();
+
+  const counts = { ok: 0, warning: 0, error: 0 };
+  document.querySelectorAll('.system-list-item[data-system-id]').forEach((el) => {
+    if (counts[el.dataset.state] !== undefined) counts[el.dataset.state]++;
+  });
+  const total = counts.ok + counts.warning + counts.error;
+  if (total > 0) {
+    const healthScore = Math.max(0, 100 - (counts.warning * 5) - (counts.error * 15));
+    const segments = [
+      { value: (counts.ok / total) * 100, color: 'success' },
+      { value: (counts.warning / total) * 100, color: 'warning' },
+      { value: (counts.error / total) * 100, color: 'error' }
+    ].filter((s) => s.value > 0);
+    healthGaugeSetResult(healthScore, segments);
+  }
+}
+
 // Generic handler for Diagnostic Function tiles that don't have their own real flow (everything
 // except BMS, which opens the Battery SoH modal). These tiles have no per-function simulated
 // behavior to speak of, so "performing" one just confirms + logs it — same "believable outcome,
@@ -878,6 +953,75 @@ if (drillToSystemId) {
   window.history.replaceState(null, '', cleanUrl);
 }
 
+// ===== Systems list: group accordion (Automechanika only — see collapse-list.njk's
+// groupedList() macro) =====
+// Replaces the LV1<->LV2 panel-swap above for this markup only: launchpad-1/2 still render the
+// older `list()` macro (data-lv1-list, data-lv2-panel) and keep using showLv1/showLv2 untouched.
+// This markup instead has a fixed accordion of groups (data-group-toggle/data-group-panel, one per
+// diagnosticSystemGroups.js entry) — each expands/collapses independently in place — and every
+// `.system-list-item` row inside is a direct link to its own detail page (ecu-detail.njk), matching
+// the real app's own two-tap interaction (tap group -> tap real module) confirmed against Vedran's
+// Figma mockups. No LV2 panel exists in this markup: a system's `functionalGroups` (if any) are
+// that detail page's own content now, not a second list level here.
+const groupAccordionList = document.querySelector('[data-group-accordion-list]');
+if (groupAccordionList) {
+  const setGroupExpanded = (groupId, expanded) => {
+    const panel = groupAccordionList.querySelector(`[data-group-panel="${groupId}"]`);
+    const header = groupAccordionList.querySelector(`[data-group-toggle="${groupId}"]`);
+    const chevron = groupAccordionList.querySelector(`[data-group-chevron="${groupId}"] svg`);
+    if (panel) panel.classList.toggle('hidden', !expanded);
+    if (header) header.setAttribute('aria-expanded', String(expanded));
+    if (chevron) chevron.classList.toggle('-rotate-90', !expanded);
+  };
+
+  groupAccordionList.addEventListener('click', (e) => {
+    if (e.target.closest('.system-select-checkbox')) return;
+
+    const header = e.target.closest('[data-group-toggle]');
+    if (header) {
+      setGroupExpanded(header.dataset.groupToggle, header.getAttribute('aria-expanded') !== 'true');
+      return;
+    }
+
+    // A system row's own click navigates straight to its detail page — same vehicle-context params
+    // this page was loaded with, same URL this app already builds elsewhere (see the old
+    // subsystem-item handler below, kept for launchpad-1/2).
+    const row = e.target.closest('.system-list-item[data-system-id]');
+    if (!row) return;
+    const ecuParams = new URLSearchParams(window.location.search);
+    ecuParams.set('systemId', row.dataset.systemId);
+    ecuParams.delete('subsystemId');
+    window.location.href = getBasePath() + 'automechanika/ecu-detail/?' + ecuParams.toString();
+  });
+
+  // Returning from ecu-detail.njk's back arrow: re-expand the group the system we came from
+  // belongs to, rather than landing back with everything collapsed.
+  if (drillToSystemId) {
+    const row = groupAccordionList.querySelector(`.system-list-item[data-system-id="${drillToSystemId}"]`);
+    const panel = row && row.closest('[data-group-panel]');
+    if (panel) {
+      setGroupExpanded(panel.dataset.groupPanel, true);
+      panel.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  // Search / "Only errors" both hide non-matching `.system-list-item` rows (existing logic below,
+  // unchanged) — without this, a match inside a collapsed group would be invisible with no signal
+  // anything matched at all. While a filter is active, auto-expand groups with a visible match and
+  // collapse groups without one; clearing every filter resets every group back to collapsed.
+  const syncGroupAccordionToFilters = () => {
+    const filterActive = (systemsSearchInput && systemsSearchInput.value.trim()) ||
+      (errorsOnlyToggle && errorsOnlyToggle.checked);
+    groupAccordionList.querySelectorAll('[data-group-panel]').forEach((panel) => {
+      if (!filterActive) { setGroupExpanded(panel.dataset.groupPanel, false); return; }
+      const hasVisibleMatch = Array.from(panel.querySelectorAll('.system-list-item')).some((row) => !row.classList.contains('hidden'));
+      setGroupExpanded(panel.dataset.groupPanel, hasVisibleMatch);
+    });
+  };
+  if (systemsSearchInput) systemsSearchInput.addEventListener('input', syncGroupAccordionToFilters);
+  if (errorsOnlyToggle) errorsOnlyToggle.addEventListener('change', syncGroupAccordionToFilters);
+}
+
 // Tab switching
 tabs.addEventListener('click', (e) => {
   const tab = e.target.closest('[data-tab]');
@@ -1050,13 +1194,54 @@ function updateFilterControls() {
   }
 }
 
+// Group accordion progress (see collapse-list.njk's groupedList() macro): while a group is
+// collapsed its leaf rows' own spinners/checkmarks are invisible, so a scan in progress can look
+// like nothing is happening. Spinner while any of the group's systems is still 'scanning';
+// otherwise an "n/total" badge for how many have reached a result, once at least one has — reset
+// (hidden) once every system is back to 'pending' (a fresh scan start, or resetSystemList()).
+function updateGroupProgress(nodeId) {
+  const row = document.querySelector(`.system-list-item[data-system-id="${nodeId}"]`);
+  const panel = row && row.closest('[data-group-panel]');
+  if (!panel) return;
+  const groupId = panel.dataset.groupPanel;
+  const rows = panel.querySelectorAll('.system-list-item[data-system-id]');
+  const total = rows.length;
+  const scanning = Array.from(rows).some((r) => r.dataset.state === 'scanning');
+  const done = Array.from(rows).filter((r) => r.dataset.state && r.dataset.state !== 'pending' && r.dataset.state !== 'scanning').length;
+  const errorCount = Array.from(rows).filter((r) => r.dataset.state === 'error').length;
+  const warningCount = Array.from(rows).filter((r) => r.dataset.state === 'warning').length;
+  const issueCount = errorCount + warningCount;
+
+  const wrap = document.querySelector(`[data-group-progress="${groupId}"]`);
+  if (!wrap) return;
+  const spinnerEl = wrap.querySelector('[data-group-progress-spinner]');
+  const issueEl = wrap.querySelector('[data-group-issue-count]');
+  const fractionEl = wrap.querySelector('[data-group-progress-fraction]');
+  if (spinnerEl) spinnerEl.classList.toggle('hidden', !scanning);
+  if (issueEl) {
+    const show = !scanning && issueCount > 0;
+    issueEl.classList.toggle('hidden', !show);
+    if (show) {
+      issueEl.textContent = String(issueCount);
+      issueEl.className = 'badge badge-sm ' + (errorCount > 0 ? 'badge-error' : 'badge-warning');
+    }
+  }
+  if (fractionEl) {
+    const show = !scanning && done > 0;
+    fractionEl.classList.toggle('hidden', !show);
+    if (show) fractionEl.textContent = `${done}/${total}`;
+  }
+}
+
 // Sync system list item state with topology node
 function syncSystemListItem(nodeId, state, dtcCodes) {
   const systemItem = document.querySelector(`.system-list-item[data-system-id="${nodeId}"]`);
   if (!systemItem) return;
-  
+
   systemItem.dataset.state = state;
-  
+  updateGroupProgress(nodeId);
+  persistNodeScanState(nodeId, state, dtcCodes);
+
   // Get status indicator elements
   const spinner = systemItem.querySelector('.system-status-spinner');
   const okIcon = systemItem.querySelector('.system-status-ok');
@@ -1450,4 +1635,8 @@ function stopScanDemo() {
     logLiveEvent('search', 'System Scan', scanResults.error > 0 ? 'error' : (scanResults.warning > 0 ? 'warning' : 'success'), issues > 0 ? issues + ' DTC found' : 'No DTC\'s');
   }
 }
+
+// Runs last (all of this file's other top-level const/let bindings are initialized by now — see
+// restoreScanState()'s own comment above for why this can't run any earlier).
+restoreScanState();
 })();

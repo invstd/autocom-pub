@@ -6,8 +6,12 @@
  * 1. Auto-detect (from index): picks a random real vehicle from the curated Garage list (see
  *    vci-detectable-vehicles-data) — so it's a "real" vehicleId with real session history, not a
  *    fabricated unknown one.
- * 2. Manual selection (from vehicle-selection): uses selected vehicle details, VIN fabricated
- *    (no curated match attempted — no vehicleId, no live-session tracking).
+ * 2. Manual selection (from vehicle-selection): uses selected vehicle details. Matched against the
+ *    same curated list by brand+model (see findCuratedMatch) — if the pick happens to be a real
+ *    curated vehicle (any year/engine), it gets that vehicle's real id+vin, so Finish Session/
+ *    live-session tracking work exactly like Auto-detect. Otherwise VIN is fabricated and there's
+ *    no vehicleId, same as before — an arbitrary pick with no curated match has nowhere real for a
+ *    session to live.
  *
  * Both paths redirect to diagnostics-dashboard with vehicle data in URL params.
  */
@@ -52,11 +56,27 @@
     return list[Math.floor(Math.random() * list.length)];
   }
 
+  // Manual selection's brand/model come from brands_models*/​.json's own clean names (e.g. "308",
+  // "XC60"), the same names curated Garage vehicles use — so this matches exactly (brand+model,
+  // case-insensitive), unlike vehicleSessions.js's fuzzier match against its own more descriptive
+  // model strings ("308 T9"). Year/engine aren't part of the match — curated Garage only has one
+  // trim per model, so a narrower match would rarely succeed at all.
+  function findCuratedMatch(brand, model) {
+    var list = readDetectableVehicles()[isTrucksMode() ? "trucks" : "cars"];
+    if (!list || !list.length) return null;
+    var b = (brand || "").trim().toLowerCase();
+    var m = (model || "").trim().toLowerCase();
+    for (var i = 0; i < list.length; i++) {
+      if ((list[i].brand || "").trim().toLowerCase() === b && (list[i].model || "").trim().toLowerCase() === m) return list[i];
+    }
+    return null;
+  }
+
   var currentVehicle = null; // Stores the vehicle data for redirect
 
   // Builds the redirect query string, including vehicleId when the vehicle is a real curated one
-  // (Path 1 always is; Path 2/manual selection isn't — see runFlow() below — so live-session
-  // tracking/Finish Session only apply to Auto-detect and Capture VIN, not manual selection).
+  // (Path 1 always is; Path 2/manual selection only is when findCuratedMatch found one — see
+  // runFlow() above) — live-session tracking/Finish Session only apply when vehicleId is present.
   function buildVehicleParams(vehicle) {
     var params = new URLSearchParams();
     params.set("vin", vehicle.vin);
@@ -185,14 +205,16 @@
       // Path 2: Manual Selection - use the selected vehicle details
       try {
         var vd = JSON.parse(vehicleDetailsJson);
+        var curatedMatch = findCuratedMatch(vd.brandLabel, vd.model);
         currentVehicle = {
           brand: vd.brandLabel || "",
           brandSlug: vd.brandSlug || (vd.brandLabel || "").toLowerCase().replace(/\s+/g, "-"),
           model: vd.model || "",
           year: vd.year || "",
           engine: vd.engine || "",
-          vin: generateRandomVIN() // Generate VIN for manual selection too
+          vin: curatedMatch ? curatedMatch.vin : generateRandomVIN() // Real VIN when matched, so it agrees with the Garage row Finish Session lands on
         };
+        if (curatedMatch) currentVehicle.id = curatedMatch.id;
       } catch (e) {
         currentVehicle = generateRandomVehicle();
       }

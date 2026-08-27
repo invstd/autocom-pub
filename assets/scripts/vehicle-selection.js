@@ -21,6 +21,23 @@
   var brandsEl = document.getElementById("vehicle-selection-brands-data");
   window.__vehicleSelectionBrands = brandsEl ? JSON.parse(brandsEl.textContent) : [];
 
+  // Curated Garage vehicles (same vci-detectable-vehicles-data tag vci-pair-detect-modal.js reads)
+  // — used to badge individual MODEL options once a brand is picked, same "Demo" signal the brand
+  // grid already shows but one level more precise: a brand can be curated (e.g. Ford) without every
+  // model being (Garage only has Focus, not Puma/Fiesta/...), so knowing the brand alone isn't
+  // enough to tell whether a specific pick will get Finish Session/session tracking.
+  var detectableVehiclesEl = document.getElementById("vci-detectable-vehicles-data");
+  var detectableVehicles = { cars: [], trucks: [] };
+  try { detectableVehicles = detectableVehiclesEl ? (JSON.parse(detectableVehiclesEl.textContent) || detectableVehicles) : detectableVehicles; } catch (e) {}
+  function curatedModelsForBrand(brandLabel) {
+    var isTrucksPage = /vehicle-selection-trucks/.test(window.location.pathname);
+    var list = detectableVehicles[isTrucksPage ? "trucks" : "cars"] || [];
+    var b = (brandLabel || "").trim().toLowerCase();
+    var models = {};
+    list.forEach(function(v) { if ((v.brand || "").trim().toLowerCase() === b) models[(v.model || "").trim().toLowerCase()] = true; });
+    return models;
+  }
+
   // Reads a filter-select's current value by its trigger id (e.g. "vehicle-model-trigger").
   // Shared by the detail score and the Show socket gate below.
   function getFilterSelectValue(triggerId) {
@@ -344,7 +361,10 @@
         .then(function(r) { return r.ok ? r.json() : Promise.reject(new Error("Brand data not found")); })
         .then(function(data) {
           brandData = data;
-          var modelOptions = (data.models || []).map(function(m) { return { value: m.model, label: m.model }; });
+          var curatedModels = curatedModelsForBrand(data.brand_name);
+          var modelOptions = (data.models || []).map(function(m) {
+            return { value: m.model, label: m.model, badge: curatedModels[m.model.trim().toLowerCase()] ? "Demo" : null };
+          });
           modelOptions.push({ value: NOT_SURE, label: NOT_SURE });
           if (typeof filterSelectSetOptions === "function") filterSelectSetOptions("vehicle-model", modelOptions);
           filterSelectSetOptions("vehicle-year", []);
