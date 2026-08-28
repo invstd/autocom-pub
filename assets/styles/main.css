@@ -6697,6 +6697,9 @@
   .z-\[9999\] {
     z-index: 9999;
   }
+  .z-\[10000\] {
+    z-index: 10000;
+  }
   .tab-content {
     @layer daisyui.l1.l2.l3 {
       order: var(--tabcontent-order);
@@ -14950,6 +14953,12 @@ html[data-theme="Wabco Dark"] .vehicle-image-tinted [data-vehicle-image] {
   .session-report-print .border-base-300 {
     border-color: #e5e7eb !important;
   }
+}
+.trial-expired-gate-root {
+  display: none;
+}
+html.automechanika-trial-expired .trial-expired-gate-root {
+  display: flex;
 }
 @layer base {
   @property --radialprogress {

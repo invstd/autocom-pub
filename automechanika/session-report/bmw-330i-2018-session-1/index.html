@@ -31,11 +31,20 @@
             paramsChanged = true;
           }
         });
-        // ?gate=1 bypasses the prototype password gate (sessionStorage, same key/value the gate
-        // itself writes on a correct password) — runs before the next script block below reads
-        // it, so the gate never flashes. Not real security either way, see prototype-gate.js.
-        if (params.get('gate') === '1') {
-          try { sessionStorage.setItem('autocom-prototype-gate', '1'); } catch (e) {}
+        // ?gate=<issued-at-ms> bypasses the prototype password gate (sessionStorage, same
+        // key/value the gate itself writes on a correct password) for 30 days from when the link
+        // was generated (Settings' Test Link) — runs before the next script block below reads it,
+        // so the gate never flashes. A plain boolean bypass (the old ?gate=1) would work forever
+        // no matter how many times the real password gets rotated, since it never checks the
+        // password at all — this at least puts a shelf life on a shared/bookmarked link. Not real
+        // security either way (a hand-edited timestamp bypasses this too), see prototype-gate.js.
+        var gateParam = params.get('gate');
+        if (gateParam) {
+          var gateIssuedAt = parseInt(gateParam, 10);
+          var GATE_LINK_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+          if (!isNaN(gateIssuedAt) && (Date.now() - gateIssuedAt) < GATE_LINK_MAX_AGE_MS) {
+            try { sessionStorage.setItem('autocom-prototype-gate', '1'); } catch (e) {}
+          }
           params.delete('gate');
           paramsChanged = true;
         }
@@ -65,6 +74,29 @@
     <link rel="stylesheet" href="/diagnostics-pub/assets/styles/main.css">
 
     
+    <script>
+      (function () {
+        // "Downloaded prototype" 30-day expiry (stakeholder request, 2026-08-28): once installed/
+        // precached, this PWA can run fully offline forever with no way for a server to revoke
+        // it — rotating the password (prototype-gate.js) only blocks *new* installs, not copies
+        // already fully cached. This is the actual revocation mechanism: a timestamp recorded on
+        // first-ever load, checked client-side on every load (works offline — no network needed
+        // for the check itself, only for trial-expired-gate.js's "Get a fresh copy" action once
+        // expired). Not real DRM — same "not real security" posture as the password gate — but it
+        // stops a stale cached build from silently circulating indefinitely. Runs before first
+        // paint (sets a class on <html>) so the expired state never flashes real content first.
+        var INSTALLED_AT_KEY = 'automechanika-installed-at';
+        var TRIAL_MS = 30 * 24 * 60 * 60 * 1000;
+        var installedAt = parseInt(localStorage.getItem(INSTALLED_AT_KEY), 10);
+        if (isNaN(installedAt)) {
+          installedAt = Date.now();
+          try { localStorage.setItem(INSTALLED_AT_KEY, String(installedAt)); } catch (e) {}
+        }
+        if (Date.now() - installedAt > TRIAL_MS) {
+          document.documentElement.classList.add('automechanika-trial-expired');
+        }
+      })();
+    </script>
     <link rel="manifest" href="/diagnostics-pub/automechanika/manifest.webmanifest">
     <meta name="theme-color" content="#111827">
     <link rel="apple-touch-icon" href="/diagnostics-pub/assets/images/icons/icon-192.png">
@@ -490,5 +522,20 @@
 </div>
 
     <script src="/diagnostics-pub/assets/scripts/prototype-gate.js"></script>
+
+    
+<div id="automechanika-trial-expired-root" class="trial-expired-gate-root fixed inset-0 z-[10000] flex items-center justify-center bg-base-100 p-4" aria-modal="true" role="dialog" aria-labelledby="trial-expired-title" aria-describedby="trial-expired-desc">
+  <div class="card bg-base-100 border border-base-300 shadow-xl w-full max-w-xs sm:max-w-sm">
+    <div class="card-body p-6 sm:p-8">
+      <h2 id="trial-expired-title" class="card-title text-xl mb-3">Preview expired</h2>
+      <p id="trial-expired-desc" class="text-sm text-base-content/80 leading-relaxed mb-6">This is a time-limited preview build. Its 30-day offline access window has ended — get a fresh copy to keep going.</p>
+      <button type="button" id="trial-expired-refresh" class="btn btn-primary btn-block">Get a fresh copy</button>
+      <p id="trial-expired-offline-note" class="text-sm text-warning leading-snug mt-4 hidden" role="alert">You're offline right now — connect to the internet, then try again.</p>
+    </div>
+  </div>
+</div>
+
+    <script src="/diagnostics-pub/assets/scripts/trial-expired-gate.js"></script>
+
 </body>
 </html>

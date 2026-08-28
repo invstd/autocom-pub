@@ -130,11 +130,26 @@
     dialog.showModal();
   }
 
+  // Software version reflects the active Branding (Settings), not a hardcoded "Autocom ICON" —
+  // same brand-extraction as automechanika-nav.js's OEM Integration reveal (localStorage 'theme',
+  // "<Brand> Light|Dark"). Real product names only for brands with reference material behind
+  // them: Autocom ICON and WOW! LOOQIT (this file's header comment), and WabcoWürth's W.EASY
+  // (the real app name referenced throughout the Trucks feature work, e.g.
+  // diagnostics-dashboard-trucks.njk, data-lists-library.js) — not a generic placeholder.
+  var PRODUCT_NAME_BY_BRAND = {
+    Autocom: "Autocom ICON",
+    WOW: "WOW! LOOQIT",
+    Wabco: "WabcoWürth W.EASY"
+  };
+  var themeBrandMatch = /^(.+) (Light|Dark)$/.exec(localStorage.getItem("theme") || "");
+  var themeBrand = themeBrandMatch ? themeBrandMatch[1] : "Autocom";
+  var productName = PRODUCT_NAME_BY_BRAND[themeBrand] || PRODUCT_NAME_BY_BRAND.Autocom;
+
   // ----- Vehicle / Test information (shared by both variants) -----
   setText(root, "brand-model", [brand, model].filter(Boolean).join(" ") + (year ? " (" + year + ")" : ""));
   setText(root, "vin", vin || "—");
   setText(root, "test-date", new Date().toLocaleString());
-  setText(root, "software-version", "Autocom ICON 2026.08x");
+  setText(root, "software-version", productName + " 2026.08x");
   setText(root, "vci-serial", "130600");
 
   // ----- Show the matching variant -----
@@ -233,7 +248,11 @@
     mileage: "battery-soh-mileage-input",
     "reg-number": "battery-soh-reg-number-input",
     "reg-date": "battery-soh-reg-date-input",
-    technician: "battery-soh-technician-input"
+    technician: "battery-soh-technician-input",
+    "workshop-name": "battery-soh-workshop-name-input",
+    "workshop-address": "battery-soh-workshop-address-input",
+    "workshop-phone": "battery-soh-workshop-phone-input",
+    "workshop-email": "battery-soh-workshop-email-input"
   };
   window.addEventListener("beforeprint", function () {
     Object.keys(PRINT_FIELD_INPUTS).forEach(function (field) {

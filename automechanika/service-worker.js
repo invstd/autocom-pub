@@ -11,7 +11,7 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1787916058185';
+var CACHE_NAME = 'automechanika-1787922363640';
 
 var PRECACHE_URLS = [
   '/diagnostics-pub/automechanika/',
@@ -181,6 +181,7 @@ var PRECACHE_URLS = [
   '/diagnostics-pub/assets/scripts/onboarding-drawer.js',
   '/diagnostics-pub/assets/scripts/onboarding-waypoint-tour.js',
   '/diagnostics-pub/assets/scripts/prototype-gate.js',
+  '/diagnostics-pub/assets/scripts/trial-expired-gate.js',
   '/diagnostics-pub/assets/scripts/report-composer.js',
   '/diagnostics-pub/assets/scripts/report-shared.js',
   '/diagnostics-pub/assets/scripts/scan-vin-modal.js',
