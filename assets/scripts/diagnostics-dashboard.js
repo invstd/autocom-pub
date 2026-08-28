@@ -407,7 +407,10 @@ const filterControls = document.querySelector('[data-filter-controls]');
 const errorsOnlyToggle = document.querySelector('[data-errors-only-toggle]');
 const errorCountBadge = document.querySelector('[data-error-count]');
 const clearDtcsBtn = document.querySelector('[data-clear-dtcs-btn]');
-const systemsSearchInput = document.getElementById('systems-search-input');
+// Renamed from systems-search-input: this box no longer filters the Systems list — per Autocom
+// feedback it's now a Functions search (see initFunctionsSearch below), scoped to Demo systems
+// since that's the only content it can honestly search (functions-library.js's curated islands).
+const functionsSearchInput = document.getElementById('functions-search-input');
 
 // Health gauge elements (main dashboard gauge only; overlay has its own in #scan-complete-gauge)
 const gauge = document.querySelector('[data-health-gauge-wrapper] .health-gauge');
@@ -1005,20 +1008,20 @@ if (groupAccordionList) {
     }
   }
 
-  // Search / "Only errors" both hide non-matching `.system-list-item` rows (existing logic below,
-  // unchanged) — without this, a match inside a collapsed group would be invisible with no signal
-  // anything matched at all. While a filter is active, auto-expand groups with a visible match and
-  // collapse groups without one; clearing every filter resets every group back to collapsed.
+  // "Only errors" hides non-matching `.system-list-item` rows (existing logic below, unchanged) —
+  // without this, a match inside a collapsed group would be invisible with no signal anything
+  // matched at all. While active, auto-expand groups with a visible match and collapse groups
+  // without one; clearing the filter resets every group back to collapsed. Search used to
+  // participate here too, before it became the Functions search below (functionsSearchInput no
+  // longer touches the Systems list at all).
   const syncGroupAccordionToFilters = () => {
-    const filterActive = (systemsSearchInput && systemsSearchInput.value.trim()) ||
-      (errorsOnlyToggle && errorsOnlyToggle.checked);
+    const filterActive = errorsOnlyToggle && errorsOnlyToggle.checked;
     groupAccordionList.querySelectorAll('[data-group-panel]').forEach((panel) => {
       if (!filterActive) { setGroupExpanded(panel.dataset.groupPanel, false); return; }
       const hasVisibleMatch = Array.from(panel.querySelectorAll('.system-list-item')).some((row) => !row.classList.contains('hidden'));
       setGroupExpanded(panel.dataset.groupPanel, hasVisibleMatch);
     });
   };
-  if (systemsSearchInput) systemsSearchInput.addEventListener('input', syncGroupAccordionToFilters);
   if (errorsOnlyToggle) errorsOnlyToggle.addEventListener('change', syncGroupAccordionToFilters);
 }
 
@@ -1086,16 +1089,14 @@ if (clearDtcsBtn) {
 }
 
 // Errors only toggle: in Systems list view hide non-error items (like presets); in Topology view dim nodes
-// Was applyErrorsFilter — renamed once it also took on the systems-search filter below, since
-// both conditions (errors-only toggle, search text) now have to compose on the same rows rather
-// than each independently fighting over the same .hidden class.
+// Was applyErrorsFilter, then briefly took on the systems-search filter too — search moved on to
+// become the Functions search (initFunctionsSearch below) and no longer touches these rows, so
+// this is back to being errors-only again.
 function applySystemsListFilters() {
   const showErrorsOnly = errorsOnlyToggle ? errorsOnlyToggle.checked : false;
-  const searchQuery = systemsSearchInput ? systemsSearchInput.value.trim().toLowerCase() : '';
   const isSystemsListView = page && page.dataset.view !== 'topology';
 
-  // Topology nodes: dim when errors-only (unchanged) — search only applies to the Systems list
-  // rows below, not the topology map.
+  // Topology nodes: dim when errors-only.
   document.querySelectorAll('.topology-node[data-node-id]').forEach(n => {
     const state = n.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
@@ -1108,19 +1109,11 @@ function applySystemsListFilters() {
     }
   });
 
-  // System list items: search hides non-matching rows outright (either view); errors-only then
-  // hides (Systems list view) or dims (Topology view) among whatever the search left visible.
+  // System list items: errors-only hides (Systems list view) or dims (Topology view) non-issue rows.
   document.querySelectorAll('.system-list-item[data-system-id]').forEach(item => {
     const state = item.dataset.state;
     const hasIssue = state === 'error' || state === 'warning';
-    const matchesSearch = !searchQuery || (item.dataset.searchable || '').indexOf(searchQuery) !== -1;
 
-    if (!matchesSearch) {
-      item.classList.add('hidden');
-      item.style.opacity = '';
-      item.style.pointerEvents = '';
-      return;
-    }
     if (!showErrorsOnly) {
       item.style.opacity = '';
       item.style.pointerEvents = '';
@@ -1163,10 +1156,6 @@ function applySystemsListFilters() {
 
 if (errorsOnlyToggle) {
   errorsOnlyToggle.addEventListener('change', applySystemsListFilters);
-}
-
-if (systemsSearchInput) {
-  systemsSearchInput.addEventListener('input', applySystemsListFilters);
 }
 
 // Update filter controls visibility based on scan results
@@ -1635,6 +1624,124 @@ function stopScanDemo() {
     logLiveEvent('search', 'System Scan', scanResults.error > 0 ? 'error' : (scanResults.warning > 0 ? 'warning' : 'success'), issues > 0 ? issues + ' DTC found' : 'No DTC\'s');
   }
 }
+
+// ===== Functions search (autocomplete) =====
+// Per Autocom feedback this box no longer filters the Systems list by name — it searches curated
+// Demo functions (functions-library.js) instead, since that's the only content honest enough to
+// search (its "curated islands" coverage is the scope, not a separate allowlist to keep in sync —
+// see that file's header comment). Selecting a result jumps to that function's ECU detail page
+// with the row highlighted (ecu-detail.js reads ?openFunction=<id>) — it never auto-runs the
+// function itself; the demonstrator decides whether to click Start from there.
+(function initFunctionsSearch() {
+  if (!functionsSearchInput) return;
+  const resultsEl = document.getElementById('functions-search-results');
+  const wrap = functionsSearchInput.closest('[data-functions-search-wrap]');
+  if (!resultsEl || !wrap) return;
+
+  const systemsEl = document.getElementById('ecu-diagnostic-systems-' + (isTrucksMode ? 'trucks' : 'cars'));
+  const allSystems = systemsEl ? JSON.parse(systemsEl.textContent) : [];
+  const functionsLibraryRoot = (window.AutocomFunctionsLibrary || {})[isTrucksMode ? 'trucks' : 'cars'] || {};
+
+  const TYPE_LABEL = { adjustment: 'Adjustment', activation: 'Activation', test: 'Test', calibration: 'Calibration' };
+
+  // Flat index: one entry per curated function, cross-referenced with its system/group for the
+  // dropdown's label + breadcrumb.
+  const index = [];
+  Object.keys(functionsLibraryRoot).forEach((systemId) => {
+    const system = allSystems.find((s) => s.systemId === systemId);
+    if (!system) return;
+    const groupsById = {};
+    (system.functionalGroups || []).forEach((g) => { groupsById[g.id] = g; });
+    const byGroup = functionsLibraryRoot[systemId];
+    Object.keys(byGroup).forEach((groupId) => {
+      const group = groupsById[groupId];
+      (byGroup[groupId] || []).forEach((fn) => {
+        index.push({ fn, systemId, systemLabel: system.label, groupLabel: group ? group.label : '' });
+      });
+    });
+  });
+
+  let currentMatches = [];
+  let activeIndex = -1;
+
+  function closeResults() {
+    resultsEl.classList.add('hidden');
+    resultsEl.innerHTML = '';
+    functionsSearchInput.setAttribute('aria-expanded', 'false');
+    currentMatches = [];
+    activeIndex = -1;
+  }
+
+  function navigateTo(entry) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('systemId', entry.systemId);
+    params.delete('subsystemId');
+    params.set('openFunction', entry.fn.id);
+    window.location.href = getBasePath() + 'automechanika/ecu-detail/?' + params.toString();
+  }
+
+  function setActive(i) {
+    const buttons = resultsEl.querySelectorAll('.functions-search-result');
+    buttons.forEach((b) => b.classList.remove('bg-base-200'));
+    activeIndex = i;
+    if (i >= 0 && buttons[i]) {
+      buttons[i].classList.add('bg-base-200');
+      buttons[i].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function renderResults(matches) {
+    currentMatches = matches;
+    activeIndex = -1;
+    if (matches.length === 0) {
+      resultsEl.innerHTML = '<div class="px-3 py-3 text-sm text-base-content/60">No matching Demo functions.</div>';
+    } else {
+      resultsEl.innerHTML = matches.map((entry, i) => (
+        '<button type="button" class="functions-search-result w-full flex items-center gap-2 px-3 py-2.5 text-left border-b border-base-200 last:border-b-0 hover:bg-base-200" role="option" data-result-index="' + i + '">' +
+          '<span class="flex-1 min-w-0">' +
+            '<span class="block text-sm text-base-content truncate">' + entry.fn.label + '</span>' +
+            '<span class="block text-xs text-base-content/50 truncate">' + entry.systemLabel + (entry.groupLabel ? ' › ' + entry.groupLabel : '') + '</span>' +
+          '</span>' +
+          '<span class="badge badge-ghost badge-sm shrink-0">' + (TYPE_LABEL[entry.fn.type] || entry.fn.type) + '</span>' +
+        '</button>'
+      )).join('');
+    }
+    resultsEl.classList.remove('hidden');
+    functionsSearchInput.setAttribute('aria-expanded', 'true');
+  }
+
+  functionsSearchInput.addEventListener('input', () => {
+    const query = functionsSearchInput.value.trim().toLowerCase();
+    if (!query) { closeResults(); return; }
+    renderResults(index.filter((entry) => entry.fn.label.toLowerCase().indexOf(query) !== -1).slice(0, 8));
+  });
+
+  functionsSearchInput.addEventListener('keydown', (e) => {
+    if (resultsEl.classList.contains('hidden')) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActive(Math.min(activeIndex + 1, currentMatches.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActive(Math.max(activeIndex - 1, 0));
+    } else if (e.key === 'Enter' && activeIndex >= 0 && currentMatches[activeIndex]) {
+      e.preventDefault();
+      navigateTo(currentMatches[activeIndex]);
+    } else if (e.key === 'Escape') {
+      closeResults();
+    }
+  });
+
+  resultsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-result-index]');
+    const entry = btn && currentMatches[parseInt(btn.dataset.resultIndex, 10)];
+    if (entry) navigateTo(entry);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) closeResults();
+  });
+})();
 
 // Runs last (all of this file's other top-level const/let bindings are initialized by now — see
 // restoreScanState()'s own comment above for why this can't run any earlier).

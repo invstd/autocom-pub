@@ -345,6 +345,7 @@
 
 
 
+
 <dialog id="obd-socket-dialog" class="modal obd-socket-modal" aria-labelledby="obd-socket-title">
   <div class="modal-box max-w-sm">
     <h2 id="obd-socket-title" class="text-lg font-semibold text-base-content mb-1 flex items-center gap-2">
@@ -358,28 +359,30 @@
 
       OBD-II socket location
     </h2>
-    <p class="text-sm text-base-content/70 mb-4">Typically under the dashboard, to the left of the steering column, within easy reach of the driver's seat.</p>
+    
+      <p class="text-sm text-base-content/70 mb-4">Typically under the dashboard, to the left of the steering column, within easy reach of the driver's seat.</p>
 
-    <div class="relative w-full aspect-[4/3] rounded-box bg-base-200 border border-base-300 overflow-hidden">
-      <svg viewBox="0 0 200 150" class="w-full h-full" aria-hidden="true">
+      <div class="relative w-full aspect-[4/3] rounded-box bg-base-200 border border-base-300 overflow-hidden">
+        <svg viewBox="0 0 200 150" class="w-full h-full" aria-hidden="true">
+          
+          <rect x="10" y="20" width="180" height="45" rx="10" fill="currentColor" class="text-base-content/10" />
+          
+          <circle cx="150" cy="95" r="34" fill="none" stroke="currentColor" stroke-width="6" class="text-base-content/20" />
+          <circle cx="150" cy="95" r="6" fill="currentColor" class="text-base-content/20" />
+          
+          <path d="M60 65 L60 140 L190 140 L190 65" fill="none" stroke="currentColor" stroke-width="2" class="text-base-content/15" />
+        </svg>
         
-        <rect x="10" y="20" width="180" height="45" rx="10" fill="currentColor" class="text-base-content/10" />
-        
-        <circle cx="150" cy="95" r="34" fill="none" stroke="currentColor" stroke-width="6" class="text-base-content/20" />
-        <circle cx="150" cy="95" r="6" fill="currentColor" class="text-base-content/20" />
-        
-        <path d="M60 65 L60 140 L190 140 L190 65" fill="none" stroke="currentColor" stroke-width="2" class="text-base-content/15" />
-      </svg>
-      
-      <span class="absolute" style="left: 44%; top: 66%;">
-        <span class="relative flex h-4 w-4">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
-          <span class="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-base-100"></span>
+        <span class="absolute" style="left: 44%; top: 66%;">
+          <span class="relative flex h-4 w-4">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
+            <span class="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-base-100"></span>
+          </span>
         </span>
-      </span>
-    </div>
+      </div>
 
-    <p class="text-xs text-base-content/50 mt-3">Generic placement shown — vehicle-specific diagrams coming soon.</p>
+      <p class="text-xs text-base-content/50 mt-3">Generic placement shown — vehicle-specific diagrams coming soon.</p>
+    
 
     <div class="modal-action mt-4">
       <form method="dialog">
@@ -1026,8 +1029,9 @@
 
     
     <div class="diagnostics-dashboard-top-row grid grid-cols-1 lg:grid-cols-2 gap-4 items-center shrink-0">
-      <label class="input input-bordered flex items-center gap-2 w-full" data-clearable-input>
-        
+      <div class="relative" data-functions-search-wrap>
+        <label class="input input-bordered flex items-center gap-2 w-full" data-clearable-input>
+          
 <span class="icon icon-search w-5 h-5 shrink-0 opacity-70 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -1035,9 +1039,9 @@
 
 </span>
 
-        <input type="text" class="grow" id="systems-search-input" placeholder="Search systems…" />
-        <button type="button" data-clear-input class="hidden shrink-0 text-base-content/50 hover:text-base-content" aria-label="Clear search">
-          
+          <input type="text" class="grow" id="functions-search-input" placeholder="Search functions (Demo)…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="functions-search-results" />
+          <button type="button" data-clear-input class="hidden shrink-0 text-base-content/50 hover:text-base-content" aria-label="Clear search">
+            
 <span class="icon icon-close w-4 h-4 inline-block shrink-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block" role="img" aria-hidden="true">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -1045,8 +1049,10 @@
 
 </span>
 
-        </button>
-      </label>
+          </button>
+        </label>
+        <div id="functions-search-results" class="hidden absolute left-0 right-0 top-full mt-1 z-30 bg-base-100 border border-base-300 rounded-box shadow-lg overflow-hidden max-h-80 overflow-y-auto" role="listbox" data-functions-search-results></div>
+      </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:justify-between">
         
         <div role="tablist" class="tabs tabs-box" data-diagnostics-tabs>
@@ -1074,6 +1080,7 @@
 </span>
 
             Topology tree
+            <span class="badge badge-outline badge-warning badge-xs normal-case font-normal">Concept</span>
           </button>
         </div>
         
@@ -1360,7 +1367,7 @@
     <div class="hidden flex-col" data-group-panel="engine">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="ecm" data-group="engine" data-state="pending" data-selected="true" data-searchable="d5244t17">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="ecm" data-group="engine" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>D5244T17</span>
           <span class="badge badge-sm badge-secondary shrink-0">Demo</span>
@@ -1443,7 +1450,7 @@
     <div class="hidden flex-col" data-group-panel="drive-train">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tcm" data-group="drive-train" data-state="pending" data-selected="true" data-searchable="gearbox - automatic (tcm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tcm" data-group="drive-train" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Gearbox - Automatic (TCM)</span>
           
@@ -1493,7 +1500,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="dem" data-group="drive-train" data-state="pending" data-selected="true" data-searchable="differential electronic module (dem)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="dem" data-group="drive-train" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Differential Electronic Module (DEM)</span>
           
@@ -1581,7 +1588,7 @@
     <div class="hidden flex-col" data-group-panel="brakes">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="bcm" data-group="brakes" data-state="pending" data-selected="true" data-searchable="brake control module (bcm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="bcm" data-group="brakes" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Brake Control Module (BCM)</span>
           
@@ -1631,7 +1638,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="parking-brake" data-group="brakes" data-state="pending" data-selected="true" data-searchable="parking brake module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="parking-brake" data-group="brakes" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Parking Brake Module</span>
           
@@ -1750,7 +1757,7 @@
     <div class="hidden flex-col" data-group-panel="safety-systems">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="srs" data-group="safety-systems" data-state="pending" data-selected="true" data-searchable="airbag (srs)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="srs" data-group="safety-systems" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Airbag (SRS)</span>
           
@@ -1833,7 +1840,7 @@
     <div class="hidden flex-col" data-group-panel="climate-control">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="ccm" data-group="climate-control" data-state="pending" data-selected="true" data-searchable="climate control module (ccm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="ccm" data-group="climate-control" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Climate Control Module (CCM)</span>
           
@@ -1883,7 +1890,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="preheater" data-group="climate-control" data-state="pending" data-selected="true" data-searchable="combustion preheater module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="preheater" data-group="climate-control" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Combustion Preheater Module</span>
           
@@ -1966,7 +1973,7 @@
     <div class="hidden flex-col" data-group-panel="dashboard">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="dim" data-group="dashboard" data-state="pending" data-selected="true" data-searchable="driver information module (dim)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="dim" data-group="dashboard" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Driver Information Module (DIM)</span>
           
@@ -2016,7 +2023,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="iam-icm" data-group="dashboard" data-state="pending" data-selected="true" data-searchable="infotainment control module (iam/icm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="iam-icm" data-group="dashboard" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Infotainment Control Module (IAM/ICM)</span>
           
@@ -2066,7 +2073,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="phone-module" data-group="dashboard" data-state="pending" data-selected="true" data-searchable="phone module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="phone-module" data-group="dashboard" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Phone Module</span>
           
@@ -2152,7 +2159,7 @@
     <div class="hidden flex-col" data-group-panel="chassis">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="suspension-module" data-group="chassis" data-state="pending" data-selected="true" data-searchable="suspension module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="suspension-module" data-group="chassis" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Suspension Module</span>
           
@@ -2202,7 +2209,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="steering-angle" data-group="chassis" data-state="pending" data-selected="true" data-searchable="steering angle sensor">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="steering-angle" data-group="chassis" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Steering Angle Sensor</span>
           
@@ -2252,7 +2259,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="eps-swm" data-group="chassis" data-state="pending" data-selected="true" data-searchable="power steering control module (eps/swm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="eps-swm" data-group="chassis" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Power Steering Control Module (EPS/SWM)</span>
           
@@ -2302,7 +2309,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tpms" data-group="chassis" data-state="pending" data-selected="true" data-searchable="tire pressure monitoring system">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tpms" data-group="chassis" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Tire Pressure Monitoring System</span>
           
@@ -2385,7 +2392,7 @@
     <div class="hidden flex-col" data-group-panel="body">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="cem" data-group="body" data-state="pending" data-selected="true" data-searchable="central electronic module (cem)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="cem" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Central Electronic Module (CEM)</span>
           
@@ -2435,7 +2442,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-driver" data-group="body" data-state="pending" data-selected="true" data-searchable="driver door module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-driver" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Driver Door Module</span>
           
@@ -2485,7 +2492,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-passenger" data-group="body" data-state="pending" data-selected="true" data-searchable="passenger door module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-passenger" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Passenger Door Module</span>
           
@@ -2535,7 +2542,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-rear-left" data-group="body" data-state="pending" data-selected="true" data-searchable="rear door module (left)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-rear-left" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Rear Door Module (Left)</span>
           
@@ -2585,7 +2592,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-rear-right" data-group="body" data-state="pending" data-selected="true" data-searchable="rear door module (right)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="door-rear-right" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Rear Door Module (Right)</span>
           
@@ -2635,7 +2642,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tailgate" data-group="body" data-state="pending" data-selected="true" data-searchable="power operated tailgate module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="tailgate" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Power Operated Tailgate Module</span>
           
@@ -2685,7 +2692,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="trailer-module" data-group="body" data-state="pending" data-selected="true" data-searchable="trailer module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="trailer-module" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Trailer Module</span>
           
@@ -2735,7 +2742,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="hcm" data-group="body" data-state="pending" data-selected="true" data-searchable="headlamp control module (hcm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="hcm" data-group="body" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Headlamp Control Module (HCM)</span>
           
@@ -2855,7 +2862,7 @@
     <div class="hidden flex-col" data-group-panel="adas">
       
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="collision-speed" data-group="adas" data-state="pending" data-selected="true" data-searchable="collision speed module">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="collision-speed" data-group="adas" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Collision Speed Module</span>
           
@@ -2905,7 +2912,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="pac-pam" data-group="adas" data-state="pending" data-selected="true" data-searchable="parking assistance module (pac/pam)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="pac-pam" data-group="adas" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Parking Assistance Module (PAC/PAM)</span>
           
@@ -2955,7 +2962,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="blis-left" data-group="adas" data-state="pending" data-selected="true" data-searchable="side obstacle detection module - left (blis)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="blis-left" data-group="adas" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Side Obstacle Detection Module - Left (BLIS)</span>
           
@@ -3005,7 +3012,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="blis-right" data-group="adas" data-state="pending" data-selected="true" data-searchable="side obstacle detection module - right (blis)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="blis-right" data-group="adas" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Side Obstacle Detection Module - Right (BLIS)</span>
           
@@ -3055,7 +3062,7 @@
           </div>
         </div>
         
-        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="fsm" data-group="adas" data-state="pending" data-selected="true" data-searchable="forward sensing module (fsm)">
+        <div class="collapse-list-row system-list-item flex items-center gap-2 py-2.5 pr-2 pl-8 min-h-0 border-b border-base-200 last:border-b-0 cursor-pointer" data-system-id="fsm" data-group="adas" data-state="pending" data-selected="true">
           <input type="checkbox" class="checkbox checkbox-xs system-select-checkbox shrink-0" checked />
           <span class="flex-1 text-left truncate" data-drill-label>Forward Sensing Module (FSM)</span>
           <span class="badge badge-sm badge-secondary shrink-0">Demo</span>
@@ -3121,6 +3128,12 @@
     <div class="topology-view card bg-base-100 border border-base-200 rounded-box overflow-hidden flex flex-col flex-1 min-h-0">
       
 <div class="topology-map flex flex-col flex-1 min-h-0 overflow-auto p-4" data-topology-map>
+  
+<div class="alert alert-soft alert-warning text-sm mb-3 items-start">
+  <span class="badge badge-outline badge-warning badge-sm shrink-0 mt-0.5">Concept</span>
+  <span>Not yet committed to the roadmap — we're exploring whether this ships in the real product. If you find it useful, tell us — that's exactly the feedback that helps decide.</span>
+</div>
+
   
   
   
@@ -3758,6 +3771,10 @@
 
 
 
+
+<script type="application/json" id="ecu-diagnostic-systems-cars">[{"systemId":"ecm","label":"D5244T17","group":"engine","type":"Diesel","icon":"engine","bus":"CAN-C Powertrain","demoReady":true,"moduleAddress":"0x7E0","hardwareNumber":"03L 906 018","softwareVersion":"SW 1037.00.02","serialNumber":"ECM2109V445781","functionalGroups":[{"id":"air-intake","label":"Air Intake & Induction System","livePids":[{"label":"Mass Air Flow (MAF) actual","unit":"g/s"},{"label":"Intake Air Temperature","unit":"°C"},{"label":"Manifold Absolute Pressure / Boost","unit":"kPa"},{"label":"Throttle Valve position","unit":"%"}]},{"id":"fuel-injection","label":"Fuel Supply & Injection System","livePids":[{"label":"Low-pressure fuel pump duty cycle","unit":"%"},{"label":"High-pressure rail pressure (actual)","unit":"bar"},{"label":"Fuel temperature","unit":"°C"},{"label":"Main injection timing","unit":"° BTDC"}]},{"id":"turbo","label":"Turbocharger & Boost Control","livePids":[{"label":"Boost control solenoid duty cycle","unit":"%"},{"label":"VNT actuator position","unit":"%"},{"label":"Charge air cooler temperature drop","unit":"°C"}]},{"id":"ignition","label":"Ignition & Misfire Detection / Pre-Heating","livePids":[{"label":"Misfire counter (per cylinder)","unit":"count"},{"label":"Ignition timing advance/retard","unit":"° BTDC"},{"label":"Knock sensor signal","unit":"V"},{"label":"Glow plug current draw","unit":"A"}]},{"id":"emissions","label":"Emissions & Exhaust Aftertreatment","livePids":[{"label":"EGR valve position (actual)","unit":"%"},{"label":"O2 / Lambda sensor voltage","unit":"V"},{"label":"DPF differential pressure","unit":"hPa"},{"label":"DPF soot mass","unit":"g"},{"label":"Distance since last regeneration","unit":"km"}]},{"id":"cooling","label":"Engine Cooling & Thermal Management","livePids":[{"label":"Engine Coolant Temperature","unit":"°C"},{"label":"Radiator fan speed","unit":"%"},{"label":"Thermostat heating element duty","unit":"%"}]},{"id":"mechanical-vvt","label":"Engine Mechanical & Variable Valve Timing","livePids":[{"label":"Crankshaft speed","unit":"RPM"},{"label":"Camshaft/Crankshaft sync status","unit":""},{"label":"Camshaft angle offset","unit":"° KW"}]},{"id":"cruise-driver-input","label":"Cruise Control & Driver Input Interface","livePids":[{"label":"Accelerator pedal position 1","unit":"%"},{"label":"Accelerator pedal position 2","unit":"%"},{"label":"Brake pedal switch status","unit":""},{"label":"Target cruise speed vs actual","unit":"km/h"}]}]},{"systemId":"tcm","label":"Gearbox - Automatic (TCM)","group":"drive-train","type":"Gearbox","icon":"drive-train","bus":"CAN-C Powertrain","functionalGroups":[{"id":"transmission","label":"Automatic Transmission (J217)"},{"id":"torque-vectoring","label":"Torque Vectoring Module"}]},{"systemId":"dem","label":"Differential Electronic Module (DEM)","group":"drive-train","type":"Differential","icon":"drive-train","bus":"CAN-C Powertrain","functionalGroups":[{"id":"transfer-case","label":"Transfer Case (J646)"},{"id":"diff-front","label":"Front Differential Lock"},{"id":"diff-rear","label":"Rear Differential Lock"},{"id":"4motion","label":"4MOTION Control"}]},{"systemId":"bcm","label":"Brake Control Module (BCM)","group":"brakes","type":"Brake","icon":"brakes","bus":"CAN-E Chassis","functionalGroups":[{"id":"abs-esp","label":"ABS/ESP (J104)"},{"id":"brake-booster","label":"Brake Booster (J539)"},{"id":"epb","label":"Electronic Parking Brake (J540)"},{"id":"wear-fl","label":"Brake Wear Sensor FL"},{"id":"wear-fr","label":"Brake Wear Sensor FR"},{"id":"wear-rl","label":"Brake Wear Sensor RL"},{"id":"wear-rr","label":"Brake Wear Sensor RR"}]},{"systemId":"parking-brake","label":"Parking Brake Module","group":"brakes","type":"Parking Brake","icon":"brakes","bus":"CAN-E Chassis"},{"systemId":"srs","label":"Airbag (SRS)","group":"safety-systems","type":"SRS - Supplementary Restraint System","icon":"restrains-safety","bus":"CAN-E Chassis","functionalGroups":[{"id":"airbag-j234","label":"Airbag Control (J234)"},{"id":"airbag-driver","label":"Front Airbag Driver"},{"id":"airbag-passenger","label":"Front Airbag Passenger"},{"id":"airbag-side","label":"Side Airbag FL/FR"},{"id":"airbag-curtain","label":"Curtain Airbag L/R"},{"id":"seatbelt-tensioner","label":"Seatbelt Tensioner FL/FR"},{"id":"rollover-sensor","label":"Rollover Sensor"},{"id":"pedestrian","label":"Pedestrian Protection"}]},{"systemId":"ccm","label":"Climate Control Module (CCM)","group":"climate-control","type":"Air Conditioning","icon":"climate-snowflake","bus":"CAN-B Comfort","functionalGroups":[{"id":"climatronic","label":"Climatronic (J255)"},{"id":"ac-compressor","label":"A/C Compressor Control"},{"id":"aux-heater","label":"Auxiliary Heater (J604)"},{"id":"seat-heat-fl","label":"Seat Heating FL (J131)"},{"id":"seat-heat-fr","label":"Seat Heating FR (J132)"},{"id":"seat-heat-rl","label":"Seat Heating RL"},{"id":"seat-heat-rr","label":"Seat Heating RR"},{"id":"steering-heat","label":"Steering Wheel Heating"},{"id":"windshield-heat","label":"Windshield Heating"}]},{"systemId":"preheater","label":"Combustion Preheater Module","group":"climate-control","type":"Heater","icon":"climate-snowflake","bus":"CAN-B Comfort"},{"systemId":"dim","label":"Driver Information Module (DIM)","group":"dashboard","type":"Instrument","icon":"gauge-instruments","bus":"CAN-B Comfort","functionalGroups":[{"id":"cluster","label":"Instrument Cluster (J285)"},{"id":"hud","label":"Head-Up Display (J898)"},{"id":"cockpit","label":"Digital Cockpit Control"}]},{"systemId":"iam-icm","label":"Infotainment Control Module (IAM/ICM)","group":"dashboard","type":"Infotainment","icon":"smartphone","bus":"LIN Bus","functionalGroups":[{"id":"infotainment","label":"Infotainment (J794)"},{"id":"touchscreen","label":"Touchscreen Display"},{"id":"rear-entertainment","label":"Rear Seat Entertainment"}]},{"systemId":"phone-module","label":"Phone Module","group":"dashboard","type":"Telephone","icon":"smartphone","bus":"LIN Bus"},{"systemId":"suspension-module","label":"Suspension Module","group":"chassis","type":"Chassis","icon":"suspension","bus":"CAN-E Chassis","functionalGroups":[{"id":"air-suspension","label":"Air Suspension (J197)"},{"id":"level-fl","label":"Level Control FL"},{"id":"level-fr","label":"Level Control FR"},{"id":"level-rl","label":"Level Control RL"},{"id":"level-rr","label":"Level Control RR"},{"id":"dcc","label":"Adaptive Damping (DCC)"},{"id":"stabilization","label":"Electronic Stabilization"}]},{"systemId":"steering-angle","label":"Steering Angle Sensor","group":"chassis","type":"Steering","icon":"suspension","bus":"CAN-E Chassis"},{"systemId":"eps-swm","label":"Power Steering Control Module (EPS/SWM)","group":"chassis","type":"Steering","icon":"car","bus":"CAN-E Chassis","functionalGroups":[{"id":"steering","label":"Power Steering (J500)"}]},{"systemId":"tpms","label":"Tire Pressure Monitoring System","group":"chassis","type":"Tire","icon":"tpms","bus":"CAN-E Chassis"},{"systemId":"cem","label":"Central Electronic Module (CEM)","group":"body","type":"Central Electronic","icon":"hard-drive","bus":"CAN-B Comfort","functionalGroups":[{"id":"battery-mgmt","label":"Battery Management (J367)"},{"id":"voltage-reg","label":"Voltage Regulator"},{"id":"starter","label":"Starter Motor Control"},{"id":"power-dist","label":"Power Distribution (SA)"},{"id":"power-supply","label":"Onboard Power Supply"},{"id":"dcdc","label":"DC/DC Converter"},{"id":"bcm-body","label":"Body Control (J519)"},{"id":"sunroof","label":"Panoramic Sunroof"},{"id":"mirrors","label":"Exterior Mirrors L/R"},{"id":"wiper","label":"Wiper Motor (V)"},{"id":"rain-light","label":"Rain/Light Sensor (G397)"},{"id":"immobilizer","label":"Immobilizer (J334)"},{"id":"kessy","label":"Kessy Control (J518)"},{"id":"central-lock","label":"Central Locking"},{"id":"alarm","label":"Alarm System (J329)"},{"id":"tilt-sensor","label":"Tilt/Interior Sensor"},{"id":"steering-lock","label":"Steering Column Lock"}]},{"systemId":"door-driver","label":"Driver Door Module","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Comfort"},{"systemId":"door-passenger","label":"Passenger Door Module","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Comfort"},{"systemId":"door-rear-left","label":"Rear Door Module (Left)","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Comfort"},{"systemId":"door-rear-right","label":"Rear Door Module (Right)","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Comfort"},{"systemId":"tailgate","label":"Power Operated Tailgate Module","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Comfort"},{"systemId":"trailer-module","label":"Trailer Module","group":"body","type":"Trailer","icon":"trailer","bus":"CAN-B Comfort"},{"systemId":"hcm","label":"Headlamp Control Module (HCM)","group":"body","type":"Lights","icon":"car-body","bus":"CAN-B Comfort","functionalGroups":[{"id":"headlight-l","label":"LED Matrix Headlights L"},{"id":"headlight-r","label":"LED Matrix Headlights R"}]},{"systemId":"collision-speed","label":"Collision Speed Module","group":"adas","type":"Anti Collision","icon":"adas","bus":"FlexRay ADAS"},{"systemId":"pac-pam","label":"Parking Assistance Module (PAC/PAM)","group":"adas","type":"Parking Aid","icon":"crosshair","bus":"FlexRay ADAS","functionalGroups":[{"id":"park-assist","label":"Park Assist (J446)"},{"id":"camera-360","label":"360° Camera System"}]},{"systemId":"blis-left","label":"Side Obstacle Detection Module - Left (BLIS)","group":"adas","type":"Radar System","icon":"shield","bus":"FlexRay ADAS","functionalGroups":[{"id":"side-assist-l","label":"Side Assist L"},{"id":"rear-radar-l","label":"Rear Radar L (J769)"}]},{"systemId":"blis-right","label":"Side Obstacle Detection Module - Right (BLIS)","group":"adas","type":"Radar System","icon":"shield","bus":"FlexRay ADAS","functionalGroups":[{"id":"side-assist-r","label":"Side Assist R"},{"id":"rear-radar-r","label":"Rear Radar R (J770)"}]},{"systemId":"fsm","label":"Forward Sensing Module (FSM)","group":"adas","type":"Sensor System","icon":"adas","bus":"FlexRay ADAS","demoReady":true,"functionalGroups":[{"id":"acc-radar","label":"ACC Radar (J428)","livePids":[{"label":"Radar target distance","unit":"m"},{"label":"Relative closing speed","unit":"km/h"},{"label":"Radar alignment status","unit":""}]},{"id":"front-camera","label":"Front Camera (J852)","demoReady":true,"livePids":[{"label":"Camera signal status","unit":""},{"label":"Lens contamination level","unit":"%"},{"label":"Horizon line offset","unit":"°"}]},{"id":"night-vision","label":"Night Vision (J853)","livePids":[{"label":"IR illuminator status","unit":""},{"label":"Pedestrian detection confidence","unit":"%"},{"label":"Thermal sensor temperature","unit":"°C"}]},{"id":"tsr","label":"Traffic Sign Recognition","livePids":[{"label":"Last recognized sign type","unit":""},{"label":"Sign recognition confidence","unit":"%"}]},{"id":"ldw","label":"Lane Departure Warning","livePids":[{"label":"Lane offset (left)","unit":"cm"},{"label":"Lane offset (right)","unit":"cm"},{"label":"Lane marking confidence","unit":"%"}]},{"id":"emergency-assist","label":"Emergency Assist","livePids":[{"label":"Collision risk level","unit":"%"},{"label":"Autonomous braking status","unit":""}]}]}]</script>
+<script type="application/json" id="ecu-diagnostic-systems-trucks">[{"systemId":"edc","label":"EDC7 Bosch V8","group":"engine","type":"Diesel","icon":"engine","bus":"CAN-C Powertrain","demoReady":true,"moduleAddress":"0x0","hardwareNumber":"21789412","softwareVersion":"SW 22345678","serialNumber":"EDC1709V778812","functionalGroups":[{"id":"fuel-system","label":"Common Rail Fuel System","livePids":[{"label":"Low-pressure supply side pressure","unit":"bar"},{"label":"High-pressure rail pressure (actual)","unit":"bar"},{"label":"Individual cylinder fuel quantity correction","unit":"mg/stroke"},{"label":"Fuel temperature","unit":"°C"}]},{"id":"air-boost-turbo","label":"Air Mass, Boost & Turbocharger Management","livePids":[{"label":"Mass Air Flow (MAF) actual","unit":"kg/h"},{"label":"Boost pressure (actual)","unit":"bar"},{"label":"Charge air temperature before/after intercooler","unit":"°C"},{"label":"Wastegate / VGT actuator position","unit":"%"}]},{"id":"egr","label":"Exhaust Gas Recirculation (EGR) System","livePids":[{"label":"EGR valve position (actual)","unit":"%"},{"label":"EGR mass flow (estimated)","unit":"kg/h"},{"label":"Exhaust temperature before/after EGR cooler","unit":"°C"}]},{"id":"aftertreatment","label":"Exhaust Aftertreatment & Emissions","livePids":[{"label":"DPF differential pressure","unit":"mbar"},{"label":"DPF soot mass (calculated)","unit":"g"},{"label":"NOx sensor, upstream/downstream","unit":"ppm"},{"label":"Exhaust gas temperature (EGT 1-4)","unit":"°C"},{"label":"AdBlue dosing pressure","unit":"bar"},{"label":"AdBlue dosing rate","unit":"g/h"}]},{"id":"thermal-lubrication","label":"Engine Thermal Management & Lubrication","livePids":[{"label":"Engine Coolant Temperature","unit":"°C"},{"label":"Engine Oil Pressure","unit":"bar"},{"label":"Engine Oil Temperature","unit":"°C"},{"label":"Cooling fan speed (actual)","unit":"RPM"},{"label":"Piston cooling jet pressure switch","unit":""}]},{"id":"auxiliary-braking","label":"Auxiliary Engine Braking (EVBec)","livePids":[{"label":"EVBec cylinder backpressure","unit":"bar"},{"label":"Exhaust flap position status","unit":""}]}]},{"systemId":"adblue","label":"DeNOx AdBlue System","group":"engine","type":"Anti Pollution","icon":"droplet","bus":"CAN-C Powertrain","functionalGroups":[{"id":"scr-catalyst","label":"SCR Catalytic Converter"},{"id":"nox-upstream","label":"NOx Sensor, upstream of SCR"},{"id":"nox-downstream","label":"NOx Sensor, downstream of SCR"},{"id":"adblue-supply","label":"AdBlue Supply Module"},{"id":"adblue-heating","label":"AdBlue Line Heating"}]},{"systemId":"transmission","label":"Gearbox (TipMatic / ZF TraXon)","group":"drive-train","type":"Gearbox","icon":"drive-train","bus":"CAN-C Powertrain","functionalGroups":[{"id":"transmission-ecu","label":"Transmission Control Unit"},{"id":"clutch-actuator","label":"Clutch Actuator"}]},{"systemId":"hydrodrive","label":"Hydrodrive","group":"drive-train","type":"Drive Train General","icon":"drive-train","bus":"CAN-C Powertrain"},{"systemId":"ebs","label":"Electronic Braking System 5 (Knorr-Bremse)","group":"brakes","type":"Brake","icon":"brakes","bus":"CAN-E Chassis","functionalGroups":[{"id":"ebs-ecu","label":"EBS Control Unit"},{"id":"abs-sensors","label":"ABS Wheel Speed Sensors"},{"id":"brake-booster","label":"Brake Booster / Modulator"},{"id":"trailer-brake","label":"Trailer Brake Interface"}]},{"systemId":"retarder","label":"Retarder","group":"brakes","type":"Retarder/Intarder","icon":"wind","bus":"CAN-E Chassis","functionalGroups":[{"id":"retarder-ecu","label":"Retarder Control Unit"},{"id":"retarder-lever","label":"Retarder Control Lever"}]},{"systemId":"climate","label":"Climate Control","group":"climate-control","type":"Air Conditioning","icon":"climate-snowflake","bus":"LIN Comfort","functionalGroups":[{"id":"ac-compressor","label":"A/C Compressor Control"},{"id":"climate-ecu","label":"Climate Control Unit"}]},{"systemId":"heater-booster","label":"Auxiliary Heating (Heater Booster)","group":"climate-control","type":"Heater","icon":"sun","bus":"LIN Comfort","functionalGroups":[{"id":"heater-unit","label":"Auxiliary Heater Unit"}]},{"systemId":"instrument","label":"Stoneridge Highline (Instrument Cluster)","group":"dashboard","type":"Instrument","icon":"gauge-instruments","bus":"CAN-B Body","functionalGroups":[{"id":"cluster","label":"Instrument Cluster"},{"id":"display","label":"Driver Info Display"}]},{"systemId":"telematics","label":"Telematics","group":"dashboard","type":"Telematic","icon":"wifi","bus":"CAN-B Body","functionalGroups":[{"id":"telematics-unit","label":"Telematics Control Unit"},{"id":"fleet-modem","label":"Fleet Management Modem"}]},{"systemId":"navigation","label":"Navigation System","group":"dashboard","type":"Navigation","icon":"grid","bus":"CAN-B Body","functionalGroups":[{"id":"nav-unit","label":"Navigation Control Unit"}]},{"systemId":"air-suspension","label":"Electronically Controlled Air Suspension 2","group":"chassis","type":"Air Suspension","icon":"suspension","bus":"CAN-E Chassis","functionalGroups":[{"id":"ecas","label":"ECAS Control Unit"},{"id":"level-front","label":"Level Control, Front Axle"},{"id":"level-rear","label":"Level Control, Rear Axle"},{"id":"lift-axle","label":"Lift Axle Control"}]},{"systemId":"drive-control","label":"Drive Control","group":"chassis","type":"Driving Dynamics","icon":"suspension","bus":"CAN-E Chassis"},{"systemId":"rear-axle-steering","label":"Electro-Hydraulic Rear Axle Steering","group":"chassis","type":"Steering","icon":"suspension","bus":"CAN-E Chassis"},{"systemId":"rear-axle-steering-ecu","label":"Rear Axle Steering - Electronic Control","group":"chassis","type":"Steering","icon":"suspension","bus":"CAN-E Chassis"},{"systemId":"tpms","label":"Tire Pressure Control","group":"chassis","type":"Tire","icon":"tpms","bus":"CAN-E Chassis","functionalGroups":[{"id":"tpms-ecu","label":"TPMS Control Unit"},{"id":"tpms-sensors","label":"Wheel Pressure Sensors"}]},{"systemId":"obd-unit","label":"On Board Diagnostics Unit","group":"body","type":"Central Electronic","icon":"hard-drive","bus":"CAN-B Body"},{"systemId":"ptm","label":"Powertrain Module","group":"body","type":"Central Electronic","icon":"hard-drive","bus":"CAN-B Body","functionalGroups":[{"id":"clutch","label":"Clutch Actuator"},{"id":"pto","label":"Power Take-Off (PTO)"}]},{"systemId":"central-control","label":"Central Control Unit","group":"body","type":"Central Electronic","icon":"hard-drive","bus":"CAN-B Body","functionalGroups":[{"id":"cgw","label":"CGW (Gateway ECU)"},{"id":"cpc","label":"CPC (Drive Control)"},{"id":"msf","label":"MSF (Modularable Switch Module)"},{"id":"mux1","label":"MUX1 (Multiplex System)"},{"id":"mux2","label":"MUX2 (Multiplex System)"},{"id":"mux3","label":"MUX3 (Multiplex System)"},{"id":"mux4","label":"MUX4 (Multiplex System)"},{"id":"mux5","label":"MUX5 (Multiplex System)"},{"id":"mux6","label":"MUX6 (Multiplex System)"}]},{"systemId":"door-control","label":"Door Control Unit","group":"body","type":"Doors","icon":"car-body","bus":"CAN-B Body","functionalGroups":[{"id":"door-driver","label":"Door Module, Driver Side"},{"id":"door-passenger","label":"Door Module, Passenger Side"}]},{"systemId":"bodybuilder-module","label":"Bodybuilder Module","group":"body","type":"Exterior Components","icon":"car-body","bus":"CAN-B Body"},{"systemId":"vas-lgs","label":"Lane Departure Warning System 2 (VAS/LGS)","group":"adas","type":"Lane Assistance System","icon":"adas","bus":"FlexRay ADAS","demoReady":true,"functionalGroups":[{"id":"lane-camera","label":"Lane Guard Camera","demoReady":true,"livePids":[{"label":"Camera signal status","unit":""},{"label":"Lens contamination level","unit":"%"},{"label":"Lane offset (left)","unit":"cm"},{"label":"Lane offset (right)","unit":"cm"},{"label":"Lane marking confidence","unit":"%"}]},{"id":"sign-recognition","label":"Traffic Sign Recognition","livePids":[{"label":"Last recognized sign type","unit":""},{"label":"Sign recognition confidence","unit":"%"}]}]},{"systemId":"eba-acc","label":"Front Radar Sensor System (EBA/ACC)","group":"adas","type":"Radar System","icon":"adas","bus":"FlexRay ADAS","functionalGroups":[{"id":"acc-radar","label":"ACC Radar"},{"id":"collision-mitigation","label":"Collision Mitigation"}]}]</script>
+<script src="/diagnostics-pub/assets/scripts/functions-library.js"></script>
 <script src="/diagnostics-pub/assets/scripts/dtc-library.js"></script>
 <script src="/diagnostics-pub/assets/scripts/dtc-detail-modal.js"></script>
 <script src="/diagnostics-pub/assets/scripts/diagnostic-functions.js"></script>

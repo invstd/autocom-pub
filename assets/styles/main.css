@@ -68,6 +68,7 @@
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     --blur-sm: 8px;
     --aspect-video: 16 / 9;
     --default-transition-duration: 150ms;
@@ -8145,6 +8146,9 @@
   .aspect-\[16\/10\] {
     aspect-ratio: 16/10;
   }
+  .aspect-\[1619\/971\] {
+    aspect-ratio: 1619/971;
+  }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
   }
@@ -8911,6 +8915,9 @@
   .animate-ping {
     animation: var(--animate-ping);
   }
+  .animate-pulse {
+    animation: var(--animate-pulse);
+  }
   .link {
     @layer daisyui.l1.l2.l3 {
       cursor: pointer;
@@ -9258,6 +9265,9 @@
   }
   .overflow-x-auto {
     overflow-x: auto;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
   }
   .otp-joined {
     --otp-gap: 0rem;
@@ -9797,6 +9807,12 @@
     background-color: var(--color-base-content);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    }
+  }
+  .bg-base-content\/30 {
+    background-color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
     }
   }
   .bg-black {
@@ -14188,6 +14204,8 @@ html[data-theme="Hi-Tech"] .setup-video-tint {
 }
 .diagnostics-dashboard-page .diagnostics-stagger-header {
   animation-delay: 0.05s;
+  position: relative;
+  z-index: 1;
 }
 .diagnostics-dashboard-page .diagnostics-stagger-tasks {
   animation-delay: 0.2s;
@@ -15614,6 +15632,11 @@ html[data-theme="Wabco Dark"] .vehicle-image-tinted [data-vehicle-image] {
   75%, 100% {
     transform: scale(2);
     opacity: 0;
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
   }
 }
 @layer properties {

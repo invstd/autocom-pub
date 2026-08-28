@@ -163,6 +163,7 @@
   function buildFunctionRow(fn) {
     const row = document.createElement('button');
     row.type = 'button';
+    row.dataset.functionId = fn.id;
     row.className = 'flex items-center gap-3 px-3 py-2.5 border-b border-base-200 last:border-b-0 text-left hover:bg-base-200 cursor-pointer w-full';
     const iconSpan = document.querySelector('[data-icon-pool] [data-icon-name="' + fn.icon + '"] .icon');
     if (iconSpan) row.appendChild(iconSpan.cloneNode(true));
@@ -198,6 +199,22 @@
     });
   }
   if (totalFunctions === 0 && functionsEmpty) functionsEmpty.classList.remove('hidden');
+
+  // Deep link from the dashboard's Functions search (diagnostics-dashboard.js's initFunctionsSearch):
+  // switch to this tab and highlight the specific row so the demonstrator sees exactly what the
+  // search found, then decides whether to open it — this never auto-opens the dialog or
+  // auto-starts the function itself.
+  const openFunctionId = params.get('openFunction');
+  if (openFunctionId && functionsList) {
+    const targetRow = functionsList.querySelector('[data-function-id="' + openFunctionId + '"]');
+    if (targetRow) {
+      const functionsTabBtn = document.querySelector('[data-ecu-tab="functions"]');
+      if (functionsTabBtn) functionsTabBtn.click();
+      targetRow.scrollIntoView({ block: 'center' });
+      targetRow.classList.add('attention-pulse');
+      setTimeout(function () { targetRow.classList.remove('attention-pulse'); }, 750);
+    }
+  }
 
   // ===== Function detail dialog =====
   const fnDialog = document.getElementById('ecu-function-dialog');
@@ -255,23 +272,36 @@
     fnStartBtn.textContent = 'Start';
     fnStopBtn.classList.add('hidden');
 
+    // Every function run re-establishes the comms protocol with the ECU first — a real mechanic
+    // flagged the absence of this "connecting" moment as the one thing breaking the simulation's
+    // feel (Activation previously had zero delay/feedback at all). Matches ADAS Calibration's own
+    // "Connecting to rig" opening step (adas-calibration-modal.js).
     fnStartBtn.onclick = function () {
+      fnStartBtn.disabled = true;
       if (fn.type === 'activation') {
-        fnStateRing.className = 'flex items-center justify-center size-28 rounded-full border-4 border-success';
-        fnStateText.textContent = 'ON';
-        fnStateText.className = 'font-semibold text-success';
-        fnStartBtn.classList.add('hidden');
-        fnStopBtn.classList.remove('hidden');
-        logFunctionRun(fn, 'Activated');
-      } else {
-        fnStartBtn.disabled = true;
-        fnStartBtn.textContent = 'Running…';
+        fnStateRing.className = 'flex items-center justify-center size-28 rounded-full border-4 border-base-300 animate-pulse';
+        fnStateText.textContent = 'Connecting…';
+        fnStateText.className = 'font-semibold text-base-content/60 text-sm';
         setTimeout(function () {
+          fnStateRing.className = 'flex items-center justify-center size-28 rounded-full border-4 border-success';
+          fnStateText.textContent = 'ON';
+          fnStateText.className = 'font-semibold text-success';
           fnStartBtn.disabled = false;
-          fnStartBtn.textContent = 'Start';
-          logFunctionRun(fn, 'Completed');
-          fnDialog.close();
-        }, 900);
+          fnStartBtn.classList.add('hidden');
+          fnStopBtn.classList.remove('hidden');
+          logFunctionRun(fn, 'Activated');
+        }, 600);
+      } else {
+        fnStartBtn.textContent = 'Connecting…';
+        setTimeout(function () {
+          fnStartBtn.textContent = 'Running…';
+          setTimeout(function () {
+            fnStartBtn.disabled = false;
+            fnStartBtn.textContent = 'Start';
+            logFunctionRun(fn, 'Completed');
+            fnDialog.close();
+          }, 700);
+        }, 500);
       }
     };
     fnStopBtn.onclick = function () {

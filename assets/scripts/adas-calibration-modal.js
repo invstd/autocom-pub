@@ -149,9 +149,12 @@
   // ===== Confirm -> progress -> result =====
   // Simulated calibration phases — no real reference recording behind these names/counts (unlike
   // battery-soh-modal's), but grounded in what a real target-based ADAS calibration actually does:
-  // confirm the rig is still square, capture the target from the camera, compute the offset, then
-  // write it to the ECU.
+  // re-establish the communication protocol with the rig, confirm it's still square, capture the
+  // target from the camera, compute the offset, then write it to the ECU. The opening "Connecting"
+  // step (added per a real mechanic's feedback) matches every other Function's dialog — see
+  // ecu-detail.js's openFunctionDialog.
   var STEPS = [
+    { label: "Connecting to rig", count: 0 },
     { label: "Verifying rig alignment", count: 0 },
     { label: "Capturing target image", count: 5 },
     { label: "Computing calibration offset", count: 0 },
