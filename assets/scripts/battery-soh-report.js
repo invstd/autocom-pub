@@ -12,7 +12,7 @@
   var variant = /electric|hybrid/i.test(engine) ? "ev" : "ice";
 
   // `scope` matters: both the ev and ice variant blocks share field names (health-percent,
-  // health-banner, health-note) since only one is ever visible at a time — but a plain
+  // health-badge, health-note) since only one is ever visible at a time — but a plain
   // document-wide querySelector always finds the ev block's copy first regardless of which
   // variant is actually active, silently writing into a hidden element. Every call below scopes
   // to the active variant's own root; only the shared vehicle/test-info fields (unique names,
@@ -22,17 +22,57 @@
     if (el) el.textContent = value;
   }
 
+  // Poor/Good cutoffs for both the category label and the health card's threshold bar (Fair is
+  // the gap between them) — named here so the bar's tick positions/labels can't drift out of sync
+  // with the category logic itself.
+  var HEALTH_THRESHOLDS = { poorMax: 50, goodMin: 80 };
+
   function healthCategory(percent) {
-    if (percent >= 80) return { label: "Good", tone: "success", note: "A battery health reading of over 80% suggests a battery of acceptable capacity. As always, check the OEM specifications, as this can differ between models and years." };
-    if (percent >= 50) return { label: "Fair", tone: "warning", note: "50–80% — expect reduced range/reserve; recheck at the next service." };
-    return { label: "Poor", tone: "error", note: "Below 50% — significantly degraded capacity, likely affecting range and performance." };
+    if (percent >= HEALTH_THRESHOLDS.goodMin) {
+      return { label: "Good", tone: "success", title: "Battery is in good condition", note: "Above " + HEALTH_THRESHOLDS.goodMin + "% — low expected range degradation." };
+    }
+    if (percent >= HEALTH_THRESHOLDS.poorMax) {
+      return { label: "Fair", tone: "warning", title: "Battery is in fair condition", note: HEALTH_THRESHOLDS.poorMax + "–" + HEALTH_THRESHOLDS.goodMin + "% — moderate expected range degradation." };
+    }
+    return { label: "Poor", tone: "error", title: "Battery is in poor condition", note: "Below " + HEALTH_THRESHOLDS.poorMax + "% — significant expected range degradation." };
   }
 
-  function applyBanner(scope, bannerField, category) {
-    var el = scope.querySelector('[data-field="' + bannerField + '"]');
+  function applyBadge(scope, field, category) {
+    var el = scope.querySelector('[data-field="' + field + '"]');
     if (!el) return;
     el.textContent = category.label;
-    el.className = "px-4 py-2 text-center text-sm font-semibold bg-" + category.tone + " text-" + category.tone + "-content";
+    el.className = "badge badge-outline badge-sm shrink-0 badge-" + category.tone;
+  }
+
+  // Fills the threshold bar to `percent` (in the category's tone color) and positions the
+  // Poor/Good tick marks + labels at their actual threshold percentages, so the bar always reads
+  // correctly even if HEALTH_THRESHOLDS above ever changes.
+  function renderHealthBar(scope, percent, category) {
+    var barEl = scope.querySelector("[data-health-bar]");
+    if (!barEl) return;
+
+    var fillEl = barEl.querySelector("[data-health-bar-fill]");
+    if (fillEl) {
+      fillEl.style.width = Math.max(0, Math.min(100, percent)) + "%";
+      fillEl.className = "h-full rounded-full bg-" + category.tone;
+    }
+
+    barEl.querySelectorAll("[data-health-bar-tick]").forEach(function (tickEl) {
+      var pos = tickEl.getAttribute("data-health-bar-tick") === "poor" ? HEALTH_THRESHOLDS.poorMax : HEALTH_THRESHOLDS.goodMin;
+      tickEl.style.left = pos + "%";
+    });
+
+    var poorLabelEl = barEl.querySelector("[data-health-bar-poor-label]");
+    if (poorLabelEl) {
+      poorLabelEl.textContent = "Poor < " + HEALTH_THRESHOLDS.poorMax + "%";
+      poorLabelEl.style.left = HEALTH_THRESHOLDS.poorMax + "%";
+    }
+
+    var goodLabelEl = barEl.querySelector("[data-health-bar-good-label]");
+    if (goodLabelEl) {
+      goodLabelEl.textContent = "Good ≥ " + HEALTH_THRESHOLDS.goodMin + "%";
+      goodLabelEl.style.left = HEALTH_THRESHOLDS.goodMin + "%";
+    }
   }
 
   // Populates and opens the AI Assist dialog for one fault code — content shape matches what
@@ -107,12 +147,12 @@
 
     var healthCat = healthCategory(data.batteryHealthPercent);
     setText(evEl, "health-percent", data.batteryHealthPercent + "%");
-    applyBanner(evEl, "health-banner", healthCat);
+    setText(evEl, "health-title", healthCat.title);
+    applyBadge(evEl, "health-badge", healthCat);
     setText(evEl, "health-note", healthCat.note);
+    renderHealthBar(evEl, data.batteryHealthPercent, healthCat);
 
     var faultCount = data.faultCodes.length;
-    applyBanner(evEl, "fault-banner", faultCount === 0 ? { label: "Good", tone: "success" } : { label: "Check", tone: "warning" });
-    setText(evEl, "fault-count", faultCount + (faultCount === 1 ? " DTC" : " DTCs"));
 
     setText(evEl, "capacity-initial", data.capacity.initialKwh.toFixed(1));
     setText(evEl, "capacity-current", data.capacity.currentKwh.toFixed(1));
@@ -171,8 +211,10 @@
     iceEl.classList.remove("hidden");
     var iceCategory = healthCategory(74);
     setText(iceEl, "health-percent", "74%");
-    applyBanner(iceEl, "health-banner", iceCategory);
+    setText(iceEl, "health-title", iceCategory.title);
+    applyBadge(iceEl, "health-badge", iceCategory);
     setText(iceEl, "health-note", iceCategory.note);
+    renderHealthBar(iceEl, 74, iceCategory);
     setText(iceEl, "ice-voltage", "11.4");
     setText(iceEl, "ice-cca", "410");
     setText(iceEl, "ice-cca-rated", "520");

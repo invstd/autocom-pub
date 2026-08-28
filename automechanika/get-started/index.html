@@ -62,12 +62,12 @@
         } catch (e) {}
       })();
     </script>
-    <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
+    <link rel="stylesheet" href="/diagnostics-pub/assets/styles/main.css">
 
     
-    <link rel="manifest" href="/autocom-pub/automechanika/manifest.webmanifest">
+    <link rel="manifest" href="/diagnostics-pub/automechanika/manifest.webmanifest">
     <meta name="theme-color" content="#111827">
-    <link rel="apple-touch-icon" href="/autocom-pub/assets/images/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/diagnostics-pub/assets/images/icons/icon-192.png">
 
 </head>
 <body class="bg-base-100 text-base-content">
@@ -139,7 +139,7 @@
           // decides which message the (harmless, redundant on first install) updatefound handler
           // below should show.
           var isFirstInstall = !navigator.serviceWorker.controller;
-          navigator.serviceWorker.register('/autocom-pub/automechanika/service-worker.js', { scope: '/autocom-pub/automechanika/' }).then(function (reg) {
+          navigator.serviceWorker.register('/diagnostics-pub/automechanika/service-worker.js', { scope: '/diagnostics-pub/automechanika/' }).then(function (reg) {
             if (reg.installing) {
               setState('pending', 'Preparing offline mode…');
               watchWorker(reg.installing);
@@ -177,7 +177,7 @@
 <div class="get-started-page relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 py-10">
   
 <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
-  <source src="/autocom-pub/assets/videos/pouring-oil.mp4" type="video/mp4" />
+  <source src="/diagnostics-pub/assets/videos/pouring-oil.mp4" type="video/mp4" />
 </video>
 <div class="setup-video-tint absolute inset-0" aria-hidden="true"></div>
 
@@ -290,7 +290,7 @@ About 6–8 minutes total</span>
         </div>
 
         <button type="button" class="btn btn-primary btn-lg btn-block mt-6" id="account-details-next" disabled>Next</button>
-        <p class="text-sm text-base-content/70 text-center mt-4">Already have an account? <a href="/autocom-pub/automechanika/login/" class="link link-primary">Log in</a></p>
+        <p class="text-sm text-base-content/70 text-center mt-4">Already have an account? <a href="/diagnostics-pub/automechanika/login/" class="link link-primary">Log in</a></p>
       </div>
 
       <div class="get-started-substep hidden" id="account-verify-email">
@@ -747,15 +747,15 @@ About 6–8 minutes total</span>
           <h2 class="text-xl font-semibold text-base-content">You're all set!</h2>
           <p class="text-sm text-base-content/70">Your account is ready. Next, connect your VCI to run your first scan.</p>
         </div>
-        <a href="/autocom-pub/automechanika/add-vci/" class="btn btn-primary btn-lg btn-block">Continue</a>
+        <a href="/diagnostics-pub/automechanika/add-vci/" class="btn btn-primary btn-lg btn-block">Continue</a>
       </div>
     </div>
 
     </div>
   </div>
 </div>
-<script src="/autocom-pub/assets/scripts/connectivity-check.js"></script>
-<script src="/autocom-pub/assets/scripts/get-started.js"></script>
+<script src="/diagnostics-pub/assets/scripts/connectivity-check.js"></script>
+<script src="/diagnostics-pub/assets/scripts/get-started.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">
@@ -778,6 +778,6 @@ About 6–8 minutes total</span>
   </div>
 </div>
 
-    <script src="/autocom-pub/assets/scripts/prototype-gate.js"></script>
+    <script src="/diagnostics-pub/assets/scripts/prototype-gate.js"></script>
 </body>
 </html>

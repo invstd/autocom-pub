@@ -17,58 +17,20 @@
   var alignRigLabelEl = document.getElementById("adas-calibration-align-rig-label");
   var changeRigBtns = Array.prototype.slice.call(document.querySelectorAll("[data-adas-calibration-change-rig]"));
 
-  // Top-down rig-alignment diagram — rig frame (hatched bar), a dotted sensor rectangle down each
-  // side, and a vehicle silhouette that swaps car/truck to match the real vehicle in the
-  // diagnostic session (same `automechanika-vehicle-type` flag every other Cars/Trucks split in
-  // this app reads), not a generic icon that reads wrong on half the vehicles this flow runs for.
+  // Top-down rig-alignment diagram (rig frame + sensor rails + vehicle silhouette) swaps car/truck
+  // to match the real vehicle in the diagnostic session (same `automechanika-vehicle-type` flag
+  // every other Cars/Trucks split in this app reads), not a generic icon that reads wrong on half
+  // the vehicles this flow runs for. Both diagrams are server-rendered inline (see
+  // adas-calibration-modal.njk's `inlineSvg` of _includes/graphics/adas/rig-{car,truck}.svg,
+  // currentColor paths) — this just toggles which one is visible instead of building SVG markup
+  // at runtime.
   var isTrucksMode = localStorage.getItem("automechanika-vehicle-type") === "trucks";
-
-  // Rig bar with a cross-hatch fill (a real alignment rig's clamp rail), plus the dotted sensor
-  // rectangle connecting both ends down to the vehicle — same layout as the reference mockup.
-  var RIG_AND_LINES =
-    '<line x1="14" y1="6" x2="86" y2="6" stroke-width="2"/>' +
-    '<line x1="14" y1="16" x2="86" y2="16" stroke-width="2"/>' +
-    '<line x1="20" y1="6" x2="14" y2="16" stroke-width="1"/>' +
-    '<line x1="32" y1="6" x2="26" y2="16" stroke-width="1"/>' +
-    '<line x1="44" y1="6" x2="38" y2="16" stroke-width="1"/>' +
-    '<line x1="56" y1="6" x2="50" y2="16" stroke-width="1"/>' +
-    '<line x1="68" y1="6" x2="62" y2="16" stroke-width="1"/>' +
-    '<line x1="80" y1="6" x2="74" y2="16" stroke-width="1"/>' +
-    '<line x1="86" y1="6" x2="80" y2="16" stroke-width="1"/>' +
-    '<path d="M 14,16 L 14,100 L 86,100 L 86,16" fill="none" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.7"/>';
-
-  // Top-down car: tapered rounded nose, flared front fenders with mirrors, a pinched
-  // cabin/greenhouse (roof rect + windshield/rear-window curves), flared rear fenders, rounded
-  // tail — a real recognizable top-down car outline, not a pill.
-  var CAR_SHAPE =
-    '<path d="M 50,14 C 41,14 35,18 33,26 C 29,30 26,35 26,42 L 26,50 C 31,54 33,57 33,62 L 33,98 ' +
-    'C 33,103 31,106 26,110 L 26,118 C 26,127 29,135 33,141 C 35,150 41,156 50,156 ' +
-    'C 59,156 65,150 67,141 C 71,135 74,127 74,118 L 74,110 C 69,106 67,103 67,98 ' +
-    'L 67,62 C 67,57 69,54 74,50 L 74,42 C 74,35 71,30 67,26 C 65,18 59,14 50,14 Z" stroke-width="2"/>' +
-    '<rect x="17" y="46" width="9" height="7" rx="2.5" stroke-width="1.4"/>' +
-    '<rect x="74" y="46" width="9" height="7" rx="2.5" stroke-width="1.4"/>' +
-    '<path d="M 31,59 Q 50,52 69,59" stroke-width="1.3" opacity="0.7"/>' +
-    '<rect x="38" y="62" width="24" height="35" rx="6" stroke-width="1.3" opacity="0.7"/>' +
-    '<path d="M 31,101 Q 50,108 69,101" stroke-width="1.3" opacity="0.7"/>';
-
-  // Top-down truck: a distinct cab (windshield + mirrors) up front, then a separate, wider
-  // load bed/box behind it with panel lines — clearly different from the car's single body.
-  var TRUCK_SHAPE =
-    '<path d="M 50,10 C 42,10 36,14 34,21 L 34,38 C 34,43 37,46 42,47 L 58,47 ' +
-    'C 63,46 66,43 66,38 L 66,21 C 64,14 58,10 50,10 Z" stroke-width="2"/>' +
-    '<rect x="24" y="22" width="9" height="7" rx="2.5" stroke-width="1.4"/>' +
-    '<rect x="67" y="22" width="9" height="7" rx="2.5" stroke-width="1.4"/>' +
-    '<path d="M 37,30 Q 50,25 63,30" stroke-width="1.3" opacity="0.7"/>' +
-    '<rect x="27" y="53" width="46" height="103" rx="5" stroke-width="2"/>' +
-    '<line x1="27" y1="53" x2="73" y2="53" stroke-width="1.2" opacity="0.5"/>' +
-    '<line x1="27" y1="82" x2="73" y2="82" stroke-width="1" opacity="0.3"/>' +
-    '<line x1="27" y1="111" x2="73" y2="111" stroke-width="1" opacity="0.3"/>' +
-    '<line x1="27" y1="140" x2="73" y2="140" stroke-width="1" opacity="0.3"/>';
-
   var vehicleDiagramEl = dialog.querySelector("[data-adas-rig-vehicle-diagram]");
   if (vehicleDiagramEl) {
-    vehicleDiagramEl.innerHTML = '<svg viewBox="0 0 100 165" class="w-28 h-44" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      RIG_AND_LINES + (isTrucksMode ? TRUCK_SHAPE : CAR_SHAPE) + '</svg>';
+    vehicleDiagramEl.querySelectorAll("[data-adas-rig-diagram]").forEach(function (el) {
+      var matches = el.getAttribute("data-adas-rig-diagram") === (isTrucksMode ? "truck" : "car");
+      el.classList.toggle("hidden", !matches);
+    });
   }
 
   var titleEl = document.getElementById("adas-calibration-title");

@@ -62,12 +62,12 @@
         } catch (e) {}
       })();
     </script>
-    <link rel="stylesheet" href="/autocom-pub/assets/styles/main.css">
+    <link rel="stylesheet" href="/diagnostics-pub/assets/styles/main.css">
 
     
-    <link rel="manifest" href="/autocom-pub/automechanika/manifest.webmanifest">
+    <link rel="manifest" href="/diagnostics-pub/automechanika/manifest.webmanifest">
     <meta name="theme-color" content="#111827">
-    <link rel="apple-touch-icon" href="/autocom-pub/assets/images/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/diagnostics-pub/assets/images/icons/icon-192.png">
 
 </head>
 <body class="bg-base-100 text-base-content">
@@ -139,7 +139,7 @@
           // decides which message the (harmless, redundant on first install) updatefound handler
           // below should show.
           var isFirstInstall = !navigator.serviceWorker.controller;
-          navigator.serviceWorker.register('/autocom-pub/automechanika/service-worker.js', { scope: '/autocom-pub/automechanika/' }).then(function (reg) {
+          navigator.serviceWorker.register('/diagnostics-pub/automechanika/service-worker.js', { scope: '/diagnostics-pub/automechanika/' }).then(function (reg) {
             if (reg.installing) {
               setState('pending', 'Preparing offline mode…');
               watchWorker(reg.installing);
@@ -170,9 +170,9 @@
 (function () {
   try {
     if (localStorage.getItem('air-app-installed') !== '1') {
-      window.location.replace('/autocom-pub/automechanika/install/');
+      window.location.replace('/diagnostics-pub/automechanika/install/');
     } else if (localStorage.getItem('air-session-active') === '1') {
-      window.location.replace('/autocom-pub/automechanika/');
+      window.location.replace('/diagnostics-pub/automechanika/');
     }
   } catch (e) {}
 })();
@@ -180,14 +180,14 @@
 <div class="welcome-page relative min-h-screen w-full overflow-hidden flex items-center justify-center">
   
 <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
-  <source src="/autocom-pub/assets/videos/pouring-oil.mp4" type="video/mp4" />
+  <source src="/diagnostics-pub/assets/videos/pouring-oil.mp4" type="video/mp4" />
 </video>
 <div class="welcome-video-tint absolute inset-0" aria-hidden="true"></div>
 
 
   <div class="relative z-10 w-full max-w-sm mx-auto px-6 py-12 flex flex-col items-center text-center gap-8">
     <div class="flex flex-col items-center">
-      <img src="/autocom-pub/assets/images/autocom-symbol.svg" alt="" class="h-16 w-auto" />
+      <img src="/diagnostics-pub/assets/images/autocom-symbol.svg" alt="" class="h-16 w-auto" />
       <h1 class="font-headline font-semibold text-3xl tracking-wide text-white">Apex</h1>
     </div>
 
@@ -203,18 +203,18 @@
     </div>
 
     <div class="flex flex-col gap-3 w-full">
-      <a href="/autocom-pub/automechanika/login/" class="btn btn-primary btn-lg btn-block">Login</a>
-      <a href="/autocom-pub/automechanika/get-started/" class="btn btn-lg btn-block bg-white text-neutral border-none hover:bg-white/90">Create account</a>
+      <a href="/diagnostics-pub/automechanika/login/" class="btn btn-primary btn-lg btn-block">Login</a>
+      <a href="/diagnostics-pub/automechanika/get-started/" class="btn btn-lg btn-block bg-white text-neutral border-none hover:bg-white/90">Create account</a>
       <div class="flex items-center gap-3 text-white/50 text-xs py-1">
         <span class="flex-1 h-px bg-white/20"></span>
         <span>or</span>
         <span class="flex-1 h-px bg-white/20"></span>
       </div>
-      <a href="/autocom-pub/automechanika/" class="link link-hover text-white/80 text-sm">Try the demo</a>
+      <a href="/diagnostics-pub/automechanika/" class="link link-hover text-white/80 text-sm">Try the demo</a>
     </div>
   </div>
 </div>
-<script src="/autocom-pub/assets/scripts/welcome.js"></script>
+<script src="/diagnostics-pub/assets/scripts/welcome.js"></script>
 
     
 <div id="prototype-gate-root" class="prototype-gate-root fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" aria-modal="true" role="dialog" aria-labelledby="prototype-gate-title" aria-describedby="prototype-gate-desc">
@@ -237,6 +237,6 @@
   </div>
 </div>
 
-    <script src="/autocom-pub/assets/scripts/prototype-gate.js"></script>
+    <script src="/diagnostics-pub/assets/scripts/prototype-gate.js"></script>
 </body>
 </html>
