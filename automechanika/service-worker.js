@@ -11,7 +11,7 @@
  * CACHE_NAME includes the build timestamp, so every new deploy gets its own cache and the old
  * one is dropped on activate — no manual version bump needed.
  */
-var CACHE_NAME = 'automechanika-1788170377088';
+var CACHE_NAME = 'automechanika-1788182746912';
 
 var PRECACHE_URLS = [
   '/diagnostics-pub/automechanika/',

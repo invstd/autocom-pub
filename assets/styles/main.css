@@ -7536,6 +7536,9 @@
   .mb-0 {
     margin-bottom: calc(var(--spacing) * 0);
   }
+  .mb-0\.5 {
+    margin-bottom: calc(var(--spacing) * 0.5);
+  }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
@@ -8859,6 +8862,9 @@
   }
   .-rotate-90 {
     rotate: calc(90deg * -1);
+  }
+  .rotate-180 {
+    rotate: 180deg;
   }
   .swap-flip {
     @layer daisyui.l1 {
@@ -10269,10 +10275,31 @@
       }
     }
   }
+  .fill-base-100 {
+    fill: var(--color-base-100);
+  }
   .fill-base-content\/30 {
     fill: var(--color-base-content);
     @supports (color: color-mix(in lab, red, red)) {
       fill: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+    }
+  }
+  .fill-base-content\/50 {
+    fill: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      fill: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+    }
+  }
+  .fill-base-content\/55 {
+    fill: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      fill: color-mix(in oklab, var(--color-base-content) 55%, transparent);
+    }
+  }
+  .fill-base-content\/75 {
+    fill: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      fill: color-mix(in oklab, var(--color-base-content) 75%, transparent);
     }
   }
   .object-contain {
@@ -10450,6 +10477,9 @@
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
+  }
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -10754,6 +10784,12 @@
       font-size: 1.25rem;
       --otp-size: calc(var(--size-field, 0.25rem) * 6);
     }
+  }
+  .text-\[6px\] {
+    font-size: 6px;
+  }
+  .text-\[8px\] {
+    font-size: 8px;
   }
   .text-\[11px\] {
     font-size: 11px;
@@ -11263,10 +11299,22 @@
       color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
     }
   }
+  .text-base-content\/45 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 45%, transparent);
+    }
+  }
   .text-base-content\/50 {
     color: var(--color-base-content);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+    }
+  }
+  .text-base-content\/55 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
     }
   }
   .text-base-content\/60 {
@@ -12784,6 +12832,11 @@
       width: calc(var(--spacing) * 12);
     }
   }
+  .sm\:w-48 {
+    @media (width >= 40rem) {
+      width: calc(var(--spacing) * 48);
+    }
+  }
   .sm\:w-80 {
     @media (width >= 40rem) {
       width: calc(var(--spacing) * 80);
@@ -13520,6 +13573,25 @@ html[data-role="User"] [data-admin-only] {
   .automechanika-shell .automechanika-drawer-side,
   .automechanika-shell > .drawer-content > .navbar {
     display: none !important;
+  }
+}
+.tech-data-diagram-fullscreen {
+  max-width: min(92vw, 64rem) !important;
+}
+@media print {
+  body:has(dialog.tech-data-print-dialog[open]) * {
+    visibility: hidden;
+  }
+  body:has(dialog.tech-data-print-dialog[open]) dialog.tech-data-print-dialog,
+  body:has(dialog.tech-data-print-dialog[open]) dialog.tech-data-print-dialog * {
+    visibility: visible;
+  }
+  dialog.tech-data-print-dialog {
+    position: fixed;
+    inset: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
   }
 }
 .btn:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-ghost):not(.btn-link):not(.btn-neutral):not(.btn-info):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-outline):not(.btn-dash):not(.btn-soft) {
