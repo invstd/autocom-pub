@@ -41,10 +41,19 @@
     try { return JSON.parse(el.textContent) || { cars: [], trucks: [] }; } catch (e) { return { cars: [], trucks: [] }; }
   }
 
-  function generateRandomVIN() {
+  // Real WMI (VIN prefix) per brand — src/_data/vinPrefixes.js, emitted by vci-pair-detect-modal.njk
+  // as vin-prefixes-data, so a manually-selected non-curated vehicle still gets a brand-matching VIN.
+  function readVinPrefixes() {
+    var el = document.getElementById("vin-prefixes-data");
+    if (!el) return {};
+    try { return JSON.parse(el.textContent) || {}; } catch (e) { return {}; }
+  }
+
+  function generateRandomVIN(brand) {
     var chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
-    var vin = "";
-    for (var i = 0; i < 17; i++) {
+    var wmi = (brand && readVinPrefixes()[brand]) || "XXX";
+    var vin = wmi;
+    for (var i = 0; i < 17 - wmi.length; i++) {
       vin += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return vin;
@@ -212,7 +221,7 @@
           model: vd.model || "",
           year: vd.year || "",
           engine: vd.engine || "",
-          vin: curatedMatch ? curatedMatch.vin : generateRandomVIN() // Real VIN when matched, so it agrees with the Garage row Finish Session lands on
+          vin: curatedMatch ? curatedMatch.vin : generateRandomVIN(vd.brandLabel) // Real VIN when matched, so it agrees with the Garage row Finish Session lands on
         };
         if (curatedMatch) currentVehicle.id = curatedMatch.id;
       } catch (e) {
