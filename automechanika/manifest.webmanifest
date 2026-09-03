@@ -1,7 +1,7 @@
 {
-  "name": "Autocom Apex — Automechanika Demo",
-  "short_name": "Apex Demo",
-  "description": "Autocom Apex NextGen diagnostics — trade-show demonstration build.",
+  "name": "Diagnostics Platform — Automechanika Demo",
+  "short_name": "Diagnostics Demo",
+  "description": "NextGen diagnostics — trade-show demonstration build.",
   "start_url": "/diagnostics-pub/automechanika/",
   "scope": "/diagnostics-pub/automechanika/",
   "display": "standalone",

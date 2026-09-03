@@ -86,7 +86,7 @@
     { at: 0, text: 'Downloading installer…' },
     { at: 25, text: 'Verifying package…' },
     { at: 45, text: 'Copying files…' },
-    { at: 70, text: 'Configuring Apex…' },
+    { at: 70, text: 'Configuring Diagnostics Platform…' },
     { at: 90, text: 'Finishing up…' }
   ];
 

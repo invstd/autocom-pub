@@ -10558,6 +10558,9 @@
   .pt-6 {
     padding-top: calc(var(--spacing) * 6);
   }
+  .pt-24 {
+    padding-top: calc(var(--spacing) * 24);
+  }
   .\!pr-3 {
     padding-right: calc(var(--spacing) * 3) !important;
   }
@@ -10587,6 +10590,9 @@
   }
   .pb-6 {
     padding-bottom: calc(var(--spacing) * 6);
+  }
+  .pb-10 {
+    padding-bottom: calc(var(--spacing) * 10);
   }
   .pb-12 {
     padding-bottom: calc(var(--spacing) * 12);
